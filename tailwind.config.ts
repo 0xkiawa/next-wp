@@ -1,4 +1,6 @@
+import { EB_Garamond } from "next/font/google";
 import type { Config } from "tailwindcss";
+import { garamond } from "./lib/fonts";
 const { fontFamily } = require("tailwindcss/defaultTheme");
 
 const config = {
@@ -21,6 +23,14 @@ const config = {
     extend: {
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
+        garamond: ["var(--font-garamond)", ...fontFamily.serif],
+        acaslon: ["var(--font-acaslon)", ...fontFamily.serif],
+        stilson: ["var(--font-stilson)", ...fontFamily.serif],
+        miller: ["var(--font-miller)", ...fontFamily.serif],
+        newyorker: ["var(--font-newyorker)"],
+        futura: ["var(--font-futura)"],
+        glacial: ["var(--font-glacial)"],
+        ghost: ["var(--font-ghost)"],
       },
       colors: {
         border: "hsl(var(--border))",

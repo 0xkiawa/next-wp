@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/pagination";
 
 import { Section, Container, Prose } from "@/components/craft";
-import { PostCard } from "@/components/posts/post-card";
+import  PostCard  from "@/components/posts/post-mobile-card";
 import { FilterPosts } from "@/components/posts/filter";
 import { SearchInput } from "@/components/posts/search-input";
 
@@ -79,7 +79,7 @@ export default async function Page({
       <Container>
         <div className="space-y-8">
           <Prose>
-            <h2>All Posts</h2>
+            <h2 className="font-acaslon italic text-center">Every KiawaNotes post</h2>
             <p className="text-muted-foreground">
               {posts.length} {posts.length === 1 ? "post" : "posts"} found
               {search && " matching your search"}

@@ -1,77 +1,72 @@
 import Image from "next/image";
 import Link from "next/link";
-
 import { Post } from "@/lib/wordpress.d";
 import { cn } from "@/lib/utils";
-
 import {
   getFeaturedMediaById,
   getAuthorById,
   getCategoryById,
 } from "@/lib/wordpress";
 
-export async function PostCard({ post }: { post: Post }) {
-  const media = post.featured_media
-    ? await getFeaturedMediaById(post.featured_media)
-    : null;
-  const author = post.author ? await getAuthorById(post.author) : null;
+export default async function PostComponent({
+  post,
+  isLast = false,
+}: {
+  post: Post;
+  isLast?: boolean;
+}) {
+  const media = await getFeaturedMediaById(post.featured_media);
+  const author = await getAuthorById(post.author);
   const date = new Date(post.date).toLocaleDateString("en-US", {
     month: "long",
     day: "numeric",
     year: "numeric",
   });
-  const category = post.categories?.[0]
-    ? await getCategoryById(post.categories[0])
-    : null;
-
+  const category = await getCategoryById(post.categories[0]);
+  
   return (
-    <Link
-      href={`/posts/${post.slug}`}
-      className={cn(
-        "border p-4 bg-accent/30 rounded-lg group flex justify-between flex-col not-prose gap-8",
-        "hover:bg-accent/75 transition-all"
-      )}
-    >
-      <div className="flex flex-col gap-4">
-        <div className="h-48 w-full overflow-hidden relative rounded-md border flex items-center justify-center bg-muted">
-          {media?.source_url ? (
-            <Image
-              className="h-full w-full object-cover"
-              src={media.source_url}
-              alt={post.title?.rendered || "Post thumbnail"}
-              width={400}
-              height={200}
-            />
-          ) : (
-            <div className="flex items-center justify-center w-full h-full text-muted-foreground">
-              No image available
-            </div>
+    <div className="relative">
+      <Link
+        href={`/posts/${post.slug}`}
+        className="flex flex-col gap-4 sm:flex-row md:flex-row-reverse lg:flex-col not-prose relative py-4 sm:py-6 md:py-6 lg:py-0"
+      >
+        {/* Image container */}
+        <div
+          className={cn(
+            "h-48 w-full sm:h-32 sm:w-1/3 md:h-36 md:w-64 lg:h-48 lg:w-full flex items-center justify-center overflow-hidden lg:border-r",
+            isLast ? "lg:last:border-r-0" : ""
           )}
+        >
+          <div className="w-full h-full relative rounded-md lg:w-3/4">
+            <Image
+              className="object-cover"
+              src={media.source_url}
+              alt={post.title.rendered}
+              layout="fill"
+            />
+          </div>
         </div>
-        <div
-          dangerouslySetInnerHTML={{
-            __html: post.title?.rendered || "Untitled Post",
-          }}
-          className="text-xl text-primary font-medium group-hover:underline decoration-muted-foreground underline-offset-4 decoration-dotted transition-all"
-        ></div>
-        <div
-          className="text-sm"
-          dangerouslySetInnerHTML={{
-            __html: post.excerpt?.rendered
-              ? post.excerpt.rendered.split(" ").slice(0, 12).join(" ").trim() +
-                "..."
-              : "No excerpt available",
-          }}
-        ></div>
-      </div>
-
-      <div className="flex flex-col gap-4">
-        <hr />
-        <div className="flex justify-between items-center text-xs">
-          <p>{category?.name || "Uncategorized"}</p>
-          <p>{date}</p>
+        
+        {/* Content container */}
+        <div className="flex flex-col gap-1 sm:flex-col md:flex-col w-full sm:w-2/3 sm:pr-4">
+          <p className="text-red-600 text-xs">{category.name}</p>
+          <div
+            dangerouslySetInnerHTML={{ __html: post.title.rendered }}
+            className="text-xl sm:text-xl lg:text-xl text-primary font-stilson font-bold hover:underline decoration-muted-foreground underline-offset-4 transition-all break-words"
+          ></div>
+          <div
+            className="text-xm sm:text-xl lg:text-base font-acaslon"
+            dangerouslySetInnerHTML={{
+              __html:
+                post.excerpt.rendered.split(" ").slice(0, 12).join(" ").trim() +
+                "...",
+            }}
+          ></div>
         </div>
-      </div>
-    </Link>
+      </Link>
+      {!isLast && (
+        <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gray-100 dark:bg-neutral-900 block lg:hidden" />
+      )}
+    </div>
   );
 }
