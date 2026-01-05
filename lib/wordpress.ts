@@ -14,10 +14,6 @@ import type {
 
 const baseUrl = process.env.WORDPRESS_URL;
 
-if (!baseUrl) {
-  throw new Error("WORDPRESS_URL environment variable is not defined");
-}
-
 interface FetchOptions extends RequestInit {
   next?: {
     revalidate?: number | false;
@@ -25,6 +21,9 @@ interface FetchOptions extends RequestInit {
 }
 
 function getUrl(path: string, query?: Record<string, any>) {
+  if (!baseUrl) {
+    throw new Error("WORDPRESS_URL environment variable is not defined");
+  }
   const params = query ? querystring.stringify(query) : null;
   return `${baseUrl}${path}${params ? `?${params}` : ""}`;
 }
