@@ -3,12 +3,16 @@ import { getPresignedDownloadUrl } from '@/lib/s3';
 
 export async function GET() {
   // Update the file key to the name of your MP3 file
-  const fileKey = "Denzel and Asap Convo.mp3"; 
-  
+  const fileKey = "Denzel and Asap Convo.mp3";
+
   try {
     const presignedUrl = await getPresignedDownloadUrl(fileKey);
     return NextResponse.json({ url: presignedUrl });
-  } catch (error) {
+  } catch (error: any) {
+    if (error.message === 'S3 is not properly configured. Missing environment variables.') {
+      console.warn('Podcast: S3 is not configured. Returning empty URL.');
+      return NextResponse.json({ url: '' });
+    }
     console.error('Error generating presigned URL:', error);
     return NextResponse.json({ url: '' }, { status: 500 });
   }

@@ -104,7 +104,8 @@ const LatestAudio: React.FC = () => {
   };
 
   if (error) {
-    return <div className="max-w-3xl mx-auto p-6 text-red-600">Error: {error}</div>;
+    // If there's an error (like missing env vars), return null so the section doesn't show
+    return null;
   }
 
   if (!audioUrl) {
