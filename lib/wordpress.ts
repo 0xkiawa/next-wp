@@ -18,7 +18,7 @@ if (!baseUrl) {
   throw new Error("WORDPRESS_URL environment variable is not defined");
 }
 
-interface FetchOptions {
+interface FetchOptions extends RequestInit {
   next?: {
     revalidate?: number | false;
   };
@@ -29,9 +29,14 @@ function getUrl(path: string, query?: Record<string, any>) {
   return `${baseUrl}${path}${params ? `?${params}` : ""}`;
 }
 
+// In development, use a short revalidation time so new posts show up quickly.
+// In production, use a longer time (1 hour) to reduce server load.
+// You can also set up on-demand revalidation via a webhook from WordPress.
+const isDev = process.env.NODE_ENV === 'development';
+
 const defaultFetchOptions: FetchOptions = {
   next: {
-    revalidate: 3600,
+    revalidate: isDev ? 60 : 3600, // 60 seconds in dev, 1 hour in production
   },
 };
 
@@ -42,29 +47,103 @@ class WordPressAPIError extends Error {
   }
 }
 
+// Fetch with timeout using AbortController
+async function fetchWithTimeout(url: string, options: RequestInit, timeoutMs = 30000): Promise<Response> {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    const response = await fetch(url, {
+      ...options,
+      signal: controller.signal,
+    });
+    return response;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
+// Retry helper with improved error detection and longer backoff for unstable hosts
+async function fetchWithRetry(url: string, options: RequestInit, retries = 5, backoff = 2000): Promise<Response> {
+  try {
+    const response = await fetchWithTimeout(url, options, 30000);
+    // If 5xx error, throw to retry
+    if (response.status >= 500) {
+      throw new Error(`Server error: ${response.status}`);
+    }
+    return response;
+  } catch (error: any) {
+    const isRetryable =
+      error.name === 'AbortError' || // Timeout
+      error.cause?.code === 'UND_ERR_SOCKET' ||
+      error.cause?.code === 'ECONNRESET' ||
+      error.cause?.code === 'ECONNREFUSED' ||
+      error.cause?.code === 'ETIMEDOUT' ||
+      error.message?.includes('fetch failed') ||
+      error.message?.includes('closed') ||
+      error.message?.includes('Server error') ||
+      error.message?.includes('network');
+
+    if (retries > 0 && isRetryable) {
+      console.warn(`[WordPress] Fetch failed for ${url}, retrying in ${backoff}ms... (${retries} attempts left). Error: ${error.message || error.name}`);
+      await new Promise(resolve => setTimeout(resolve, backoff));
+      return fetchWithRetry(url, options, retries - 1, Math.min(backoff * 1.5, 10000)); // Cap backoff at 10s
+    }
+    throw error;
+  }
+}
+
+
 async function wordpressFetch<T>(
   url: string,
   options: FetchOptions = {}
 ): Promise<T> {
   const userAgent = "Next.js WordPress Client";
+  const username = process.env.WORDPRESS_USERNAME;
+  const applicationPassword = process.env.WORDPRESS_APPLICATION_PASSWORD;
 
-  const response = await fetch(url, {
-    ...defaultFetchOptions,
-    ...options,
-    headers: {
-      "User-Agent": userAgent,
-    },
-  });
+  const headers: HeadersInit = {
+    "User-Agent": userAgent,
+    "Connection": "keep-alive", // Try to maintain connection
+  };
 
-  if (!response.ok) {
-    throw new WordPressAPIError(
-      `WordPress API request failed: ${response.statusText}`,
-      response.status,
-      url
-    );
+  if (username && applicationPassword) {
+    const credentials = Buffer.from(`${username}:${applicationPassword}`).toString("base64");
+    headers["Authorization"] = `Basic ${credentials}`;
   }
 
-  return response.json();
+  try {
+    const response = await fetchWithRetry(url, {
+      ...defaultFetchOptions,
+      ...options,
+      headers: {
+        ...headers,
+        ...options.headers,
+      },
+    });
+
+    if (!response.ok) {
+      throw new WordPressAPIError(
+        `WordPress API request failed: ${response.statusText}`,
+        response.status,
+        url
+      );
+    }
+
+    const responseClone = response.clone();
+
+    try {
+      return await response.json();
+    } catch (parseError) {
+      const text = await responseClone.text();
+      console.error("[WordPress] Failed to parse JSON. Response text:", text.substring(0, 500));
+      throw new Error(`Failed to parse JSON from ${url}`);
+    }
+  } catch (error: any) {
+    console.error(`[WordPress] Error fetching (${url}):`, error.message || error);
+    // Rethrow - components should handle gracefully
+    throw error;
+  }
 }
 
 export async function getAllPosts(filterParams?: {
@@ -75,7 +154,7 @@ export async function getAllPosts(filterParams?: {
 }): Promise<Post[]> {
   const query: Record<string, any> = {
     _embed: true,
-    per_page: 100,
+    per_page: 20, // Reduced from 100 to be lighter
   };
 
   if (filterParams?.search) {
@@ -205,6 +284,11 @@ export async function getPostsByAuthorSlug(
   authorSlug: string
 ): Promise<Post[]> {
   const author = await getAuthorBySlug(authorSlug);
+  // If author doesn't exist, return empty array instead of crashing
+  if (!author) {
+    console.warn(`Author "${authorSlug}" not found in WordPress`);
+    return [];
+  }
   const url = getUrl("/wp-json/wp/v2/posts", { author: author.id });
   return wordpressFetch<Post[]>(url);
 }
@@ -213,17 +297,30 @@ export async function getPostsByCategorySlug(
   categorySlug: string
 ): Promise<Post[]> {
   const category = await getCategoryBySlug(categorySlug);
+  // If category doesn't exist, return empty array instead of crashing
+  if (!category) {
+    console.warn(`Category "${categorySlug}" not found in WordPress`);
+    return [];
+  }
   const url = getUrl("/wp-json/wp/v2/posts", { categories: category.id });
   return wordpressFetch<Post[]>(url);
 }
 
 export async function getPostsByTagSlug(tagSlug: string): Promise<Post[]> {
   const tag = await getTagBySlug(tagSlug);
+  // If tag doesn't exist, return empty array instead of crashing
+  if (!tag) {
+    console.warn(`Tag "${tagSlug}" not found in WordPress`);
+    return [];
+  }
   const url = getUrl("/wp-json/wp/v2/posts", { tags: tag.id });
   return wordpressFetch<Post[]>(url);
 }
 
-export async function getFeaturedMediaById(id: number): Promise<FeaturedMedia> {
+export async function getFeaturedMediaById(id: number): Promise<FeaturedMedia | null> {
+  if (id === 0) {
+    return null;
+  }
   const url = getUrl(`/wp-json/wp/v2/media/${id}`);
   return wordpressFetch<FeaturedMedia>(url);
 }

@@ -1,5 +1,12 @@
 import localFont from 'next/font/local';
-import { EB_Garamond } from 'next/font/google';
+import { EB_Garamond, Plus_Jakarta_Sans, Imbue } from 'next/font/google';
+
+// Plus Jakarta Sans font
+export const plusJakarta = Plus_Jakarta_Sans({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-jakarta',
+});
 
 // ACaslon Pro font family
 export const acaslonPro = localFont({
@@ -78,6 +85,12 @@ export const ghost = localFont({
   display: 'swap',
 });
 
+export const coolvetica = localFont({
+  src: '../public/fonts/Coolvetica Rg.otf',
+  variable: '--font-coolvetica',
+  display: 'swap',
+});
+
 
 // Futura font family
 export const futura = localFont({
@@ -148,4 +161,20 @@ export const garamond = EB_Garamond({
   weight: ['400', '500', '600', '700', '800'],
   style: ['normal', 'italic'],
   variable: '--font-garamond',
+});
+
+// Imbue font from Google Fonts (for Culture layout)
+export const imbue = Imbue({
+  subsets: ['latin'],
+  display: 'swap',
+  weight: ['400', '500', '600', '700'],
+  style: ['normal'],
+  variable: '--font-imbue',
+});
+
+// Knockout font family
+export const knockout = localFont({
+  src: '../public/fonts/knockout.bold.otf',
+  variable: '--font-knockout',
+  display: 'swap',
 });

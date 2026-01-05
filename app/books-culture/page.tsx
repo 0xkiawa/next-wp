@@ -9,19 +9,17 @@ import { Section, Container } from '@/components/craft';
 
 export default function BooksAndCulturePage() {
   return (
-    <Section>
-      <Container>
-        <KiawaNotesLibrary />
+    <div className="w-full">
+      <KiawaNotesLibrary />
 
-        {/* 📌 Give the Books section an ID so we can link to it */}
-          <Books />
+      {/* 📌 Give the Books section an ID so we can link to it */}
+      <Books />
 
-        <BookReview />
-        <Arts />
-        <div id="books-column">
-          <CurrentlyReading />
-        </div>
-      </Container>
-    </Section>
+      <BookReview />
+      <Arts />
+      <div id="books-column">
+        <CurrentlyReading />
+      </div>
+    </div>
   );
 }

@@ -23,7 +23,7 @@ export default async function PostComponent({
     year: "numeric",
   });
   const category = await getCategoryById(post.categories[0]);
-  
+
   return (
     <div className="relative">
       <Link
@@ -38,17 +38,22 @@ export default async function PostComponent({
           )}
         >
           <div className="w-full h-full relative rounded-md lg:w-3/4">
-            <Image
-              className="object-cover"
-              src={media.source_url}
-              alt={post.title.rendered}
-              layout="fill"
-            />
+            {media?.source_url ? (
+              <Image
+                className="object-cover"
+                src={media.source_url}
+                alt={post.title.rendered}
+                fill
+                sizes="(max-width: 768px) 100vw, 33vw"
+              />
+            ) : (
+              <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800" />
+            )}
           </div>
         </div>
-        
+
         {/* Content container */}
-        <div className="flex flex-col gap-1 sm:flex-col md:flex-col w-full sm:w-2/3 sm:pr-4">
+        <div className="flex flex-col gap-1 sm:flex-col md:flex-col w-full sm:w-2/3 sm:pr-4 lg:w-full lg:pr-0">
           <p className="text-red-600 text-xs">{category.name}</p>
           <div
             dangerouslySetInnerHTML={{ __html: post.title.rendered }}

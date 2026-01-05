@@ -6,114 +6,92 @@ export default function VogueStyleEmailCTA() {
   const [email, setEmail] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  const [lastDismissed, setLastDismissed] = useState(null);
+  const [isAnimating, setIsAnimating] = useState(false);
   const [hasSubscribed, setHasSubscribed] = useState(false);
 
   // Effect to control body scroll locking
   useEffect(() => {
     if (isVisible) {
-      // Lock scrolling when popup is visible
       document.body.style.overflow = 'hidden';
     } else {
-      // Restore scrolling when popup is hidden
       document.body.style.overflow = 'auto';
     }
 
-    // Cleanup: always restore scrolling when component unmounts
     return () => {
       document.body.style.overflow = 'auto';
     };
   }, [isVisible]);
 
   useEffect(() => {
-    // Check if the popup has been shown in this session
-    const hasShown = sessionStorage.getItem('popupShown');
+    const hasBeenDismissed = sessionStorage.getItem('popupDismissed');
     const subscribedStatus = sessionStorage.getItem('hasSubscribed');
-    
-    if (subscribedStatus === 'true') {
-      setHasSubscribed(true);
-      return; // Don't show popup again if user has subscribed
-    }
-    
-    if (!hasShown) {
-      // Show popup after 5 seconds of page load
-      const timer = setTimeout(() => {
-        setIsVisible(true);
-      }, 5000);
-      
-      // Or show popup when user scrolls 60% down the page
-      const handleScroll = () => {
-        const scrollPosition = window.scrollY;
-        const windowHeight = window.innerHeight;
-        const documentHeight = document.body.scrollHeight;
-        
-        if (scrollPosition > (documentHeight * 0.6 - windowHeight)) {
-          setIsVisible(true);
-          window.removeEventListener('scroll', handleScroll);
-        }
-      };
-      
-      window.addEventListener('scroll', handleScroll);
-      
-      // Exit intent detection (user moving mouse to top of page quickly)
-      const handleMouseLeave = (e) => {
-        if (e.clientY <= 0) {
-          setIsVisible(true);
-          document.removeEventListener('mouseleave', handleMouseLeave);
-        }
-      };
-      
-      document.addEventListener('mouseleave', handleMouseLeave);
-      
-      return () => {
-        clearTimeout(timer);
-        window.removeEventListener('scroll', handleScroll);
-        document.removeEventListener('mouseleave', handleMouseLeave);
-      };
-    }
-  }, []);
 
-  // Timer to reshow popup after 1 minute if just dismissed with X
-  useEffect(() => {
-    // Only set up timer if user dismissed popup but hasn't subscribed
-    if (lastDismissed && !hasSubscribed) {
-      const timer = setTimeout(() => {
-        setIsVisible(true);
-      }, 60000); // 60000ms = 1 minute
-      
-      return () => clearTimeout(timer);
-    }
-  }, [lastDismissed, hasSubscribed]);
-
-  const handleSubmit = (e) => {
-    if (e) e.preventDefault();
-    
-    // Validate email
-    if (!email || !email.includes('@')) {
+    if (subscribedStatus === 'true' || hasBeenDismissed === 'true') {
+      setHasSubscribed(subscribedStatus === 'true');
       return;
     }
-    
-    // Here you would typically handle the submission to your newsletter service
-    console.log('Subscribing email:', email);
-    setIsSubmitted(true);
-    setEmail('');
-    setHasSubscribed(true);
-    // Set flag that user has subscribed
-    sessionStorage.setItem('hasSubscribed', 'true');
-    
-    // Reset submission state after 3 seconds and allow scrolling again
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setIsVisible(false);
-      sessionStorage.setItem('popupShown', 'true');
+
+    // Show popup logic
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+      setTimeout(() => setIsAnimating(true), 50);
     }, 3000);
+
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.body.scrollHeight;
+
+      if (scrollPosition > (documentHeight * 0.4 - windowHeight)) {
+        setIsVisible(true);
+        setTimeout(() => setIsAnimating(true), 50);
+        window.removeEventListener('scroll', handleScroll);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+
+    const handleMouseLeave = (e: MouseEvent) => {
+      if (e.clientY <= 0) {
+        setIsVisible(true);
+        setTimeout(() => setIsAnimating(true), 50);
+        document.removeEventListener('mouseleave', handleMouseLeave);
+      }
+    };
+
+    document.addEventListener('mouseleave', handleMouseLeave);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('scroll', handleScroll);
+      document.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, []);
+
+  const handleSubmit = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+
+    if (!email || !email.includes('@')) {
+      return; // Basic validation
+    }
+
+    setIsSubmitted(true);
+    setHasSubscribed(true);
+    sessionStorage.setItem('hasSubscribed', 'true');
+
+    setTimeout(() => {
+      closePopup();
+    }, 2000);
   };
 
   const closePopup = () => {
-    setIsVisible(false);
-    setLastDismissed(Date.now());
-    // Only mark as shown, but we'll show it again after 1 minute
-    sessionStorage.setItem('popupShown', 'true');
+    setIsAnimating(false);
+    setTimeout(() => {
+      setIsVisible(false);
+      sessionStorage.setItem('popupDismissed', 'true');
+      setIsSubmitted(false); // Reset for next time if needed, though hidden
+      setEmail('');
+    }, 400);
   };
 
   if (!isVisible) {
@@ -121,78 +99,71 @@ export default function VogueStyleEmailCTA() {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75 px-4">
-      <div className="relative max-w-4xl w-full max-h-[90vh] bg-black text-white shadow-2xl animate-fadeIn overflow-hidden">
-        <button 
+    <div className={`fixed inset-0 z-[100] flex items-center justify-center transition-all duration-500 ${isAnimating ? 'bg-black/60 backdrop-blur-sm' : 'bg-black/0 backdrop-blur-none pointer-events-none'}`}>
+      <div
+        className={`relative w-full max-w-md mx-4 bg-[#fcfbf9] text-black shadow-2xl transform transition-all duration-500 ease-out 
+          ${isAnimating ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 translate-y-8'} 
+          border-t-4 border-red-600`}
+      >
+        <button
           onClick={closePopup}
-          className="absolute top-4 right-4 z-10 text-white hover:text-gray-300 transition-colors bg-black bg-opacity-50 rounded-full p-1"
+          className="absolute top-2 right-2 p-2 z-10 text-gray-400 hover:text-black transition-colors"
           aria-label="Close popup"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square" strokeLinejoin="miter">
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>
           </svg>
         </button>
-        
-        <div className="flex flex-col md:flex-row min-h-[500px]">
-          {/* Image Section - Left Half */}
-          <div className="w-full md:w-1/2 relative">
-            <img 
-              src="/popup.jpg" 
-              alt="Popup Image"
-              className="w-full h-full object-cover"
-            />
-            <div className="absolute inset-0 bg-black bg-opacity-20"></div>
-          </div>
-          
-          {/* Content Section - Right Half */}
-          <div className="w-full md:w-1/2 p-6 md:p-8 lg:p-12 flex flex-col justify-center">
-            <div className="text-center mb-6 md:mb-8">
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-serif uppercase tracking-wider mb-3">
-                NEWSLETTER
-              </h2>
-              <div className="w-12 h-0.5 bg-red-600 mx-auto mb-4 md:mb-6"></div>
-              <p className="text-base md:text-lg lg:text-xl font-light mb-6 md:mb-8 font-glacial leading-relaxed">
-                Sign up for our newsletter to receive the latest culinary stories, exclusive recipes, and chef insights.
-              </p>
-            </div>
 
-            <div className="w-full">
-              <div className="flex flex-col gap-4 mb-4">
+        <div className="p-8 md:p-10 text-center border-x border-b border-gray-200">
+          <div className="mb-6">
+            <span className="font-newyorker text-red-600 text-xs tracking-[0.2em] uppercase block mb-3">
+              The Newsletter
+            </span>
+            <h2 className="text-3xl md:text-4xl font-newyorker font-bold tracking-tight mb-4">
+              KiawaNotes
+            </h2>
+            <p className="text-lg font-acaslon italic text-gray-600 leading-relaxed max-w-xs mx-auto">
+              "The most essential reading of the week, delivered directly to you."
+            </p>
+          </div>
+
+          {!isSubmitted ? (
+            <form onSubmit={handleSubmit} className="w-full">
+              <div className="flex flex-col gap-4">
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Enter your email address"
-                  className="w-full py-3 px-4 bg-transparent border border-white text-white placeholder-gray-300 focus:outline-none focus:ring-1 focus:ring-white text-sm md:text-base"
+                  placeholder="Your email address"
+                  className="w-full py-3 px-0 border-b border-gray-300 bg-transparent text-center font-acaslon text-lg placeholder:text-gray-400 focus:outline-none focus:border-black focus:placeholder:text-gray-200 transition-all rounded-none"
                   autoFocus
                 />
+
                 <button
-                  onClick={handleSubmit}
-                  className="w-full py-3 px-6 bg-white text-black uppercase tracking-widest text-xs md:text-sm font-medium hover:bg-gray-200 transition duration-300"
+                  type="submit"
+                  className="w-full py-3 px-6 mt-2 bg-black text-white font-futura uppercase tracking-widest text-xs font-bold hover:bg-neutral-800 transition-all duration-300 border border-transparent hover:border-black"
                 >
-                  Sign Up
+                  Join the List
                 </button>
               </div>
-              
-              {isSubmitted && (
-                <div className="mb-4 text-center text-green-400 text-sm md:text-base">
-                  Thank you for subscribing!
-                </div>
-              )}
-              
-              <div className="text-center text-xs text-gray-300 leading-relaxed">
-                By signing up you agree to our{' '}
-                <span className="underline cursor-pointer hover:text-white transition-colors">
-                  Terms of Service
-                </span>{' '}
-                and{' '}
-                <span className="underline cursor-pointer hover:text-white transition-colors">
-                  Privacy Policy
-                </span>
+
+              <p className="mt-4 text-[10px] text-gray-400 font-glacial tracking-wide uppercase">
+                No spam. Unsubscribe anytime.
+              </p>
+            </form>
+          ) : (
+            <div className="py-8 animate-in fade-in duration-500">
+              <div className="w-12 h-12 border-2 border-black rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="square" strokeLinejoin="miter">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
               </div>
+              <h3 className="font-newyorker text-2xl mb-2">Welcome Aboard</h3>
+              <p className="font-acaslon text-gray-600">You're on the list.</p>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

@@ -1,4 +1,6 @@
 import "./globals.css";
+import "katex/dist/katex.min.css";
+
 
 import { Section, Container } from "@/components/craft";
 import { Inter as FontSans } from "next/font/google";
@@ -14,7 +16,7 @@ import { AuthProvider } from "@/lib/auth-context";
 import { mainMenu, contentMenu } from "@/menu.config";
 import { siteConfig } from "@/site.config";
 import { cn } from "@/lib/utils";
-import { acaslonPro, stilson, millerDaily, newyorker, futura, glacial, ghost, garamond } from "@/lib/fonts";
+import { acaslonPro, stilson, millerDaily, newyorker, futura, glacial, ghost, garamond, coolvetica, plusJakarta, imbue, knockout } from "@/lib/fonts";
 
 // Initialize the Inter font
 const fontSans = FontSans({
@@ -23,7 +25,7 @@ const fontSans = FontSans({
 });
 
 import Balancer from "react-wrap-balancer";
-import Logo from "@/public/logo.svg";
+import Logo from "@/public/logoo.svg";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -40,6 +42,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { NavbarTitleProvider } from "@/components/navigation/NavbarTitleContext";
+
 export default function RootLayout({
   children,
 }: {
@@ -48,18 +52,24 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={cn("min-h-screen bg-background font-sans antialiased", fontSans.variable, acaslonPro.variable,
-          stilson.variable,
-          millerDaily.variable,
-          newyorker.variable,
-          glacial.variable,
-          ghost.variable,
-          futura.variable,
-          garamond.variable)}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        stilson.variable,
+        millerDaily.variable,
+        newyorker.variable,
+        glacial.variable,
+        ghost.variable,
+        futura.variable,
+        coolvetica.variable,
+        garamond.variable,
+        plusJakarta.variable,
+        imbue.variable,
+        knockout.variable)}>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
           <AuthProvider>
-            <FixedDualNavbar />
-            {children}
-            <Footer />
+            <NavbarTitleProvider>
+              <FixedDualNavbar />
+              {children}
+              <Footer />
+            </NavbarTitleProvider>
           </AuthProvider>
           <ThemeToggle />
         </ThemeProvider>

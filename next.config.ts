@@ -4,14 +4,20 @@ const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "http",
-        hostname: `${process.env.WORDPRESS_HOSTNAME}`,
+        protocol: "https",
+        hostname: "res.cloudinary.com",
         port: "",
         pathname: "/**",
       },
       {
         protocol: "http",
-        hostname: "localhost",
+        hostname: "kiawanotes.atwebpages.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "http",
+        hostname: `${process.env.WORDPRESS_HOSTNAME}`,
         port: "",
         pathname: "/**",
       }

@@ -4,10 +4,11 @@ import NonFiction from '@/components/posts/science-post-card';
 import FeaturedPostCard from '@/components/posts/featured-post-card';
 import { getAllPosts, getPostsByCategorySlug } from "@/lib/wordpress";
 import Unsubscribed from '@/app/mainsection/the-unsubscribed';
-import BooksCulture from '@/app/mainsection/book-culture';
+import Culture from '@/app/mainsection/-culture';
+import Books from '@/app/mainsection/-books';
 import WeeklyEdit from '@/app/mainsection/weekly-edit';
 import SubscribePopup from '@/app/mainsection/subscribe-popup';
-import Image from '@/app/mainsection/image';
+import Image from '@/app/mainsection/podcast';
 
 // Define metadata for the home page
 export const metadata: Metadata = {
@@ -48,16 +49,16 @@ export default async function Home() {
   // Fetch the latest post instead of a specific post by ID
   const posts = await getAllPosts({});
   const latestPost = posts[0]; // Get the first post, which is the latest one
-  
+
   // Fetch posts from the personal category for Fiction section
   const personalPosts = await getPostsByCategorySlug("books");
   // Get the first personal post (or undefined if none exists)
   const personalPost = personalPosts.length > 0 ? personalPosts[0] : undefined;
   //fetch posts from the personal category for Fiction section
-  const personalPosts2 = await getPostsByCategorySlug("personal");
+  const personalPosts2 = await getPostsByCategorySlug("science");
   // Get the first personal post (or undefined if none exists)
   const personalPost2 = personalPosts2.length > 0 ? personalPosts2[0] : undefined;
-  
+
   return (
     <>
       {/* Featured Post Card */}
@@ -69,10 +70,11 @@ export default async function Home() {
       <WeeklyEdit />
       {/* Culture section with personal category post */}
       {personalPost2 && <NonFiction post={personalPost2} />}
-      <BooksCulture />
-      
-      {/* Fiction section with personal category post */}
-      {personalPost && <Fiction post={personalPost} />}
+      <Culture />
+
+      {/* Fiction section (The Weekend Essay) - fetches latest post internally */}
+      <Fiction /> 
+      <Books />
       <SubscribePopup />
     </>
   );

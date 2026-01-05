@@ -31,6 +31,10 @@ const config = {
         futura: ["var(--font-futura)"],
         glacial: ["var(--font-glacial)"],
         ghost: ["var(--font-ghost)"],
+        coolvetica: ["var(--font-coolvetica)"],
+        jakarta: ["var(--font-jakarta)", ...fontFamily.sans],
+        imbue: ["var(--font-imbue)", ...fontFamily.serif],
+        knockout: ["var(--font-knockout)", ...fontFamily.sans],
       },
       colors: {
         border: "hsl(var(--border))",

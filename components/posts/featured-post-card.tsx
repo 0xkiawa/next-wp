@@ -6,7 +6,11 @@ import { getFeaturedMediaById, getAuthorById, getCategoryById } from "@/lib/word
 import { ChevronDown } from "lucide-react"; // Import the ChevronDown icon
 
 export default async function FeaturedPostCard({ post }: { post: any }) {
-  const media = await getFeaturedMediaById(post.featured_media);
+  // Check if featured media is available in _embedded, otherwise fetch it by ID
+  const media = post._embedded?.['wp:featuredmedia']?.[0] 
+    ? post._embedded['wp:featuredmedia'][0] 
+    : (post.featured_media ? await getFeaturedMediaById(post.featured_media) : null);
+
   const author = await getAuthorById(post.author);
   const date = new Date(post.date).toLocaleDateString("en-US", {
     month: "long",
@@ -26,7 +30,7 @@ export default async function FeaturedPostCard({ post }: { post: any }) {
               <Link 
                 href={`/posts/?category=${category.id}`}
                 className={cn(
-                  "text-xs md:text-xl font-newyorker font-bold uppercase hover:text-red-700 transition-colors text-red-600",
+                  "text-xs  font-newyorker tracking-widest font-bold uppercase hover:text-red-700 transition-colors text-red-600",
                   "!no-underline"
                 )}
               >
@@ -37,7 +41,7 @@ export default async function FeaturedPostCard({ post }: { post: any }) {
             {/* Title in uppercase with distinctive styling and link */}
             <Link href={`/posts/${post.slug}`} className="hover:text-red-600 transition-colors">
               <h2 
-                className="text-2xl md:text-4xl font-bold tracking-wide text-center md:text-left mb-6 font-stilson"
+                className="text-xl md:text-2xl  tracking-40  text-center md:text-left mb-6 font-knockout"
                 dangerouslySetInnerHTML={{ __html: post.title.rendered }}
               ></h2>
             </Link>
@@ -79,7 +83,7 @@ export default async function FeaturedPostCard({ post }: { post: any }) {
           className="flex flex-col items-center text-blue-500 hover:text-black transition-colors"
           aria-label="Scroll down to see more content"
         >
-          <span className="text-sm uppercase tracking-wider mb-2">Scroll Down</span>
+          <span className="text-sm uppercase tracking-wider mb-2 font-newyorker">Scroll Down</span>
           <ChevronDown size={24} />
           <ChevronDown size={24} className="-mt-4" />
         </a>

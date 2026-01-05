@@ -37,12 +37,16 @@ export default async function PostComponent({
           )}
         >
           <div className="w-full h-full relative rounded-md lg:w-2/3">
-            <Image
-              className="object-cover"
-              src={media.source_url}
-              alt={post.title.rendered}
-              layout="fill"
-            />
+            {media?.source_url ? (
+              <Image
+                className="object-cover"
+                src={media.source_url}
+                alt={post.title.rendered}
+                layout="fill"
+              />
+            ) : (
+              <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-700 dark:to-gray-800" />
+            )}
           </div>
         </div>
         <div className="flex flex-col gap-1 sm:gap-2 w-full">
