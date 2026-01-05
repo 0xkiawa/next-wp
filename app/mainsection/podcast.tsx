@@ -1,4 +1,5 @@
 'use client';
+import NextImage from "next/image";
 import React, { useEffect, useState, useRef } from 'react';
 import { Play, Pause, Volume2, RotateCcw, RotateCw } from 'lucide-react';
 
@@ -161,15 +162,14 @@ const LatestAudio: React.FC = () => {
           {/* Background card layers */}
           <div className="absolute inset-0 bg-gray-300 border-2 border-gray-400 transform translate-x-1 translate-y-2 rounded-sm"></div>
           <div className="absolute inset-0 bg-gray-200 border-2 border-gray-400 transform translate-x-0.5 translate-y-1 rounded-sm"></div>
-          
+
           {/* Main card */}
           <button
             type="button"
             className="relative w-full bg-white border-2 border-gray-400 shadow-xl flex items-center hover:border-black transition overflow-hidden transform hover:-translate-y-1 hover:shadow-2xl duration-200"
             style={{
-              backgroundImage: `linear-gradient(to right, #9ca3af 0%, #9ca3af ${
-                duration ? (currentTime / duration) * 100 : 0
-              }%, transparent ${duration ? (currentTime / duration) * 100 : 0}%, transparent 100%)`,
+              backgroundImage: `linear-gradient(to right, #9ca3af 0%, #9ca3af ${duration ? (currentTime / duration) * 100 : 0
+                }%, transparent ${duration ? (currentTime / duration) * 100 : 0}%, transparent 100%)`,
               backgroundPosition: 'bottom',
               backgroundSize: '100% 4px',
               backgroundRepeat: 'no-repeat'
@@ -177,10 +177,12 @@ const LatestAudio: React.FC = () => {
           >
             {/* Icon-like image on the left */}
             <div className="flex-shrink-0 p-1">
-              <img
+              <NextImage
                 src="/popup.jpg"
                 alt="Podcast cover"
-                className="w-11 h-14 sm:w-13 sm:h-16 object-cover rounded-lg"
+                className="rounded-lg object-cover"
+                width={52}
+                height={64}
               />
             </div>
 

@@ -25,7 +25,7 @@ const NewsletterGrid = () => {
           <div className="md:col-span-3 space-y-8 border-t border-black dark:border-white pt-4 md:border-t-0 md:pt-0">
             <ArticleCard
               number={1}
-              title="Books We Can't Stop Reading"
+              title="Books We Can&apos;t Stop Reading"
               description="A deep dive into the literary world that keeps us inspired this month."
               href="/books-culture#books-column"
             />
@@ -65,13 +65,13 @@ const NewsletterGrid = () => {
             <ArticleCard
               number={4}
               title="What KiawaNotes Got Right"
-              description="A reflection on KiawaNotes's bold covers and brave journalism."
+              description="A reflection on KiawaNotes&apos;s bold covers and brave journalism."
             />
             <div className="w-full h-px bg-gray-200 dark:bg-gray-800 my-6"></div>
             <ArticleCard
               number={5}
               title="The KiawaNotes Visionaries"
-              description="Meet the stylists, editors, and artists leading next season's revolution."
+              description="Meet the stylists, editors, and artists leading next season&apos;s revolution."
             />
           </div>
         </div>

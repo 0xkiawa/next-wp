@@ -1,9 +1,10 @@
 import { getAllAuthors } from "@/lib/wordpress";
+import Image from "next/image";
 import Link from "next/link";
 
 export default async function Page() {
     const authors = await getAllAuthors();
-    
+
     return (
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 font-stilson">
             {/* Left column for author profiles */}
@@ -13,13 +14,15 @@ export default async function Page() {
                         <div key={author.id} className="flex items-start space-x-4">
                             {/* Avatar image */}
                             <div className="flex-shrink-0">
-                                <img
-                                    className="w-20 h-20 rounded-full"
-                                    src={author.avatar_urls?.[96]}
+                                <Image
+                                    className="rounded-full"
+                                    src={author.avatar_urls?.[96] || "/placeholder-avatar.jpg"}
                                     alt={`Profile of ${author.name}`}
+                                    width={80}
+                                    height={80}
                                 />
                             </div>
-                            
+
                             {/* Author info */}
                             <div className="flex-1">
                                 {/* Author name on top */}
@@ -31,7 +34,7 @@ export default async function Page() {
                                         {author.name}
                                     </Link>
                                 </div>
-                                
+
                                 {/* Bio below */}
                                 <div className="text-sm text-gray-600 leading-normal font-glacial">
                                     {author.description}
@@ -41,7 +44,7 @@ export default async function Page() {
                     ))}
                 </div>
             </div>
-            
+
             {/* Right column for other content */}
             <div>
                 {/* Add your other content here */}

@@ -125,7 +125,7 @@ export default function VogueStyleEmailCTA() {
               KiawaNotes
             </h2>
             <p className="text-lg font-acaslon italic text-gray-600 leading-relaxed max-w-xs mx-auto">
-              "The most essential reading of the week, delivered directly to you."
+              &quot;The most essential reading of the week, delivered directly to you.&quot;
             </p>
           </div>
 
@@ -161,7 +161,7 @@ export default function VogueStyleEmailCTA() {
                 </svg>
               </div>
               <h3 className="font-newyorker text-2xl mb-2">Welcome Aboard</h3>
-              <p className="font-acaslon text-gray-600">You're on the list.</p>
+              <p className="font-acaslon text-gray-600">You&apos;re on the list.</p>
             </div>
           )}
         </div>

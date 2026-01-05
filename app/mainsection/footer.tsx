@@ -37,7 +37,7 @@ export default function PremiumFooter() {
               </span>
             </Link>
             <p className="font-acaslon italic text-lg text-gray-400 max-w-sm leading-relaxed">
-              "Curated thoughts on culture, books, and the brilliant minds shaping our future."
+              &quot;Curated thoughts on culture, books, and the brilliant minds shaping our future.&quot;
             </p>
           </div>
 

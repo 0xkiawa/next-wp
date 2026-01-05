@@ -8,7 +8,7 @@ import Culture from '@/app/mainsection/-culture';
 import Books from '@/app/mainsection/-books';
 import WeeklyEdit from '@/app/mainsection/weekly-edit';
 import SubscribePopup from '@/app/mainsection/subscribe-popup';
-import Image from '@/app/mainsection/podcast';
+import Podcast from '@/app/mainsection/podcast';
 
 // Define metadata for the home page
 export const metadata: Metadata = {
@@ -66,14 +66,14 @@ export default async function Home() {
         {latestPost && <FeaturedPostCard post={latestPost} />} {/* Display the latest post if available */}
       </div>
       <Unsubscribed />
-      <Image />
+      <Podcast />
       <WeeklyEdit />
       {/* Culture section with personal category post */}
       {personalPost2 && <NonFiction post={personalPost2} />}
       <Culture />
 
       {/* Fiction section (The Weekend Essay) - fetches latest post internally */}
-      <Fiction /> 
+      <Fiction />
       <Books />
       <SubscribePopup />
     </>
