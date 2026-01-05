@@ -19,7 +19,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  
+
   const { login, user } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -38,13 +38,13 @@ export default function LoginPage() {
     setError('');
 
     const result = await login(formData.email, formData.password);
-    
+
     if (result.success) {
       router.push(redirectTo);
     } else {
       setError(result.error || 'Login failed');
     }
-    
+
     setLoading(false);
   };
 
@@ -75,7 +75,7 @@ export default function LoginPage() {
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
-            
+
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -89,7 +89,7 @@ export default function LoginPage() {
                 disabled={loading}
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
               <div className="relative">
@@ -114,16 +114,16 @@ export default function LoginPage() {
                 </button>
               </div>
             </div>
-            
+
             <Button type="submit" className="w-full" disabled={loading}>
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               {loading ? 'Signing in...' : 'Sign in'}
             </Button>
           </form>
-          
+
           <div className="mt-4 text-center text-sm">
-            Don't have an account?{' '}
-            <Link 
+            Don&apos;t have an account?{' '}
+            <Link
               href={`/sign-up?redirect=${encodeURIComponent(redirectTo)}`}
               className="text-red-600 hover:text-red-500 font-medium"
             >

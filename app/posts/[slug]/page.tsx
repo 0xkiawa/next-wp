@@ -188,10 +188,12 @@ export async function generateMetadata({
   const awaitedParams = await params;
   const post = await getPostBySlug(awaitedParams.slug);
 
-  if (!post) return {};
+  if (!post || !post.title) return {
+    title: "Post Not Found",
+  };
 
   const title = post.title.rendered;
-  const description = post.excerpt.rendered.replace(/<[^>]*>/g, "").trim();
+  const description = post.excerpt?.rendered?.replace(/<[^>]*>/g, "").trim() || "";
 
   const ogUrl = new URL(`${siteConfig.site_domain}/api/og`);
   ogUrl.searchParams.append("title", title);
@@ -662,7 +664,18 @@ function DefaultLayout({ post, featuredMedia, author, category, cleanExcerpt, wo
 export default async function Page({ params }: { params: { slug: string } }) {
   const awaitedParams = await params;
   const post = await getPostBySlug(awaitedParams.slug);
-  if (!post) return <div>Post not found.</div>;
+  if (!post || !post.id) {
+    return (
+      <Section>
+        <Container>
+          <Prose>
+            <h2>Post Not Found</h2>
+            <p>The post you are looking for does not exist or could not be loaded.</p>
+          </Prose>
+        </Container>
+      </Section>
+    );
+  }
 
   const [featuredMedia, author, category] = await Promise.all([
     post.featured_media ? getFeaturedMediaById(post.featured_media) : null,

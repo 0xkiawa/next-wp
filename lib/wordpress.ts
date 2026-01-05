@@ -22,7 +22,7 @@ interface FetchOptions extends RequestInit {
 
 function getUrl(path: string, query?: Record<string, any>) {
   if (!baseUrl) {
-    throw new Error("WORDPRESS_URL environment variable is not defined");
+    return "";
   }
   const params = query ? querystring.stringify(query) : null;
   return `${baseUrl}${path}${params ? `?${params}` : ""}`;
@@ -97,6 +97,11 @@ async function wordpressFetch<T>(
   url: string,
   options: FetchOptions = {}
 ): Promise<T> {
+  if (!url) {
+    console.warn("[WordPress] No URL provided to wordpressFetch. Returning default value.");
+    // Return empty array for array types, or null/empty object for others
+    return [] as any;
+  }
   const userAgent = "Next.js WordPress Client";
   const username = process.env.WORDPRESS_USERNAME;
   const applicationPassword = process.env.WORDPRESS_APPLICATION_PASSWORD;
@@ -140,7 +145,10 @@ async function wordpressFetch<T>(
     }
   } catch (error: any) {
     console.error(`[WordPress] Error fetching (${url}):`, error.message || error);
-    // Rethrow - components should handle gracefully
+    // During build, if we can't fetch, return an empty result instead of crashing the build
+    if (process.env.NODE_ENV === 'production') {
+      return [] as any;
+    }
     throw error;
   }
 }

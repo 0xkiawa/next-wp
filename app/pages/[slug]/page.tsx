@@ -23,8 +23,10 @@ export async function generateMetadata({
   const { slug } = await params;
   const page = await getPageBySlug(slug);
 
-  if (!page) {
-    return {};
+  if (!page || !page.title) {
+    return {
+      title: "Page Not Found",
+    };
   }
 
   const ogUrl = new URL(`${siteConfig.site_domain}/api/og`);
@@ -32,10 +34,10 @@ export async function generateMetadata({
   // Strip HTML tags for description and limit length
   const description = page.excerpt?.rendered
     ? page.excerpt.rendered.replace(/<[^>]*>/g, "").trim()
-    : page.content.rendered
-        .replace(/<[^>]*>/g, "")
-        .trim()
-        .slice(0, 200) + "...";
+    : page.content?.rendered
+      .replace(/<[^>]*>/g, "")
+      .trim()
+      .slice(0, 200) + "..." || "";
   ogUrl.searchParams.append("description", description);
 
   return {
@@ -71,6 +73,19 @@ export default async function Page({
 }) {
   const { slug } = await params;
   const page = await getPageBySlug(slug);
+
+  if (!page || !page.title) {
+    return (
+      <Section>
+        <Container>
+          <Prose>
+            <h2>Page Not Found</h2>
+            <p>The page you are looking for does not exist or could not be loaded.</p>
+          </Prose>
+        </Container>
+      </Section>
+    );
+  }
 
   return (
     <Section>
