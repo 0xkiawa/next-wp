@@ -11,7 +11,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Eye, EyeOff, Loader2 } from 'lucide-react';
 
-export default function SignUpPage() {
+// Separate component that uses useSearchParams
+function SignUpContent() {
   const [formData, setFormData] = useState({
     username: '',
     email: '',
@@ -20,7 +21,7 @@ export default function SignUpPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  
+
   const { register, user } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -39,13 +40,13 @@ export default function SignUpPage() {
     setError('');
 
     const result = await register(formData.username, formData.email, formData.password);
-    
+
     if (result.success) {
       router.push(redirectTo);
     } else {
       setError(result.error || 'Registration failed');
     }
-    
+
     setLoading(false);
   };
 
@@ -76,7 +77,7 @@ export default function SignUpPage() {
                 <AlertDescription>{error}</AlertDescription>
               </Alert>
             )}
-            
+
             <div className="space-y-2">
               <Label htmlFor="username">Username</Label>
               <Input
@@ -90,7 +91,7 @@ export default function SignUpPage() {
                 disabled={loading}
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -104,7 +105,7 @@ export default function SignUpPage() {
                 disabled={loading}
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
               <div className="relative">
@@ -129,16 +130,16 @@ export default function SignUpPage() {
                 </button>
               </div>
             </div>
-            
+
             <Button type="submit" className="w-full" disabled={loading}>
               {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
               {loading ? 'Creating account...' : 'Sign up'}
             </Button>
           </form>
-          
+
           <div className="mt-4 text-center text-sm">
             Already have an account?{' '}
-            <Link 
+            <Link
               href={`/login?redirect=${encodeURIComponent(redirectTo)}`}
               className="text-red-600 hover:text-red-500 font-medium"
             >
@@ -148,5 +149,13 @@ export default function SignUpPage() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function SignUpPage() {
+  return (
+    <React.Suspense fallback={<div className="min-h-screen flex items-center justify-center">Loading...</div>}>
+      <SignUpContent />
+    </React.Suspense>
   );
 }
