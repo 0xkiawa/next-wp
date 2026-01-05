@@ -8,10 +8,10 @@ export async function POST(request) {
   try {
     // Connect to the database
     await dbConnect();
-    
+
     // Parse the request body
     const { username, email, password } = await request.json();
-    
+
     // Validate input
     if (!username || !email || !password) {
       return NextResponse.json(
@@ -21,8 +21,8 @@ export async function POST(request) {
     }
 
     // Check if user already exists
-    const existingUser = await User.findOne({ 
-      $or: [{ email }, { username }] 
+    const existingUser = await User.findOne({
+      $or: [{ email }, { username }]
     });
 
     if (existingUser) {
@@ -85,12 +85,19 @@ export async function POST(request) {
 
   } catch (error) {
     console.error('Registration error:', error);
-    
+
     // Handle duplicate key error (if unique constraints are in the schema)
     if (error.code === 11000) {
       return NextResponse.json(
         { success: false, error: 'User already exists' },
         { status: 409 }
+      );
+    }
+
+    if (error.message.includes('Database configuration missing')) {
+      return NextResponse.json(
+        { success: false, error: 'Server database configuration is missing.' },
+        { status: 500 }
       );
     }
 

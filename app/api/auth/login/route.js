@@ -9,10 +9,10 @@ export async function POST(request) {
   try {
     // Connect to the database
     await dbConnect();
-    
+
     // Parse the request body
     const { email, password } = await request.json();
-    
+
     // Validate input
     if (!email || !password) {
       return NextResponse.json(
@@ -45,9 +45,9 @@ export async function POST(request) {
     // Check if password is correct
     try {
       console.log('Attempting password comparison...');
-      
+
       const isMatch = await bcrypt.compare(password, user.password);
-      
+
       if (!isMatch) {
         console.log('Password does not match');
         return NextResponse.json(
@@ -108,6 +108,12 @@ export async function POST(request) {
     });
   } catch (error) {
     console.error('Login error:', error);
+    if (error.message.includes('Database configuration missing')) {
+      return NextResponse.json(
+        { success: false, error: 'Server database configuration is missing.' },
+        { status: 500 }
+      );
+    }
     return NextResponse.json(
       { success: false, error: 'Internal server error' },
       { status: 500 }
