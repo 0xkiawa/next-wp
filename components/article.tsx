@@ -110,24 +110,32 @@ export function ArticleContent({ content, className }: ArticleContentProps) {
 
   useEffect(() => {
     if (contentRef.current) {
-      // Dropcap logic
+      // Dropcap logic - preserves HTML formatting
       const applyDropCap = (paragraphElement: HTMLParagraphElement) => {
+        const html = paragraphElement.innerHTML;
         const text = paragraphElement.textContent;
         if (text && text.trim().length > 0 && !paragraphElement.querySelector('span.dropcap-span')) {
-          const firstLetter = text.charAt(0);
-          const restOfText = text.slice(1);
-          paragraphElement.innerHTML =
-            `<span class="dropcap-span float-left text-6xl md:text-7xl font-stilson text-red-600 mr-2 leading-none -mt-1">${firstLetter}</span>${restOfText}`;
-          return true;
+          // Find the first actual letter in the HTML (skip tags)
+          const firstLetterMatch = html.match(/^(\s*(?:<[^>]+>)*\s*)([a-zA-Z0-9])/);
+          if (firstLetterMatch) {
+            const beforeLetter = firstLetterMatch[1] || '';
+            const firstLetter = firstLetterMatch[2];
+            const restOfHtml = html.slice(beforeLetter.length + 1);
+            paragraphElement.innerHTML =
+              `${beforeLetter}<span class="dropcap-span float-left text-6xl md:text-7xl font-stilson text-red-600 mr-2 leading-none -mt-1">${firstLetter}</span>${restOfHtml}`;
+            return true;
+          }
         }
         return false;
       };
 
-      // Reset dropcaps if re-rendered
+      // Reset dropcaps if re-rendered - preserves HTML formatting
       contentRef.current.querySelectorAll('span.dropcap-span').forEach(span => {
         const parent = span.parentNode as HTMLElement;
-        if (parent) {
-          parent.innerHTML = parent.textContent || '';
+        if (parent && span.textContent) {
+          // Replace the span with just its text content (the letter)
+          const textNode = document.createTextNode(span.textContent);
+          parent.replaceChild(textNode, span);
         }
       });
 
