@@ -79,8 +79,16 @@ function renderLatex(content: string): string {
   });
 
   // Handle $...$ for inline math
-  // Be careful not to match $$ (display math) or escaped \$
-  result = result.replace(/(?<!\$)\$(?!\$)((?:[^$])+?)\$/g, (_, expr) => {
+  // Be careful not to match $$ (display math), escaped \$, or currency amounts like $120
+  // Only match if the content looks like actual LaTeX (contains backslash, braces, ^, _, etc.)
+  result = result.replace(/(?<!\$)\$(?!\$)(?!\d)((?:[^$])+?)\$/g, (match, expr) => {
+    // Skip if it looks like currency or doesn't contain LaTeX-like syntax
+    const looksLikeLaTeX = /[\\{}^_]|\\[a-zA-Z]+/.test(expr);
+    if (!looksLikeLaTeX) {
+      // Return the original match unchanged - it's probably not LaTeX
+      return match;
+    }
+
     try {
       // Clean up WordPress formatting artifacts
       const cleanExpr = expr
