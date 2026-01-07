@@ -686,7 +686,39 @@ export default async function Page({ params }: { params: { slug: string } }) {
   // Get recommended posts based on shared tags
   const recommendedPosts = await getRecommendedPosts(post, 3);
 
-  const cleanExcerpt = post.excerpt.rendered.replace(/<[^>]*>/g, "").trim();
+  // Helper function to decode HTML entities
+  const decodeHtmlEntities = (text: string): string => {
+    const entities: { [key: string]: string } = {
+      '&#8220;': '"', // left double quotation mark
+      '&#8221;': '"', // right double quotation mark
+      '&#8216;': "'", // left single quotation mark
+      '&#8217;': "'", // right single quotation mark
+      '&#8211;': '–', // en dash
+      '&#8212;': '—', // em dash
+      '&#8230;': '…', // ellipsis
+      '&#38;': '&',   // ampersand
+      '&amp;': '&',   // ampersand
+      '&lt;': '<',    // less than
+      '&gt;': '>',    // greater than
+      '&quot;': '"',  // double quote
+      '&apos;': "'",  // single quote
+      '&#039;': "'",  // single quote (numeric)
+      '&nbsp;': ' ',  // non-breaking space
+      '&#160;': ' ',  // non-breaking space (numeric)
+    };
+    
+    let decoded = text;
+    for (const [entity, char] of Object.entries(entities)) {
+      decoded = decoded.replace(new RegExp(entity, 'g'), char);
+    }
+    // Also handle numeric entities generically
+    decoded = decoded.replace(/&#(\d+);/g, (_, code) => String.fromCharCode(parseInt(code, 10)));
+    // Handle hex entities
+    decoded = decoded.replace(/&#x([0-9a-fA-F]+);/g, (_, code) => String.fromCharCode(parseInt(code, 16)));
+    return decoded;
+  };
+
+  const cleanExcerpt = decodeHtmlEntities(post.excerpt.rendered.replace(/<[^>]*>/g, "").trim());
   const wordCount = calculateWordCount(post.content.rendered);
   const readingTimeMinutes = calculateReadingTime(post.content.rendered);
   const formattedDate = new Date(post.date).toLocaleDateString("en-US", {
