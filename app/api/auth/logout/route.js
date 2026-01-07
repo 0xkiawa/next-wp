@@ -3,8 +3,8 @@ import { cookies } from 'next/headers';
 
 export async function POST() {
   try {
-    // Clear the auth cookie
-    const cookieStore = cookies();
+    // Clear the auth cookie (cookies() is async in Next.js 15)
+    const cookieStore = await cookies();
     cookieStore.set('auth-token', '', {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',

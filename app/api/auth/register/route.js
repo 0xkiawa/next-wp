@@ -60,8 +60,8 @@ export async function POST(request) {
       { expiresIn: '7d' }
     );
 
-    // Set HTTP-only cookie
-    const cookieStore = cookies();
+    // Set HTTP-only cookie (cookies() is async in Next.js 15)
+    const cookieStore = await cookies();
     cookieStore.set('auth-token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
