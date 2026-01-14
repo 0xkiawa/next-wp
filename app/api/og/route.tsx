@@ -3,6 +3,30 @@ import { NextRequest } from "next/server";
 
 export const runtime = "edge";
 
+// Helper to fetch image and convert to base64 data URL
+async function fetchImageAsBase64(url: string): Promise<string | null> {
+  try {
+    const response = await fetch(url, {
+      headers: {
+        "User-Agent": "Mozilla/5.0 (compatible; OGImageBot/1.0)",
+      },
+    });
+
+    if (!response.ok) {
+      console.log(`Failed to fetch image: ${response.status}`);
+      return null;
+    }
+
+    const contentType = response.headers.get("content-type") || "image/png";
+    const arrayBuffer = await response.arrayBuffer();
+    const base64 = Buffer.from(arrayBuffer).toString("base64");
+    return `data:${contentType};base64,${base64}`;
+  } catch (error) {
+    console.log(`Error fetching image: ${error}`);
+    return null;
+  }
+}
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -20,6 +44,12 @@ export async function GET(request: NextRequest) {
     // Truncate description if too long
     const truncatedDesc = description.length > 120 ? description.substring(0, 117) + "..." : description;
 
+    // Fetch the background image if provided
+    let backgroundImageData: string | null = null;
+    if (imageUrl) {
+      backgroundImageData = await fetchImageAsBase64(imageUrl);
+    }
+
     return new ImageResponse(
       (
         <div
@@ -31,10 +61,10 @@ export async function GET(request: NextRequest) {
             backgroundColor: "#111",
           }}
         >
-          {/* Background Image with Overlay */}
-          {imageUrl && (
+          {/* Background Image */}
+          {backgroundImageData && (
             <img
-              src={imageUrl}
+              src={backgroundImageData}
               alt=""
               style={{
                 position: "absolute",
@@ -55,7 +85,7 @@ export async function GET(request: NextRequest) {
               left: 0,
               width: "100%",
               height: "100%",
-              background: imageUrl
+              background: backgroundImageData
                 ? "linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.7) 40%, rgba(0,0,0,0.3) 100%)"
                 : "linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%)",
               display: "flex",
@@ -97,7 +127,6 @@ export async function GET(request: NextRequest) {
                     fontWeight: 700,
                     color: "white",
                     letterSpacing: "-0.02em",
-                    fontFamily: "Georgia, serif",
                   }}
                 >
                   KiawaNotes
@@ -201,7 +230,7 @@ export async function GET(request: NextRequest) {
     );
   } catch (e: any) {
     console.log(`OG Image Error: ${e.message}`);
-    return new Response(`Failed to generate the image`, {
+    return new Response(`Failed to generate the image: ${e.message}`, {
       status: 500,
     });
   }
