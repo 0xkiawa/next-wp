@@ -3,6 +3,16 @@ import { NextRequest } from "next/server";
 
 export const runtime = "edge";
 
+// Helper to convert ArrayBuffer to base64 using Web APIs (Edge compatible)
+function arrayBufferToBase64(buffer: ArrayBuffer): string {
+  const bytes = new Uint8Array(buffer);
+  let binary = "";
+  for (let i = 0; i < bytes.byteLength; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary);
+}
+
 // Helper to fetch image and convert to base64 data URL
 async function fetchImageAsBase64(url: string): Promise<string | null> {
   try {
@@ -19,7 +29,7 @@ async function fetchImageAsBase64(url: string): Promise<string | null> {
 
     const contentType = response.headers.get("content-type") || "image/png";
     const arrayBuffer = await response.arrayBuffer();
-    const base64 = Buffer.from(arrayBuffer).toString("base64");
+    const base64 = arrayBufferToBase64(arrayBuffer);
     return `data:${contentType};base64,${base64}`;
   } catch (error) {
     console.log(`Error fetching image: ${error}`);
