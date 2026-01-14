@@ -194,9 +194,9 @@ export async function generateMetadata({
 
   // Fetch additional data for rich OG image
   const [featuredMedia, author, category] = await Promise.all([
-    post.featured_media ? getFeaturedMediaById(post.featured_media) : null,
-    getAuthorById(post.author),
-    post.categories?.[0] ? getCategoryById(post.categories[0]) : null,
+    post.featured_media ? getFeaturedMediaById(post.featured_media).catch(() => null) : null,
+    getAuthorById(post.author).catch(() => null),
+    post.categories?.[0] ? getCategoryById(post.categories[0]).catch(() => null) : null,
   ]);
 
   const title = post.title.rendered.replace(/<[^>]*>/g, "");
