@@ -192,12 +192,35 @@ export async function generateMetadata({
     title: "Post Not Found",
   };
 
-  const title = post.title.rendered;
+  // Fetch additional data for rich OG image
+  const [featuredMedia, author, category] = await Promise.all([
+    post.featured_media ? getFeaturedMediaById(post.featured_media) : null,
+    getAuthorById(post.author),
+    post.categories?.[0] ? getCategoryById(post.categories[0]) : null,
+  ]);
+
+  const title = post.title.rendered.replace(/<[^>]*>/g, "");
   const description = post.excerpt?.rendered?.replace(/<[^>]*>/g, "").trim() || "";
 
+  // Build OG image URL with all parameters
   const ogUrl = new URL(`${siteConfig.site_domain}/api/og`);
   ogUrl.searchParams.append("title", title);
-  ogUrl.searchParams.append("description", description);
+  ogUrl.searchParams.append("description", description.substring(0, 150));
+
+  // Add featured image if available
+  if (featuredMedia?.source_url) {
+    ogUrl.searchParams.append("image", featuredMedia.source_url);
+  }
+
+  // Add category if available
+  if (category?.name) {
+    ogUrl.searchParams.append("category", category.name);
+  }
+
+  // Add author if available
+  if (author?.name) {
+    ogUrl.searchParams.append("author", author.name);
+  }
 
   return {
     title,
@@ -706,7 +729,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
       '&nbsp;': ' ',  // non-breaking space
       '&#160;': ' ',  // non-breaking space (numeric)
     };
-    
+
     let decoded = text;
     for (const [entity, char] of Object.entries(entities)) {
       decoded = decoded.replace(new RegExp(entity, 'g'), char);
