@@ -9,9 +9,19 @@ export async function GET(request: NextRequest) {
 
     const title = searchParams.get("title") || "Untitled";
     const description = searchParams.get("description") || "";
-    const imageUrl = searchParams.get("image");
+    let imageUrl = searchParams.get("image");
     const category = searchParams.get("category") || "";
     const author = searchParams.get("author") || "";
+
+    // OPTIMIZATION: If it's a Cloudinary URL, resize it to prevent timeout/crashes
+    if (imageUrl && imageUrl.includes("res.cloudinary.com")) {
+      // Check if it already has transformations (contains /upload/...)
+      // Standard format: .../upload/v1234/name.jpg
+      // We want: .../upload/w_1200,h_630,c_fill,q_80/v1234/name.jpg
+      if (imageUrl.includes("/upload/") && !imageUrl.includes("w_")) {
+        imageUrl = imageUrl.replace("/upload/", "/upload/w_1200,h_630,c_fill,q_80/");
+      }
+    }
 
     // Truncate text
     const displayTitle = title.length > 80 ? title.substring(0, 77) + "..." : title;
@@ -29,13 +39,43 @@ export async function GET(request: NextRequest) {
             justifyContent: "flex-end",
             padding: 60,
             backgroundColor: "#0f172a",
-            backgroundImage: imageUrl
-              ? `linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.9)), url(${imageUrl})`
-              : "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
+            position: "relative",
           }}
         >
+          {/* Background Image Layer */}
+          {imageUrl && (
+            <img
+              src={imageUrl}
+              width="1200"
+              height="630"
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                width: "1200px",
+                height: "630px",
+                objectFit: "cover",
+                zIndex: -2,
+              }}
+              alt=""
+            />
+          )}
+
+          {/* Gradient Overlay Layer */}
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "1200px",
+              height: "630px",
+              background: imageUrl
+                ? "linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.9) 100%)"
+                : "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
+              zIndex: -1,
+            }}
+          />
+
           {/* Top: Brand + Category */}
           <div
             style={{
@@ -46,6 +86,7 @@ export async function GET(request: NextRequest) {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
+              zIndex: 10,
             }}
           >
             <div
@@ -80,6 +121,7 @@ export async function GET(request: NextRequest) {
               flexDirection: "column",
               gap: 12,
               maxWidth: 900,
+              zIndex: 10,
             }}
           >
             <div
