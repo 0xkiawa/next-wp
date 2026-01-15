@@ -735,24 +735,12 @@ export default async function Page({ params }: { params: { slug: string } }) {
     getCategoryById(post.categories[0]),
   ]);
 
-  // Handle article_media (audio) - it might be a URL or an ID (number)
-  // This robustly handles the case where ACF Return Format is set to "Media ID" instead of "File URL"
+  // Handle article_media (audio)
+  // Simple pass-through: We assume the user provides a valid, accessible URL (e.g., Cloudinary)
+  // This avoids issues with the free hosting provider blocking file access or HTTPS mixing.
   if (post.acf && post.acf.article_media) {
-    // If it looks like a number (ID), fetch the media to get the URL
-    if (!isNaN(Number(post.acf.article_media)) && Number(post.acf.article_media) > 0) {
-      try {
-        const audioMedia = await getFeaturedMediaById(Number(post.acf.article_media));
-        if (audioMedia?.source_url) {
-          post.acf.article_media = audioMedia.source_url;
-        }
-      } catch (e) {
-        console.error('Failed to resolve audio media ID:', e);
-      }
-    }
-    // Use audio proxy to serve HTTP content over HTTPS (fixes Mixed Content issue)
-    if (typeof post.acf.article_media === 'string' && post.acf.article_media.startsWith('http://')) {
-      post.acf.article_media = `/api/audio-proxy?url=${encodeURIComponent(post.acf.article_media)}`;
-    }
+    // Ensure it's treated as a string
+    post.acf.article_media = String(post.acf.article_media);
   }
 
   // Get recommended posts based on shared tags
