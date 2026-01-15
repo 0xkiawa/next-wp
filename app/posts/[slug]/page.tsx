@@ -24,6 +24,7 @@ import { calculateWordCount, calculateReadingTime } from "@/lib/utils/text";
 import { BookmarkButton } from "@/components/posts/bookmark-button";
 import AboutTheAuthor from "@/components/posts/about-the-author";
 import SetNavbarTitle from "@/components/navigation/SetNavbarTitle";
+import { AudioPlayer } from "@/components/posts/audio-player";
 
 // Helper function to get recommended posts based on shared tags
 async function getRecommendedPosts(currentPost: Post, limit: number = 3): Promise<Post[]> {
@@ -308,6 +309,13 @@ function ScienceTechLayout({ post, featuredMedia, author, category }: { post: an
             </h2>
           </div>
 
+          {/* Audio Player */}
+          {post.acf?.article_audio && (
+            <div className="max-w-2xl mx-auto mb-8">
+              <AudioPlayer src={post.acf.article_audio} title="Listen to this article" />
+            </div>
+          )}
+
           {/* Author Line + Bookmark */}
           <div className="text-center mb-8">
             <p className="text-sm text-gray-600 font-glacial mb-3">
@@ -424,6 +432,13 @@ function BooksLayout({ post, featuredMedia, author, category, cleanExcerpt, form
               </Balancer>
             </h1>
           </div>
+
+          {/* Audio Player */}
+          {post.acf?.article_audio && (
+            <div className="mb-8">
+              <AudioPlayer src={post.acf.article_audio} title="Listen to this article" />
+            </div>
+          )}
 
           {/* Excerpt */}
           {cleanExcerpt && (
@@ -553,6 +568,13 @@ function CultureLayout({ post, featuredMedia, author, category, cleanExcerpt, fo
             </div>
           </div>
 
+          {/* Audio Player */}
+          {post.acf?.article_audio && (
+            <div className="mb-8">
+              <AudioPlayer src={post.acf.article_audio} title="Listen to this article" />
+            </div>
+          )}
+
           {/* Featured Image */}
           {featuredMedia?.source_url && (
             <figure className="mb-10 relative">
@@ -648,6 +670,13 @@ function DefaultLayout({ post, featuredMedia, author, category, cleanExcerpt, wo
               <span>{readingTimeMinutes} min read</span>
             </div>
           </div>
+
+          {/* Audio Player */}
+          {post.acf?.article_audio && (
+            <div className="max-w-2xl mx-auto mb-8">
+              <AudioPlayer src={post.acf.article_audio} title="Listen to this article" />
+            </div>
+          )}
 
           {/* Featured Image */}
           {featuredMedia?.source_url && (

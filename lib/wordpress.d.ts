@@ -63,19 +63,23 @@ export interface Post extends WPEntity {
   sticky: boolean;
   template: string;
   format:
-    | "standard"
-    | "aside"
-    | "chat"
-    | "gallery"
-    | "link"
-    | "image"
-    | "quote"
-    | "status"
-    | "video"
-    | "audio";
+  | "standard"
+  | "aside"
+  | "chat"
+  | "gallery"
+  | "link"
+  | "image"
+  | "quote"
+  | "status"
+  | "video"
+  | "audio";
   categories: number[];
   tags: number[];
   meta: Record<string, unknown>;
+  acf?: {
+    article_audio?: string;
+    [key: string]: any;
+  };
 }
 
 export interface Page extends WPEntity {
