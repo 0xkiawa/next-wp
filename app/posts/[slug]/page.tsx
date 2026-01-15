@@ -26,6 +26,8 @@ import AboutTheAuthor from "@/components/posts/about-the-author";
 import SetNavbarTitle from "@/components/navigation/SetNavbarTitle";
 import { AudioPlayer } from "@/components/posts/audio-player";
 
+export const revalidate = 60;
+
 // Helper function to get recommended posts based on shared tags
 async function getRecommendedPosts(currentPost: Post, limit: number = 3): Promise<Post[]> {
   try {
