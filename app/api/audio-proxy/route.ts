@@ -13,11 +13,13 @@ export async function GET(request: NextRequest) {
     const allowedDomain = "kiawanotes.atwebpages.com";
     try {
         const urlObj = new URL(audioUrl);
-        if (!urlObj.hostname.includes(allowedDomain)) {
-            return NextResponse.json({ error: "Unauthorized domain" }, { status: 403 });
+        if (!urlObj.hostname.toLowerCase().includes(allowedDomain.toLowerCase())) {
+            console.error(`Audio proxy blocked: ${urlObj.hostname} not in ${allowedDomain}`);
+            return NextResponse.json({ error: "Unauthorized domain", hostname: urlObj.hostname }, { status: 403 });
         }
-    } catch {
-        return NextResponse.json({ error: "Invalid URL" }, { status: 400 });
+    } catch (e) {
+        console.error(`Audio proxy URL parse error:`, e, audioUrl);
+        return NextResponse.json({ error: "Invalid URL", received: audioUrl }, { status: 400 });
     }
 
     try {
