@@ -310,9 +310,9 @@ function ScienceTechLayout({ post, featuredMedia, author, category }: { post: an
           </div>
 
           {/* Audio Player */}
-          {post.acf?.article_audio && (
+          {post.acf?.article_media && (
             <div className="max-w-2xl mx-auto mb-8">
-              <AudioPlayer src={post.acf.article_audio} title="Listen to this article" />
+              <AudioPlayer src={post.acf.article_media} title="Listen to this article" />
             </div>
           )}
 
@@ -434,9 +434,9 @@ function BooksLayout({ post, featuredMedia, author, category, cleanExcerpt, form
           </div>
 
           {/* Audio Player */}
-          {post.acf?.article_audio && (
+          {post.acf?.article_media && (
             <div className="mb-8">
-              <AudioPlayer src={post.acf.article_audio} title="Listen to this article" />
+              <AudioPlayer src={post.acf.article_media} title="Listen to this article" />
             </div>
           )}
 
@@ -569,9 +569,9 @@ function CultureLayout({ post, featuredMedia, author, category, cleanExcerpt, fo
           </div>
 
           {/* Audio Player */}
-          {post.acf?.article_audio && (
+          {post.acf?.article_media && (
             <div className="mb-8">
-              <AudioPlayer src={post.acf.article_audio} title="Listen to this article" />
+              <AudioPlayer src={post.acf.article_media} title="Listen to this article" />
             </div>
           )}
 
@@ -672,9 +672,9 @@ function DefaultLayout({ post, featuredMedia, author, category, cleanExcerpt, wo
           </div>
 
           {/* Audio Player */}
-          {post.acf?.article_audio && (
+          {post.acf?.article_media && (
             <div className="max-w-2xl mx-auto mb-8">
-              <AudioPlayer src={post.acf.article_audio} title="Listen to this article" />
+              <AudioPlayer src={post.acf.article_media} title="Listen to this article" />
             </div>
           )}
 

@@ -77,7 +77,7 @@ export interface Post extends WPEntity {
   tags: number[];
   meta: Record<string, unknown>;
   acf?: {
-    article_audio?: string;
+    article_media?: string;
     [key: string]: any;
   };
 }
