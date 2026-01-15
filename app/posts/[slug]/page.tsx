@@ -749,6 +749,10 @@ export default async function Page({ params }: { params: { slug: string } }) {
         console.error('Failed to resolve audio media ID:', e);
       }
     }
+    // Ensure HTTPS to prevent Mixed Content blocking on Vercel
+    if (typeof post.acf.article_media === 'string' && post.acf.article_media.startsWith('http://')) {
+      post.acf.article_media = post.acf.article_media.replace('http://', 'https://');
+    }
   }
 
   // Get recommended posts based on shared tags
