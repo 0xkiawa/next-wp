@@ -735,6 +735,22 @@ export default async function Page({ params }: { params: { slug: string } }) {
     getCategoryById(post.categories[0]),
   ]);
 
+  // Handle article_media (audio) - it might be a URL or an ID (number)
+  // This robustly handles the case where ACF Return Format is set to "Media ID" instead of "File URL"
+  if (post.acf && post.acf.article_media) {
+    // If it looks like a number (ID), fetch the media to get the URL
+    if (!isNaN(Number(post.acf.article_media)) && Number(post.acf.article_media) > 0) {
+      try {
+        const audioMedia = await getFeaturedMediaById(Number(post.acf.article_media));
+        if (audioMedia?.source_url) {
+          post.acf.article_media = audioMedia.source_url;
+        }
+      } catch (e) {
+        console.error('Failed to resolve audio media ID:', e);
+      }
+    }
+  }
+
   // Get recommended posts based on shared tags
   const recommendedPosts = await getRecommendedPosts(post, 3);
 
