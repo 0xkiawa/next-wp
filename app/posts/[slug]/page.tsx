@@ -311,23 +311,25 @@ function ScienceTechLayout({ post, featuredMedia, author, category }: { post: an
             </h2>
           </div>
 
-          {/* Audio Player */}
+          {/* Audio Player - Made smaller for Science Layout */}
           {post.acf?.article_media && (
-            <div className="max-w-2xl mx-auto mb-8">
+            <div className="max-w-sm mx-auto mb-8">
               <AudioPlayer src={post.acf.article_media} title="Listen to this article" />
             </div>
           )}
 
-          {/* Author Line + Bookmark */}
+          {/* Author Line + Bookmark - Scaled down */}
           <div className="text-center mb-8">
             <p className="text-sm text-gray-600 font-glacial mb-3">
               presented by / {author.name}
             </p>
-            <BookmarkButton
-              wpPostId={post.id}
-              postTitle={post.title.rendered}
-              postSlug={post.slug}
-            />
+            <div className="inline-block transform scale-90 origin-top">
+              <BookmarkButton
+                wpPostId={post.id}
+                postTitle={post.title.rendered}
+                postSlug={post.slug}
+              />
+            </div>
           </div>
 
           {/* Featured Image */}
