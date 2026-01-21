@@ -220,12 +220,12 @@ export async function getCategoryBySlug(slug: string): Promise<Category> {
 }
 
 export async function getPostsByCategory(categoryId: number): Promise<Post[]> {
-  const url = getUrl("/wp-json/wp/v2/posts", { categories: categoryId });
+  const url = getUrl("/wp-json/wp/v2/posts", { categories: categoryId, _embed: true });
   return wordpressFetch<Post[]>(url);
 }
 
 export async function getPostsByTag(tagId: number): Promise<Post[]> {
-  const url = getUrl("/wp-json/wp/v2/posts", { tags: tagId });
+  const url = getUrl("/wp-json/wp/v2/posts", { tags: tagId, _embed: true });
   return wordpressFetch<Post[]>(url);
 }
 
@@ -283,7 +283,7 @@ export async function getAuthorBySlug(slug: string): Promise<Author> {
 }
 
 export async function getPostsByAuthor(authorId: number): Promise<Post[]> {
-  const url = getUrl("/wp-json/wp/v2/posts", { author: authorId });
+  const url = getUrl("/wp-json/wp/v2/posts", { author: authorId, _embed: true });
   return wordpressFetch<Post[]>(url);
 }
 
@@ -296,7 +296,7 @@ export async function getPostsByAuthorSlug(
     console.warn(`Author "${authorSlug}" not found in WordPress`);
     return [];
   }
-  const url = getUrl("/wp-json/wp/v2/posts", { author: author.id });
+  const url = getUrl("/wp-json/wp/v2/posts", { author: author.id, _embed: true });
   return wordpressFetch<Post[]>(url);
 }
 
@@ -309,7 +309,7 @@ export async function getPostsByCategorySlug(
     console.warn(`Category "${categorySlug}" not found in WordPress`);
     return [];
   }
-  const url = getUrl("/wp-json/wp/v2/posts", { categories: category.id });
+  const url = getUrl("/wp-json/wp/v2/posts", { categories: category.id, _embed: true });
   return wordpressFetch<Post[]>(url);
 }
 
@@ -320,7 +320,7 @@ export async function getPostsByTagSlug(tagSlug: string): Promise<Post[]> {
     console.warn(`Tag "${tagSlug}" not found in WordPress`);
     return [];
   }
-  const url = getUrl("/wp-json/wp/v2/posts", { tags: tag.id });
+  const url = getUrl("/wp-json/wp/v2/posts", { tags: tag.id, _embed: true });
   return wordpressFetch<Post[]>(url);
 }
 

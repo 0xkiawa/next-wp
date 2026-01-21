@@ -80,6 +80,11 @@ export interface Post extends WPEntity {
     article_media?: string;
     [key: string]: any;
   };
+  _embedded?: {
+    'wp:featuredmedia'?: Array<{ source_url: string }>;
+    author?: Array<{ name: string }>;
+    [key: string]: any;
+  };
 }
 
 export interface Page extends WPEntity {
