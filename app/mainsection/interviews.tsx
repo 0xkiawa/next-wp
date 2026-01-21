@@ -35,10 +35,10 @@ const Interviews: React.FC<InterviewsProps> = ({ post }) => {
 
                 {/* Content Section */}
                 {/* Mobile: overlaid on top (z-20), Text White. Desktop: Right Side, standard colors. */}
-                <div className="relative z-20 w-full md:w-1/2 h-full flex flex-col justify-end md:justify-center p-6 md:p-16 lg:p-24 order-2">
+                <div className="relative z-20 w-full md:w-1/2 h-full flex flex-col justify-end md:justify-center px-6 pb-12 pt-48 md:p-16 lg:p-24 order-2">
 
                     {/* Mobile Only Top Header */}
-                    <div className="md:hidden absolute top-8 left-0 right-0 text-center">
+                    <div className="md:hidden absolute top-24 left-0 right-0 text-center">
                         <h2 className="text-sm font-bold tracking-widest uppercase text-white/90 mb-2">Interviews</h2>
                     </div>
 
