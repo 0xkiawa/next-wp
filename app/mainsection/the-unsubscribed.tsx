@@ -21,7 +21,7 @@ export default async function Page() {
       {/* Text above border */}
       <div className="text-center max-w-6xl mx-auto pl-4 md:pl-0 pr-4 md:pr-0 mb-6">
         <div className="text-3xl font-acaslon tracking-widest  uppercase font-bold mb-2">
-          THE MANTEL
+          The Mantel
         </div>
         <p className="text-2xl font-garamond italic text-gray-600 max-w-2xl mx-auto">
           Echoes of the past, resonating in the present. A curated collection of timeless stories.
