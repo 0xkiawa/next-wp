@@ -16,21 +16,25 @@ const Interviews: React.FC<InterviewsProps> = ({ post }) => {
     const authorName = _embedded?.author?.[0]?.name || 'Unknown Author';
 
     return (
-        <section className="relative bg-[#fcfbf9] dark:bg-black w-full border-b border-black dark:border-white overflow-hidden">
+        <section className="relative bg-[#fcfbf9] dark:bg-black w-full border-b border-black dark:border-white overflow-hidden mt-16">
             <div className="flex flex-col md:flex-row min-h-[600px] md:h-[700px]">
 
                 {/* Image Section */}
                 {/* Mobile: Absolute Full Background. Desktop: Relative Split Left Side */}
-                <div className="absolute inset-0 md:relative md:w-1/2 h-full border-r-0 md:border-r border-black dark:border-white order-1">
-                    <Image
-                        src={featuredImage}
-                        alt={title.rendered}
-                        fill
-                        className="object-cover"
-                        priority
-                    />
-                    {/* Mobile Dark Overlay for Text Readability */}
-                    <div className="absolute inset-0 bg-black/40 md:hidden z-10" />
+                {/* Image Section */}
+                {/* Mobile: Absolute Full Background. Desktop: Relative Split Left Side with Padding */}
+                <div className="absolute inset-0 md:relative md:w-1/2 h-full border-r-0 md:border-r border-black dark:border-white order-1 md:p-12">
+                    <div className="relative w-full h-full">
+                        <Image
+                            src={featuredImage}
+                            alt={title.rendered}
+                            fill
+                            className="object-cover"
+                            priority
+                        />
+                        {/* Mobile Dark Overlay for Text Readability */}
+                        <div className="absolute inset-0 bg-black/40 md:hidden z-10" />
+                    </div>
                 </div>
 
                 {/* Content Section */}
