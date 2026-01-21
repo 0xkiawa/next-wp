@@ -6,7 +6,7 @@ import { getAllPosts, getPostsByCategorySlug } from "@/lib/wordpress";
 import Unsubscribed from '@/app/mainsection/the-unsubscribed';
 import Culture from '@/app/mainsection/-culture';
 import Books from '@/app/mainsection/-books';
-import WeeklyEdit from '@/app/mainsection/weekly-edit';
+import Interviews from '@/app/mainsection/interviews';
 import SubscribePopup from '@/app/mainsection/subscribe-popup';
 import Podcast from '@/app/mainsection/podcast';
 
@@ -59,6 +59,10 @@ export default async function Home() {
   // Get the first personal post (or undefined if none exists)
   const personalPost2 = personalPosts2.length > 0 ? personalPosts2[0] : undefined;
 
+  // Fetch posts from "culture" for Interviews section
+  const culturePosts = await getPostsByCategorySlug("culture");
+  const interviewPost = culturePosts.length > 0 ? culturePosts[0] : undefined;
+
   return (
     <>
       {/* Featured Post Card */}
@@ -67,7 +71,7 @@ export default async function Home() {
       </div>
       <Unsubscribed />
       <Podcast />
-      <WeeklyEdit />
+      {interviewPost && <Interviews post={interviewPost} />}
       {/* Culture section with personal category post */}
       {personalPost2 && <NonFiction post={personalPost2} />}
       <Culture />
