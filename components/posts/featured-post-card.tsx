@@ -1,93 +1,82 @@
-import Link from "next/link";
-import { cn } from "@/lib/utils";
-import Image from "next/image";
-import { Section, Container } from "@/components/craft";import { ArticleContent } from "@/components/article";
-import { getFeaturedMediaById, getAuthorById, getCategoryById } from "@/lib/wordpress";
-import { ChevronDown } from "lucide-react"; // Import the ChevronDown icon
+'use client';
+import React from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { Post } from '@/lib/wordpress.d';
 
-export default async function FeaturedPostCard({ post }: { post: any }) {
-  // Check if featured media is available in _embedded, otherwise fetch it by ID
-  const media = post._embedded?.['wp:featuredmedia']?.[0] 
-    ? post._embedded['wp:featuredmedia'][0] 
-    : (post.featured_media ? await getFeaturedMediaById(post.featured_media) : null);
-
-  const author = await getAuthorById(post.author);
-  const date = new Date(post.date).toLocaleDateString("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-  });
-  const category = await getCategoryById(post.categories[0]);
-
-  return (
-    <>
-      <div className="max-w-[90%] md:max-w-[85%] lg:max-w-[80%] mx-auto px-6 md:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-0 md:gap-6">
-          {/* Left column for text content - reduced padding to push content left */}
-          <div className="flex flex-col justify-center px-0 md:pl-0 md:pr-8 pt-6 md:pt-10">
-            {/* Category display with font-newyorker styling - centered */}
-            <div className="text-center mb-2">
-              <Link 
-                href={`/posts/?category=${category.id}`}
-                className={cn(
-                  "text-xs  font-newyorker tracking-widest font-bold uppercase hover:text-red-700 transition-colors text-red-600",
-                  "!no-underline"
-                )}
-              >
-                <span dangerouslySetInnerHTML={{ __html: category.name }} />
-              </Link>
-            </div>
-            
-            {/* Title in uppercase with distinctive styling and link */}
-            <Link href={`/posts/${post.slug}`} className="hover:text-red-600 transition-colors">
-              <h2 
-                className="text-xl md:text-2xl  tracking-40  text-center md:text-left mb-6 font-knockout"
-                dangerouslySetInnerHTML={{ __html: post.title.rendered }}
-              ></h2>
-            </Link>
-            
-            {/* Article excerpt with specific styling */}
-            <div 
-              className="text-base md:text-lg mb-6 text-center md:text-left font-acaslon italic"
-              dangerouslySetInnerHTML={{
-                __html: post.excerpt.rendered,
-              }}
-            ></div>
-            
-            {/* Author and date information */}
-            <div className="text-sm text-muted-foreground text-center md:text-left font-miller mb-4">
-              By {author.name} | {date}
-            </div>
-          </div>
-          
-          {/* Right column for image */}
-          {media && (
-            <div className="relative h-80 sm:h-120 md:h-[500px]">
-              <Image
-                src={media.source_url}
-                alt={post.title.rendered}
-                fill
-                className="object-cover md:object-cover"
-                sizes="(max-width: 200px) 60vw, 50vw"
-                priority
-              />
-            </div>
-          )}
-        </div>
-      </div>
-      
-      {/* Scroll Down CTA */}
-      <div className="flex justify-center items-center mt-12 mb-4 animate-bounce">
-        <a 
-          href="#more-content" 
-          className="flex flex-col items-center text-blue-500 hover:text-black transition-colors"
-          aria-label="Scroll down to see more content"
-        >
-          <span className="text-sm uppercase tracking-wider mb-2 font-newyorker">Scroll Down</span>
-          <ChevronDown size={24} />
-          <ChevronDown size={24} className="-mt-4" />
-        </a>
-      </div>
-    </>
-  );
+interface FeaturedPostCardProps {
+    post: Post;
 }
+
+const FeaturedPostCard: React.FC<FeaturedPostCardProps> = ({ post }) => {
+    if (!post) return null;
+
+    const { title, excerpt, _embedded, slug } = post;
+    const featuredImage = _embedded?.['wp:featuredmedia']?.[0]?.source_url || '/placeholder.jpg';
+    const authorName = _embedded?.author?.[0]?.name || 'Unknown Author';
+
+    return (
+        <section className="bg-[#fcfbf9] dark:bg-black text-black dark:text-white w-full border-b border-black dark:border-white">
+            <div className="flex flex-col md:flex-row min-h-auto md:min-h-[700px]">
+
+                {/* Content Section */}
+                {/* Mobile: Top (Order 1). Desktop: Left (Order 1). */}
+                <div className="w-full md:w-1/2 flex flex-col justify-center p-6 md:p-16 lg:p-24 order-1 md:border-r border-black dark:border-white">
+
+                    {/* Label */}
+                    <div className="mb-6 md:mb-8 text-center md:text-left">
+                        <span className="font-newyorker text-red-600 tracking-widest text-xs uppercase">
+                            Featured Story
+                        </span>
+                    </div>
+
+                    <div className="space-y-6 text-center md:text-left">
+                        <Link href={`/posts/${slug}`} className="block group">
+                            <h1
+                                className="text-4xl md:text-5xl lg:text-6xl font-acaslon leading-[1.1] group-hover:text-red-700 transition-colors"
+                                dangerouslySetInnerHTML={{ __html: title.rendered }}
+                            />
+                        </Link>
+
+                        <div
+                            className="text-lg md:text-xl font-acaslon text-gray-700 dark:text-gray-300 leading-relaxed line-clamp-4"
+                            dangerouslySetInnerHTML={{ __html: excerpt.rendered }}
+                        />
+
+                        <div className="pt-4">
+                            <p className="font-acaslon italic [font-variant:small-caps] text-sm md:text-base tracking-wide">
+                                By <span className="text-red-600">{authorName}</span>
+                            </p>
+                        </div>
+
+                        <div className="pt-6 flex justify-center md:justify-start">
+                            <Link href={`/posts/${slug}`}>
+                                <button className="px-8 py-3 border border-black dark:border-white font-newyorker text-xs tracking-widest uppercase hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all">
+                                    Read Article
+                                </button>
+                            </Link>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Image Section */}
+                {/* Mobile: Bottom (Order 2). Desktop: Right (Order 2). */}
+                {/* Desktop: Framed with padding. Mobile: Full width. */}
+                <div className="relative w-full md:w-1/2 min-h-[400px] md:h-auto order-2 md:p-12 border-t md:border-t-0 border-black dark:border-white">
+                    <div className="relative w-full h-full">
+                        <Image
+                            src={featuredImage}
+                            alt={title.rendered}
+                            fill
+                            className="object-cover"
+                            priority
+                        />
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    );
+};
+
+export default FeaturedPostCard;
