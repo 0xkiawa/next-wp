@@ -35,6 +35,7 @@ const config = {
         jakarta: ["var(--font-jakarta)", ...fontFamily.sans],
         imbue: ["var(--font-imbue)", ...fontFamily.serif],
         knockout: ["var(--font-knockout)", ...fontFamily.sans],
+        'space-mono': ["var(--font-space-mono)", ...fontFamily.mono],
       },
       colors: {
         border: "hsl(var(--border))",

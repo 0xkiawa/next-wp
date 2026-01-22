@@ -1,5 +1,5 @@
 import localFont from 'next/font/local';
-import { EB_Garamond, Plus_Jakarta_Sans, Imbue } from 'next/font/google';
+import { EB_Garamond, Plus_Jakarta_Sans, Imbue, Space_Mono } from 'next/font/google';
 
 // Plus Jakarta Sans font
 export const plusJakarta = Plus_Jakarta_Sans({
@@ -177,4 +177,13 @@ export const knockout = localFont({
   src: '../public/fonts/knockout.bold.otf',
   variable: '--font-knockout',
   display: 'swap',
+});
+
+// Space Mono font from Google Fonts
+export const spaceMono = Space_Mono({
+  subsets: ['latin'],
+  display: 'swap',
+  weight: ['400', '700'],
+  style: ['normal', 'italic'],
+  variable: '--font-space-mono',
 });

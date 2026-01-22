@@ -16,7 +16,7 @@ import { AuthProvider } from "@/lib/auth-context";
 import { mainMenu, contentMenu } from "@/menu.config";
 import { siteConfig } from "@/site.config";
 import { cn } from "@/lib/utils";
-import { acaslonPro, stilson, millerDaily, newyorker, futura, glacial, ghost, garamond, coolvetica, plusJakarta, imbue, knockout } from "@/lib/fonts";
+import { acaslonPro, stilson, millerDaily, newyorker, futura, glacial, ghost, garamond, coolvetica, plusJakarta, imbue, knockout, spaceMono } from "@/lib/fonts";
 
 // Initialize the Inter font
 const fontSans = FontSans({
@@ -62,7 +62,8 @@ export default function RootLayout({
         garamond.variable,
         plusJakarta.variable,
         imbue.variable,
-        knockout.variable)}>
+        knockout.variable,
+        spaceMono.variable)}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
           <AuthProvider>
             <NavbarTitleProvider>

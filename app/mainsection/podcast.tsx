@@ -120,11 +120,11 @@ const LatestAudio: React.FC = () => {
         <p className="text-2xl sm:text-2xl  font-newyorker ">
           {formatDate()}
         </p>
-        <h2 className="text-4xl sm:text-6xl md:text-5xl font-extrabold mb-2 font-coolvetica">
+        <h2 className="text-4xl sm:text-6xl md:text-5xl font-extrabold mb-2 font-space-mono tracking-tighter">
           Listen to The Insight
         </h2>
-        <p className="text-sm sm:text-base text-gray-600 font-light">
-          Was it that cool?
+        <p className="text-sm sm:text-base text-gray-600 font-light font-space-mono">
+          Tune in to the rhythm of the culture.
         </p>
       </div>
 
