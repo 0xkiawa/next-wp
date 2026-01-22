@@ -128,12 +128,9 @@ const LatestAudio: React.FC = () => {
 
         {/* Episode Number + Title */}
         <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4">
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold font-futura tracking-tight">
-            (Ep.01:)
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold font-knockout tracking-tight">
+            Ep.01:
           </h2>
-          <span className="text-4xl sm:text-5xl md:text-6xl font-bold font-futura tracking-tight text-gray-900">
-            curated: KiawaNoteS
-          </span>
         </div>
       </div>
 

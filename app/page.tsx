@@ -86,9 +86,17 @@ export default async function Home() {
   // Get the latest science post (for when featured is NOT science)
   const scienceSectionPost = sciencePosts.length > 0 ? sciencePosts[0] : undefined;
 
-  // Fetch posts from "interviews" for Interviews section
+  // Fetch posts from \"interviews\" for Interviews section
   const culturePosts = await getPostsByCategorySlug("interviews");
   const interviewPost = culturePosts.length > 0 ? culturePosts[0] : undefined;
+
+  // Collect all post IDs that are already displayed in other sections
+  const excludedPostIds: number[] = [
+    latestNonInterviewPost?.id,
+    previousFeaturedPost?.id,
+    isLatestPostScience ? undefined : scienceSectionPost?.id,
+    interviewPost?.id,
+  ].filter((id): id is number => id !== undefined);
 
   return (
     <>
@@ -100,7 +108,7 @@ export default async function Home() {
             : <FeaturedPostCard post={latestNonInterviewPost} />
         )}
       </div>
-      <Unsubscribed />
+      <Unsubscribed excludedPostIds={excludedPostIds} />
       <Podcast />
       {interviewPost && <Interviews post={interviewPost} />}
       {/* Second section: If featured is science, show previous featured. Otherwise show science post */}

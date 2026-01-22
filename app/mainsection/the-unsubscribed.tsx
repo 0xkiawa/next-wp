@@ -10,11 +10,19 @@ import {
 } from "@/components/ui/carousel";
 import { Info } from "lucide-react";
 
-export default async function Page() {
+interface UnsubscribedProps {
+  excludedPostIds?: number[];
+}
+
+export default async function Page({ excludedPostIds = [] }: UnsubscribedProps) {
   // Fetch posts from the personal category
   const posts = await getAllPosts({});
-  // Skip the first post (index 0) and take the next 3 posts
-  const nextPosts = posts.slice(1, 5);
+
+  // Filter out excluded posts (posts already shown in other sections)
+  const filteredPosts = posts.filter(post => !excludedPostIds.includes(post.id));
+
+  // Take the first 4 posts from the filtered list
+  const displayPosts = filteredPosts.slice(0, 4);
 
   return (
     <div>
@@ -38,7 +46,7 @@ export default async function Page() {
           className="w-full"
         >
           <CarouselContent className="-ml-2 md:-ml-4">
-            {nextPosts.map((post, idx) => (
+            {displayPosts.map((post, idx) => (
               <CarouselItem key={post.id} className="pl-2 md:pl-4 basis-[45%] md:basis-[55%] lg:basis-1/4">
                 <div className="p-1 h-96">
                   <PostCard post={post} isLast={true} />

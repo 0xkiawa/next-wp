@@ -1,6 +1,8 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { ArrowLeft } from 'lucide-react';
 import { ArticleContent } from "@/components/article";
 import { Post, FeaturedMedia, Author, Category } from "@/lib/wordpress.d";
 import { useNavbarTitle } from "@/components/navigation/NavbarTitleContext";
@@ -19,6 +21,7 @@ const InterviewLayout: React.FC<InterviewLayoutProps> = ({
 }) => {
     const [scrollProgress, setScrollProgress] = useState(0);
     const { setHidden } = useNavbarTitle();
+    const router = useRouter();
 
     // Hide navbar on mount, restore on unmount
     useEffect(() => {
@@ -46,6 +49,16 @@ const InterviewLayout: React.FC<InterviewLayoutProps> = ({
 
     return (
         <div className="relative min-h-[200vh]">
+            {/* Fixed Back Button */}
+            <button
+                onClick={() => router.back()}
+                className="fixed top-6 left-6 z-50 flex items-center gap-2 px-4 py-2 bg-black/50 backdrop-blur-sm text-white rounded-full hover:bg-black/70 transition-all group"
+                aria-label="Go back"
+            >
+                <ArrowLeft size={20} className="group-hover:-translate-x-1 transition-transform" />
+                <span className="text-sm font-space-mono uppercase tracking-wider">Back</span>
+            </button>
+
             {/* Fixed Background Image with Dynamic Gradient */}
             <div className="fixed inset-0 w-full h-screen -z-10">
                 {featuredMedia ? (
