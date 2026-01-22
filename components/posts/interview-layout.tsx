@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { ArticleContent } from "@/components/article";
 import { Post, FeaturedMedia, Author, Category } from "@/lib/wordpress.d";
+import { useNavbarTitle } from "@/components/navigation/NavbarTitleContext";
 
 interface InterviewLayoutProps {
     post: Post;
@@ -17,6 +18,13 @@ const InterviewLayout: React.FC<InterviewLayoutProps> = ({
     featuredMedia,
 }) => {
     const [scrollProgress, setScrollProgress] = useState(0);
+    const { setHidden } = useNavbarTitle();
+
+    // Hide navbar on mount, restore on unmount
+    useEffect(() => {
+        setHidden(true);
+        return () => setHidden(false);
+    }, [setHidden]);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -55,7 +63,7 @@ const InterviewLayout: React.FC<InterviewLayoutProps> = ({
                             style={{
                                 background: `
                   linear-gradient(to right, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0) 20%, rgba(0,0,0,0) 80%, rgba(0,0,0,0.9) 100%),
-                  linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%),
+                  linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.85) 25%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.1) 100%),
                   rgba(0,0,0,${gradientOpacity})
                 `,
                             }}
@@ -67,7 +75,7 @@ const InterviewLayout: React.FC<InterviewLayoutProps> = ({
             </div>
 
             {/* Main Content - Overlaid on Top of Image */}
-            <div className="relative z-10 min-h-screen flex flex-col justify-end pt-[30vh]">
+            <div className="relative z-10 min-h-screen flex flex-col justify-center pt-[10vh]">
                 <div className="max-w-3xl mx-auto px-6 md:px-8 pb-20">
                     {/* Title */}
                     <h1

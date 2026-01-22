@@ -14,7 +14,7 @@ const FixedDualNavbar = () => {
   const lastScrollY = useRef(0);
   const menuRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
-  const { title } = useNavbarTitle();
+  const { title, isHidden } = useNavbarTitle();
 
   const displayTitle = title || "THE BLOG OF KIAWA VURNER";
 
@@ -76,11 +76,14 @@ const FixedDualNavbar = () => {
 
   return (
     <>
-      <div className="h-16 md:h-16">
+      <div className={cn("h-16 md:h-16", isHidden && "hidden")}>
         {/* Spacer for fixed header - single navbar height */}
       </div>
 
-      <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-500">
+      <header className={cn(
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
+        isHidden && "opacity-0 pointer-events-none -translate-y-full"
+      )}>
         {/* Single navbar container */}
         <div className="relative h-16">
           {/* Navbar - Transforms content on scroll */}
