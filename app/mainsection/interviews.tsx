@@ -16,7 +16,7 @@ const Interviews: React.FC<InterviewsProps> = ({ post }) => {
     const authorName = _embedded?.author?.[0]?.name || 'Unknown Author';
 
     return (
-        <section className="relative bg-[#fcfbf9] dark:bg-black w-full border-b border-black dark:border-white overflow-hidden mt-16">
+        <section className="relative dark:bg-black w-full border-b border-black dark:border-white overflow-hidden mt-16">
             <div className="flex flex-col md:flex-row min-h-[600px] md:h-[700px]">
 
                 {/* Image Section */}

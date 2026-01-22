@@ -16,7 +16,7 @@ const FeaturedPostCard: React.FC<FeaturedPostCardProps> = ({ post }) => {
     const authorName = _embedded?.author?.[0]?.name || 'Unknown Author';
 
     return (
-        <section className="bg-[#fcfbf9] dark:bg-black text-black dark:text-white w-full border-b border-black dark:border-white">
+        <section className="dark:bg-black text-black dark:text-white w-full border-b border-black dark:border-white">
             <div className="flex flex-col md:flex-row min-h-auto md:min-h-[700px]">
 
                 {/* Content Section */}
@@ -63,7 +63,7 @@ const FeaturedPostCard: React.FC<FeaturedPostCardProps> = ({ post }) => {
                 {/* Mobile: Bottom (Order 2). Desktop: Right (Order 2). */}
                 {/* Desktop: Framed with padding. Mobile: Full width. */}
                 <div className="relative w-full md:w-1/2 min-h-[400px] md:h-auto order-2 md:p-12 border-t md:border-t-0 border-black dark:border-white">
-                    <div className="relative w-full h-full">
+                    <div className="relative w-full h-[400px] md:h-full">
                         <Image
                             src={featuredImage}
                             alt={title.rendered}

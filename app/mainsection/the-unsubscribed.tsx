@@ -20,7 +20,7 @@ export default async function Page() {
     <div>
       {/* Text above border */}
       <div className="text-center max-w-6xl mx-auto pl-4 md:pl-0 pr-4 md:pr-0 mb-6">
-        <div className="text-3xl font-acaslon  font-bold mb-2">
+        <div className="text-3xl font-newyorker font-bold mb-2">
           The Mantel
         </div>
         <p className="text-2xl font-garamond italic text-gray-600 max-w-2xl mx-auto">
