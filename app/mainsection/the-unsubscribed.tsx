@@ -37,7 +37,7 @@ export default async function Page({ excludedPostIds = [] }: UnsubscribedProps) 
       </div>
 
       {/* Carousel Layout with border only on this div */}
-      <div className="max-w-6xl mx-auto border-t pt-6 pl-4 md:pl-0 pr-4 md:pr-0">
+      <div className="max-w-7xl mx-auto border-t pt-6 pl-4 md:pl-0 pr-4 md:pr-0">
         <Carousel
           opts={{
             align: "start",
@@ -47,7 +47,7 @@ export default async function Page({ excludedPostIds = [] }: UnsubscribedProps) 
         >
           <CarouselContent className="-ml-2 md:-ml-4">
             {displayPosts.map((post, idx) => (
-              <CarouselItem key={post.id} className="pl-2 md:pl-4 basis-[45%] md:basis-[55%] lg:basis-1/4">
+              <CarouselItem key={post.id} className="pl-2 md:pl-4 basis-[70%] md:basis-[45%] lg:basis-1/4">
                 <div className="p-1 h-96">
                   <PostCard post={post} isLast={true} />
                 </div>
