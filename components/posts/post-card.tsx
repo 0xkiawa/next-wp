@@ -56,10 +56,10 @@ export default async function PostComponent({
         <div className="flex flex-col gap-1 sm:flex-col md:flex-col w-full sm:w-2/3 sm:pr-4 lg:w-full lg:pr-0">
           <div
             dangerouslySetInnerHTML={{ __html: post.title.rendered }}
-            className="text-xl sm:text-xl lg:text-xl text-primary font-acaslon hover:underline decoration-muted-foreground underline-offset-4 transition-all break-words"
+            className="text-xl sm:text-xl lg:text-xl text-primary font-acaslon hover:underline decoration-muted-foreground underline-offset-4 transition-all break-words text-black"
           ></div>
           <div
-            className="text-xm sm:text-xl lg:text-base font-acaslon"
+            className="text-xm sm:text-xl lg:text-base font-acaslon text-gray-500"
             dangerouslySetInnerHTML={{
               __html:
                 post.excerpt.rendered.split(" ").slice(0, 12).join(" ").trim() +
