@@ -24,8 +24,15 @@ export default async function AboutTheAuthor({ authorId }: { authorId?: number }
     }
 
     const getAvatarUrl = (author: any) => {
-        if (!author.avatar_urls) return "/placeholder-avatar.jpg";
-        return author.avatar_urls['96'] || author.avatar_urls['48'] || author.avatar_urls['24'] || Object.values(author.avatar_urls)[0] || "/placeholder-avatar.jpg";
+        // First try to find a valid WordPress avatar
+        if (author.avatar_urls) {
+            const url = author.avatar_urls['96'] || author.avatar_urls['48'] || author.avatar_urls['24'] || Object.values(author.avatar_urls)[0];
+            if (url) return url;
+        }
+
+        // Fallback to UI Avatars if no WP avatar is found or if it's invalid
+        const name = author.name || 'Author';
+        return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random&color=fff&size=96`;
     };
 
     return (
@@ -43,6 +50,7 @@ export default async function AboutTheAuthor({ authorId }: { authorId?: number }
                                     alt={`Profile of ${author.name}`}
                                     width={80}
                                     height={80}
+                                    unoptimized
                                 />
                             </div>
 

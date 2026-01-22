@@ -20,6 +20,18 @@ const nextConfig: NextConfig = {
         hostname: `${process.env.WORDPRESS_HOSTNAME}`,
         port: "",
         pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "secure.gravatar.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "ui-avatars.com",
+        port: "",
+        pathname: "/**",
       }
     ],
   },
