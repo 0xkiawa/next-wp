@@ -59,7 +59,7 @@ export default async function PostComponent({
             className="text-xl sm:text-xl lg:text-xl text-primary font-acaslon hover:underline decoration-muted-foreground underline-offset-4 transition-all break-words text-black"
           ></div>
           <div
-            className="text-xm sm:text-xl lg:text-base font-acaslon text-gray-700"
+            className="text-xm sm:text-xl lg:text-base font-acaslon text-gray-900"
             dangerouslySetInnerHTML={{
               __html:
                 post.excerpt.rendered.split(" ").slice(0, 12).join(" ").trim() +
