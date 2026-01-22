@@ -112,7 +112,7 @@ const InterviewLayout: React.FC<InterviewLayoutProps> = ({
                     <div className="w-24 h-px bg-white/30 mb-12" />
 
                     {/* Article Body */}
-                    <div className="prose prose-lg prose-invert max-w-none font-garamond text-white/95 leading-loose">
+                    <div className="prose prose-lg prose-invert max-w-none font-garamond prose-p:text-white/90 prose-headings:text-white prose-strong:text-white prose-blockquote:text-white/80 leading-loose">
                         <ArticleContent content={post.content.rendered} />
                     </div>
 
