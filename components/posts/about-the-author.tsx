@@ -1,9 +1,32 @@
-import { getAllAuthors } from "@/lib/wordpress";
+import { getAllAuthors, getAuthorById } from "@/lib/wordpress";
+import { Author } from "@/lib/wordpress.d";
 import Image from "next/image";
 import Link from "next/link";
 
-export default async function Page() {
-    const authors = await getAllAuthors();
+export default async function AboutTheAuthor({ authorId }: { authorId?: number }) {
+    let authors: Author[] = [];
+
+    if (authorId) {
+        try {
+            const author = await getAuthorById(authorId);
+            if (author) {
+                authors = [author];
+            }
+        } catch (error) {
+            console.error(`Failed to fetch author with ID ${authorId}:`, error);
+        }
+    } else {
+        authors = await getAllAuthors();
+    }
+
+    if (authors.length === 0) {
+        return null;
+    }
+
+    const getAvatarUrl = (author: any) => {
+        if (!author.avatar_urls) return "/placeholder-avatar.jpg";
+        return author.avatar_urls['96'] || author.avatar_urls['48'] || author.avatar_urls['24'] || Object.values(author.avatar_urls)[0] || "/placeholder-avatar.jpg";
+    };
 
     return (
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 font-stilson">
@@ -15,8 +38,8 @@ export default async function Page() {
                             {/* Avatar image */}
                             <div className="flex-shrink-0">
                                 <Image
-                                    className="rounded-full"
-                                    src={author.avatar_urls?.[96] || "/placeholder-avatar.jpg"}
+                                    className="rounded-full bg-gray-100 object-cover"
+                                    src={getAvatarUrl(author)}
                                     alt={`Profile of ${author.name}`}
                                     width={80}
                                     height={80}
