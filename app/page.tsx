@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import Fiction from '@/components/posts/fiction-card';
 import NonFiction from '@/components/posts/science-post-card';
 import FeaturedPostCard from '@/components/posts/featured-post-card';
-import { getAllPosts, getPostsByCategorySlug } from "@/lib/wordpress";
+import { getAllPosts, getPostsByCategorySlug, getCategoryBySlug } from "@/lib/wordpress";
 import Unsubscribed from '@/app/mainsection/the-unsubscribed';
 import Culture from '@/app/mainsection/-culture';
 import Books from '@/app/mainsection/-books';
@@ -50,6 +50,15 @@ export default async function Home() {
   const posts = await getAllPosts({});
   const latestPost = posts[0]; // Get the first post, which is the latest one
 
+  // Fetch the science category to get its ID
+  const scienceCategory = await getCategoryBySlug("science");
+  const scienceCategoryId = scienceCategory?.id;
+
+  // Check if the latest post is in the science category
+  const isLatestPostScience = latestPost && scienceCategoryId
+    ? latestPost.categories.includes(scienceCategoryId)
+    : false;
+
   // Fetch posts from the personal category for Fiction section
   const personalPosts = await getPostsByCategorySlug("books");
   // Get the first personal post (or undefined if none exists)
@@ -65,9 +74,13 @@ export default async function Home() {
 
   return (
     <>
-      {/* Featured Post Card */}
+      {/* Featured Post Card - conditionally render based on category */}
       <div className="mb-8 py-4">
-        {latestPost && <FeaturedPostCard post={latestPost} />} {/* Display the latest post if available */}
+        {latestPost && (
+          isLatestPostScience
+            ? <NonFiction post={latestPost} />
+            : <FeaturedPostCard post={latestPost} />
+        )}
       </div>
       <Unsubscribed />
       <Podcast />
