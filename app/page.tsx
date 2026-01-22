@@ -46,17 +46,25 @@ export const metadata: Metadata = {
 };
 
 export default async function Home() {
-  // Fetch the latest post instead of a specific post by ID
+  // Fetch the latest posts
   const posts = await getAllPosts({});
-  const latestPost = posts[0]; // Get the first post, which is the latest one
 
   // Fetch the science category to get its ID
   const scienceCategory = await getCategoryBySlug("science");
   const scienceCategoryId = scienceCategory?.id;
 
-  // Check if the latest post is in the science category
-  const isLatestPostScience = latestPost && scienceCategoryId
-    ? latestPost.categories.includes(scienceCategoryId)
+  // Fetch the interviews category to get its ID
+  const interviewsCategory = await getCategoryBySlug("interviews");
+  const interviewsCategoryId = interviewsCategory?.id;
+
+  // Find the first post that is NOT in the interviews category (for featured section)
+  const latestNonInterviewPost = posts.find(post =>
+    !interviewsCategoryId || !post.categories.includes(interviewsCategoryId)
+  );
+
+  // Check if the featured post is in the science category
+  const isLatestPostScience = latestNonInterviewPost && scienceCategoryId
+    ? latestNonInterviewPost.categories.includes(scienceCategoryId)
     : false;
 
   // Fetch posts from the personal category for Fiction section
@@ -76,10 +84,10 @@ export default async function Home() {
     <>
       {/* Featured Post Card - conditionally render based on category */}
       <div className="mb-8 py-4">
-        {latestPost && (
+        {latestNonInterviewPost && (
           isLatestPostScience
-            ? <NonFiction post={latestPost} />
-            : <FeaturedPostCard post={latestPost} />
+            ? <NonFiction post={latestNonInterviewPost} />
+            : <FeaturedPostCard post={latestNonInterviewPost} />
         )}
       </div>
       <Unsubscribed />
