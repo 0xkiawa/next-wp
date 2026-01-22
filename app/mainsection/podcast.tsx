@@ -115,17 +115,26 @@ const LatestAudio: React.FC = () => {
   return (
     <div className="max-w-5xl mx-auto p-2">
       {/* Center text section */}
-      <div className="text-center mb-12 sm:mb-16 mt-8">
-        {/*dynamic date */}
-        <p className="text-2xl sm:text-2xl  font-newyorker ">
+      <div className="text-center mb-12 sm:mb-16 mt-8 flex flex-col items-center">
+        {/* Dynamic Date */}
+        <p className="text-2xl sm:text-2xl font-newyorker mb-4">
           {formatDate()}
         </p>
-        <h2 className="text-4xl sm:text-6xl md:text-5xl font-extrabold mb-2 font-space-mono tracking-tighter">
-          Listen to The Insight
-        </h2>
-        <p className="text-sm sm:text-base text-gray-600 font-light font-space-mono">
-          Tune in to the rhythm of the culture.
+
+        {/* Quote */}
+        <p className="text-sm sm:text-base text-gray-700 font-space-mono max-w-lg mx-auto mb-6 leading-relaxed">
+          "The culture is not just what we see, but what we refuse to see."
         </p>
+
+        {/* Episode Number + Title */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold font-futura tracking-tight">
+            (Ep.01:)
+          </h2>
+          <span className="text-4xl sm:text-5xl md:text-6xl font-bold font-futura tracking-tight text-gray-900">
+            curated: KiawaNoteS
+          </span>
+        </div>
       </div>
 
       {/* Whole row */}
@@ -192,7 +201,7 @@ const LatestAudio: React.FC = () => {
               <h1 className="text-sm sm:text-lg md:text-xl font-bold text-black mb-1 font-stilson">
                 {audioTitle}
               </h1>
-              <div className="text-[10px] sm:text-xs font-light text-gray-600 uppercase tracking-wider">
+              <div className="text-[10px] sm:text-xs font-light text-gray-600 uppercase tracking-wider font-space-mono">
                 Podcast of the Week
               </div>
 
@@ -235,9 +244,9 @@ const LatestAudio: React.FC = () => {
           height: 10px;
           width: 10px;
           border-radius: 50%;
-          background: #22c55e;
+          background: #161817ff;
           cursor: pointer;
-          box-shadow: 0 0 3px rgba(34, 197, 94, 0.5);
+          box-shadow: 0 0 3px rgba(15, 15, 15, 0.5);
           transition: all 0.2s ease;
         }
         .thin-slider::-webkit-slider-thumb:hover {
@@ -247,10 +256,10 @@ const LatestAudio: React.FC = () => {
           height: 10px;
           width: 10px;
           border-radius: 50%;
-          background: #22c55e;
+          background: #141414ff;
           cursor: pointer;
           border: none;
-          box-shadow: 0 0 3px rgba(34, 197, 94, 0.5);
+          box-shadow: 0 0 3px rgba(20, 20, 20, 0.5);
         }
       `}</style>
     </div>

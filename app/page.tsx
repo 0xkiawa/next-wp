@@ -68,8 +68,8 @@ export default async function Home() {
   // Get the first personal post (or undefined if none exists)
   const personalPost2 = personalPosts2.length > 0 ? personalPosts2[0] : undefined;
 
-  // Fetch posts from "culture" for Interviews section
-  const culturePosts = await getPostsByCategorySlug("culture");
+  // Fetch posts from "interviews" for Interviews section
+  const culturePosts = await getPostsByCategorySlug("interviews");
   const interviewPost = culturePosts.length > 0 ? culturePosts[0] : undefined;
 
   return (

@@ -25,6 +25,7 @@ import { BookmarkButton } from "@/components/posts/bookmark-button";
 import AboutTheAuthor from "@/components/posts/about-the-author";
 import SetNavbarTitle from "@/components/navigation/SetNavbarTitle";
 import { AudioPlayer } from "@/components/posts/audio-player";
+import InterviewLayout from "@/components/posts/interview-layout";
 
 export const revalidate = 60;
 
@@ -799,6 +800,10 @@ export default async function Page({ params }: { params: { slug: string } }) {
   const isBooks = category?.slug === 'books' ||
     category?.name?.toLowerCase().includes('books');
 
+  const isInterview = category?.slug === 'interviews' ||
+    category?.name?.toLowerCase().includes('interviews') ||
+    category?.name?.toLowerCase().includes('interview');
+
   const isCulture = category?.slug === 'culture' ||
     category?.name?.toLowerCase().includes('culture');
 
@@ -811,6 +816,21 @@ export default async function Page({ params }: { params: { slug: string } }) {
         <ReadMoreSection posts={recommendedPosts} />
       </>
     );
+  }
+
+  if (isInterview) {
+    return (
+      <>
+        <SetNavbarTitle title={post.title.rendered} />
+        <InterviewLayout
+          post={post}
+          featuredMedia={featuredMedia}
+          author={author}
+          category={category}
+          formattedDate={formattedDate}
+        />
+      </>
+    )
   }
 
   if (isBooks) {
