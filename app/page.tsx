@@ -67,14 +67,24 @@ export default async function Home() {
     ? latestNonInterviewPost.categories.includes(scienceCategoryId)
     : false;
 
+  // Find the previous featured post (non-interview, non-science) for when science is featured
+  const previousFeaturedPost = isLatestPostScience
+    ? posts.find(post =>
+      post.id !== latestNonInterviewPost?.id &&
+      (!interviewsCategoryId || !post.categories.includes(interviewsCategoryId)) &&
+      (!scienceCategoryId || !post.categories.includes(scienceCategoryId))
+    )
+    : undefined;
+
   // Fetch posts from the personal category for Fiction section
   const personalPosts = await getPostsByCategorySlug("books");
   // Get the first personal post (or undefined if none exists)
   const personalPost = personalPosts.length > 0 ? personalPosts[0] : undefined;
-  //fetch posts from the personal category for Fiction section
-  const personalPosts2 = await getPostsByCategorySlug("science");
-  // Get the first personal post (or undefined if none exists)
-  const personalPost2 = personalPosts2.length > 0 ? personalPosts2[0] : undefined;
+
+  // Fetch posts from the science category for science section
+  const sciencePosts = await getPostsByCategorySlug("science");
+  // Get the latest science post (for when featured is NOT science)
+  const scienceSectionPost = sciencePosts.length > 0 ? sciencePosts[0] : undefined;
 
   // Fetch posts from "interviews" for Interviews section
   const culturePosts = await getPostsByCategorySlug("interviews");
@@ -93,8 +103,11 @@ export default async function Home() {
       <Unsubscribed />
       <Podcast />
       {interviewPost && <Interviews post={interviewPost} />}
-      {/* Culture section with personal category post */}
-      {personalPost2 && <NonFiction post={personalPost2} />}
+      {/* Second section: If featured is science, show previous featured. Otherwise show science post */}
+      {isLatestPostScience
+        ? (previousFeaturedPost && <FeaturedPostCard post={previousFeaturedPost} />)
+        : (scienceSectionPost && <NonFiction post={scienceSectionPost} />)
+      }
       <Culture />
 
       {/* Fiction section (The Weekend Essay) - fetches latest post internally */}
