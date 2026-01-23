@@ -270,7 +270,7 @@ function ScienceTechLayout({ post, featuredMedia, author, category }: { post: an
 
   return (
     <div className="min-h-screen bg-white py-16 px-8">
-      <div className="max-w-3.5xl mx-auto">
+      <div className="max-w-4xl mx-auto">
         {/* Category Header at Top */}
         <div className="text-center mb-12">
           <p className="text-2xl text-red-700 font-newyorker">
@@ -340,8 +340,8 @@ function ScienceTechLayout({ post, featuredMedia, author, category }: { post: an
                 src={featuredMedia.source_url}
                 alt={featuredMedia.alt_text || post.title.rendered}
                 className="mx-auto max-w-full h-auto !rounded-none"
-                width={featuredMedia.media_details?.width || 736}
-                height={featuredMedia.media_details?.height || 982}
+                width={featuredMedia.media_details?.width || 1200}
+                height={featuredMedia.media_details?.height || 800}
                 style={{ borderRadius: 0 }}
                 loading="lazy"
                 priority={false}
@@ -358,7 +358,7 @@ function ScienceTechLayout({ post, featuredMedia, author, category }: { post: an
           )}
 
           {/* Excerpt */}
-          <div className="max-w-3.5xl mx-auto mb-12">
+          <div className="max-w-2xl mx-auto mb-12">
             <div className="text-base leading-relaxed text-black font-garamond italic">
               <p>{excerpt}</p>
             </div>
@@ -370,7 +370,7 @@ function ScienceTechLayout({ post, featuredMedia, author, category }: { post: an
           </div>
 
           {/* Full Article Content */}
-          <div className="max-w-3.5xl mx-auto">
+          <div className="max-w-2xl mx-auto">
             <div className="text-base leading-relaxed text-black prose prose-lg max-w-none" style={{ fontFamily: 'Georgia, serif', lineHeight: '1.7' }}>
               <div className="md:first-letter:text-5xl md:first-letter:font-bold md:first-letter:float-left md:first-letter:mr-2 md:first-letter:leading-none">
                 <ArticleContent
@@ -411,7 +411,7 @@ function BooksLayout({ post, featuredMedia, author, category, cleanExcerpt, form
   return (
     <Section>
       <Container>
-        <div className="max-w-3.5xl mx-auto">
+        <div className="max-w-4xl mx-auto">
           {/* Category | Date - Button Style */}
           <div className="mb-6">
             <div className="inline-flex overflow-hidden rounded-sm border border-gray-300">
@@ -475,8 +475,8 @@ function BooksLayout({ post, featuredMedia, author, category, cleanExcerpt, form
                 src={featuredMedia.source_url}
                 alt={featuredMedia.alt_text || post.title.rendered}
                 className="mx-auto max-w-full h-auto !rounded-none"
-                width={featuredMedia.media_details?.width || 736}
-                height={featuredMedia.media_details?.height || 982}
+                width={featuredMedia.media_details?.width || 1200}
+                height={featuredMedia.media_details?.height || 800}
                 style={{ borderRadius: 0 }}
                 loading="lazy"
                 priority={false}
@@ -510,7 +510,7 @@ function CultureLayout({ post, featuredMedia, author, category, cleanExcerpt, fo
   return (
     <Section className="bg-white pt-12 pb-20">
       <Container>
-        <div className="max-w-3.5xl mx-auto">
+        <div className="max-w-3xl mx-auto">
           {/* Eyebrow */}
           <div className="mb-4">
             <Link
@@ -587,8 +587,8 @@ function CultureLayout({ post, featuredMedia, author, category, cleanExcerpt, fo
                 src={featuredMedia.source_url}
                 alt={featuredMedia.alt_text || post.title.rendered}
                 className="w-full h-auto object-cover"
-                width={736}
-                height={982}
+                width={1200}
+                height={800}
                 priority
               />
               {featuredMedia.caption && (
@@ -617,103 +617,101 @@ function DefaultLayout({ post, featuredMedia, author, category, cleanExcerpt, wo
   return (
     <Section>
       <Container>
-        <div className="max-w-3.5xl mx-auto">
-          <Prose>
-            {/* Category */}
-            {category && (
-              <div className="text-center mb-4">
-                <Link
-                  href={`/posts/?category=${category.id}`}
-                  className={cn(
-                    "text-xs lg:text-2xl font-newyorker uppercase text-red-700 transition-colors",
-                    "!no-underline"
-                  )}
-                >
-                  <span dangerouslySetInnerHTML={{ __html: category.name }} />
-                </Link>
-              </div>
-            )}
+        <Prose>
+          {/* Category */}
+          {category && (
+            <div className="text-center mb-4">
+              <Link
+                href={`/posts/?category=${category.id}`}
+                className={cn(
+                  "text-xs lg:text-2xl font-newyorker uppercase text-red-700 transition-colors",
+                  "!no-underline"
+                )}
+              >
+                <span dangerouslySetInnerHTML={{ __html: category.name }} />
+              </Link>
+            </div>
+          )}
 
-            {/* Title */}
-            <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold font-knockout text-center mb-4">
-              <Balancer>
-                <span dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
-              </Balancer>
-            </h1>
+          {/* Title */}
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold font-knockout text-center mb-4">
+            <Balancer>
+              <span dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
+            </Balancer>
+          </h1>
 
-            {/* Excerpt */}
-            {cleanExcerpt && (
-              <div className="text-center mb-6 max-w-3.5xl mx-auto">
-                <p className="text-base md:text-lg text-muted-foreground font-acaslon italic">
-                  {cleanExcerpt}
-                </p>
-              </div>
-            )}
-
-            {/* Author + Date + Bookmark + Time */}
-            <div className="text-center mb-8">
-              <p className="font-miller text-sm text-muted-foreground">
-                Published by{" "}
-                <Link
-                  href={`/posts/?author=${author.id}`}
-                  className="font-stilson text-primary/90"
-                >
-                  {author.name}
-                </Link>{" "}
-                • {formattedDate}
+          {/* Excerpt */}
+          {cleanExcerpt && (
+            <div className="text-center mb-6 max-w-2xl mx-auto">
+              <p className="text-base md:text-lg text-muted-foreground font-acaslon italic">
+                {cleanExcerpt}
               </p>
+            </div>
+          )}
 
-              <div className="mt-2">
-                <BookmarkButton
-                  wpPostId={post.id}
-                  postTitle={post.title.rendered}
-                  postSlug={post.slug}
-                />
-              </div>
+          {/* Author + Date + Bookmark + Time */}
+          <div className="text-center mb-8">
+            <p className="font-miller text-sm text-muted-foreground">
+              Published by{" "}
+              <Link
+                href={`/posts/?author=${author.id}`}
+                className="font-stilson text-primary/90"
+              >
+                {author.name}
+              </Link>{" "}
+              • {formattedDate}
+            </p>
 
-              <div className="flex items-center justify-center mt-2 text-sm text-muted-foreground">
-                <Clock size={14} className="mr-1" />
-                <span>{readingTimeMinutes} min read</span>
-              </div>
+            <div className="mt-2">
+              <BookmarkButton
+                wpPostId={post.id}
+                postTitle={post.title.rendered}
+                postSlug={post.slug}
+              />
             </div>
 
-            {/* Audio Player */}
-            {post.acf?.article_media && (
-              <div className="max-w-3.5xl mx-auto mb-8">
-                <AudioPlayer src={post.acf.article_media} title="Listen to this article" />
-              </div>
-            )}
+            <div className="flex items-center justify-center mt-2 text-sm text-muted-foreground">
+              <Clock size={14} className="mr-1" />
+              <span>{readingTimeMinutes} min read</span>
+            </div>
+          </div>
 
-            {/* Featured Image */}
-            {featuredMedia?.source_url && (
-              <figure className="my-4 text-center">
-                <Image
-                  src={featuredMedia.source_url}
-                  alt={featuredMedia.alt_text || post.title.rendered}
-                  className="mx-auto max-w-full h-auto !rounded-none"
-                  width={featuredMedia.media_details?.width || 736}
-                  height={featuredMedia.media_details?.height || 982}
-                  style={{ borderRadius: 0 }}
-                  loading="lazy"
-                  priority={false}
+          {/* Audio Player */}
+          {post.acf?.article_media && (
+            <div className="max-w-2xl mx-auto mb-8">
+              <AudioPlayer src={post.acf.article_media} title="Listen to this article" />
+            </div>
+          )}
+
+          {/* Featured Image */}
+          {featuredMedia?.source_url && (
+            <figure className="my-4 text-center">
+              <Image
+                src={featuredMedia.source_url}
+                alt={featuredMedia.alt_text || post.title.rendered}
+                className="mx-auto max-w-full h-auto !rounded-none"
+                width={featuredMedia.media_details?.width || 1200}
+                height={featuredMedia.media_details?.height || 800}
+                style={{ borderRadius: 0 }}
+                loading="lazy"
+                priority={false}
+              />
+              {featuredMedia.caption && (
+                <figcaption
+                  className="text-sm text-muted-foreground mt-2 italic"
+                  dangerouslySetInnerHTML={{
+                    __html: featuredMedia.caption.rendered,
+                  }}
                 />
-                {featuredMedia.caption && (
-                  <figcaption
-                    className="text-sm text-muted-foreground mt-2 italic"
-                    dangerouslySetInnerHTML={{
-                      __html: featuredMedia.caption.rendered,
-                    }}
-                  />
-                )}
-              </figure>
-            )}
-          </Prose>
+              )}
+            </figure>
+          )}
+        </Prose>
 
-          <div className="w-full h-px bg-dark my-8"></div>
+        <div className="w-full h-px bg-dark my-8"></div>
 
-          {/* Article Body */}
-          <ArticleContent content={post.content.rendered} className="mt-2" />
-        </div>
+        {/* Article Body */}
+        <ArticleContent content={post.content.rendered} className="mt-2" />
       </Container>
     </Section>
   );

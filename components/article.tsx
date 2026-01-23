@@ -165,7 +165,7 @@ export function ArticleContent({ content, className }: ArticleContentProps) {
 
   return (
     <div className={cn(
-      "w-full",
+      "md:grid md:grid-cols-2 lg:grid-cols-3 lg:gap-x-8",
       className
     )}>
       <article
@@ -173,7 +173,8 @@ export function ArticleContent({ content, className }: ArticleContentProps) {
         dangerouslySetInnerHTML={{ __html: renderLatex(content) }}
         className={cn(
           "font-acaslon text-primary",
-          "prose dark:prose-invert prose-xl max-w-none",
+          "prose dark:prose-invert prose-xl",
+          "md:col-span-2 lg:col-span-2",
           "overflow-x-hidden border-b"
         )}
       />
