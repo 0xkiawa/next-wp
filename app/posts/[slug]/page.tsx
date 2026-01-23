@@ -370,7 +370,7 @@ function ScienceTechLayout({ post, featuredMedia, author, category }: { post: an
           </div>
 
           {/* Full Article Content */}
-          <div className="max-w-2xl mx-auto">
+          <div className="max-w-4xl mx-auto">
             <div className="text-base leading-relaxed text-black prose prose-lg max-w-none" style={{ fontFamily: 'Georgia, serif', lineHeight: '1.7' }}>
               <div className="md:first-letter:text-5xl md:first-letter:font-bold md:first-letter:float-left md:first-letter:mr-2 md:first-letter:leading-none">
                 <ArticleContent
@@ -411,7 +411,7 @@ function BooksLayout({ post, featuredMedia, author, category, cleanExcerpt, form
   return (
     <Section>
       <Container>
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           {/* Category | Date - Button Style */}
           <div className="mb-6">
             <div className="inline-flex overflow-hidden rounded-sm border border-gray-300">
@@ -510,7 +510,7 @@ function CultureLayout({ post, featuredMedia, author, category, cleanExcerpt, fo
   return (
     <Section className="bg-white pt-12 pb-20">
       <Container>
-        <div className="max-w-3xl mx-auto">
+        <div className="max-w-5xl mx-auto">
           {/* Eyebrow */}
           <div className="mb-4">
             <Link
