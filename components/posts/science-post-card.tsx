@@ -91,7 +91,7 @@ export default async function FeaturedPostCard({ post }: { post: any }) {
 
           {/* Article Details Footer */}
           <div className="mt-16 pt-8 border-t border-gray-300">
-            <div className="text-sm text-gray-600 space-y-1 font-futura font-bold">
+            <div className="text-sm text-gray-600 space-y-1 font-space-mono font-bold">
               <p className="uppercase tracking-wide">
                 <Link
                   href={`/posts/?category=${category.id}`}
