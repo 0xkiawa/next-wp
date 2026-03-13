@@ -58,14 +58,12 @@ function renderLatex(content: string): string {
   });
 
   // Handle $$...$$ for display math (block equations)
-  // Strip <br>, <br/>, <br />, and <p> tags that WordPress may insert inside the formula
   result = result.replace(/\$\$([\s\S]*?)\$\$/g, (_, expr) => {
     try {
-      // Clean up WordPress formatting artifacts inside the formula
       const cleanExpr = expr
-        .replace(/<br\s*\/?>/gi, ' ')  // Replace <br> with space
-        .replace(/<\/?p[^>]*>/gi, '')   // Remove <p> tags
-        .replace(/&nbsp;/gi, ' ')       // Replace &nbsp; with space
+        .replace(/<br\s*\/?>/gi, ' ')
+        .replace(/<\/?p[^>]*>/gi, '')
+        .replace(/&nbsp;/gi, ' ')
         .trim();
 
       return `<div class="katex-display my-6 overflow-x-auto text-center">${katex.renderToString(cleanExpr, {
@@ -79,25 +77,20 @@ function renderLatex(content: string): string {
   });
 
   // Handle $...$ for inline math
-  // Be careful not to match $$ (display math), escaped \$, or currency amounts like $120
-  // Only match if the content looks like actual LaTeX (contains backslash, braces, ^, _, etc.)
   result = result.replace(/(?<!\$)\$(?!\$)(?!\d)((?:[^$])+?)\$/g, (match, expr) => {
-    // Skip if it looks like currency or doesn't contain LaTeX-like syntax
     const looksLikeLaTeX = /[\\{}^_]|\\[a-zA-Z]+/.test(expr);
     if (!looksLikeLaTeX) {
-      // Return the original match unchanged - it's probably not LaTeX
       return match;
     }
 
     try {
-      // Clean up WordPress formatting artifacts
       const cleanExpr = expr
-        .replace(/<br\s*\/?>/gi, ' ')   // Replace <br> with space
-        .replace(/<\/?[^>]+>/gi, '')    // Remove any HTML tags
-        .replace(/&gt;/gi, '>')         // Decode >
-        .replace(/&lt;/gi, '<')         // Decode <
-        .replace(/&amp;/gi, '&')        // Decode &
-        .replace(/&nbsp;/gi, ' ')       // Replace &nbsp; with space
+        .replace(/<br\s*\/?>/gi, ' ')
+        .replace(/<\/?[^>]+>/gi, '')
+        .replace(/&gt;/gi, '>')
+        .replace(/&lt;/gi, '<')
+        .replace(/&amp;/gi, '&')
+        .replace(/&nbsp;/gi, ' ')
         .trim();
 
       return katex.renderToString(cleanExpr, {
@@ -118,12 +111,10 @@ export function ArticleContent({ content, className }: ArticleContentProps) {
 
   useEffect(() => {
     if (contentRef.current) {
-      // Dropcap logic - preserves HTML formatting
       const applyDropCap = (paragraphElement: HTMLParagraphElement) => {
         const html = paragraphElement.innerHTML;
         const text = paragraphElement.textContent;
         if (text && text.trim().length > 0 && !paragraphElement.querySelector('span.dropcap-span')) {
-          // Find the first actual letter in the HTML (skip tags)
           const firstLetterMatch = html.match(/^(\s*(?:<[^>]+>)*\s*)([a-zA-Z0-9])/);
           if (firstLetterMatch) {
             const beforeLetter = firstLetterMatch[1] || '';
@@ -137,23 +128,19 @@ export function ArticleContent({ content, className }: ArticleContentProps) {
         return false;
       };
 
-      // Reset dropcaps if re-rendered - preserves HTML formatting
       contentRef.current.querySelectorAll('span.dropcap-span').forEach(span => {
         const parent = span.parentNode as HTMLElement;
         if (parent && span.textContent) {
-          // Replace the span with just its text content (the letter)
           const textNode = document.createTextNode(span.textContent);
           parent.replaceChild(textNode, span);
         }
       });
 
-      // Apply dropcap ONLY to the first paragraph
       const firstArticleParagraph = contentRef.current.querySelector('p');
       if (firstArticleParagraph) {
         applyDropCap(firstArticleParagraph);
       }
 
-      // Italic font styling
       const italicElements = contentRef.current.querySelectorAll('i, em');
       italicElements.forEach((el) => {
         if (el instanceof HTMLElement) {
@@ -164,17 +151,16 @@ export function ArticleContent({ content, className }: ArticleContentProps) {
   }, [content]);
 
   return (
-    <div className={cn(
-      "md:grid md:grid-cols-2 lg:grid-cols-3 lg:gap-x-8",
-      className
-    )}>
+    // Outer wrapper: full width, centers the article column
+    <div className={cn("w-full px-4 sm:px-6", className)}>
       <article
         ref={contentRef}
         dangerouslySetInnerHTML={{ __html: renderLatex(content) }}
         className={cn(
+          // Magazine-style reading width: ~680px, centered
+          "mx-auto w-full max-w-[680px]",
           "font-acaslon text-primary",
           "prose dark:prose-invert prose-xl",
-          "md:col-span-2 lg:col-span-2",
           "overflow-x-hidden border-b"
         )}
       />
