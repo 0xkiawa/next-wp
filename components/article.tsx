@@ -157,11 +157,11 @@ export function ArticleContent({ content, className }: ArticleContentProps) {
         ref={contentRef}
         dangerouslySetInnerHTML={{ __html: renderLatex(content) }}
         className={cn(
-          // Magazine-style reading width: ~680px, centered
-          "mx-auto w-full max-w-[680px]",
+          // Magazine-style reading width, left-aligned
+          "w-full max-w-[800px]",
           "font-acaslon text-primary",
           "prose dark:prose-invert prose-xl",
-          "overflow-x-hidden border-b"
+          "overflow-x-hidden border-b pb-8"
         )}
       />
     </div>

@@ -620,7 +620,7 @@ function DefaultLayout({ post, featuredMedia, author, category, cleanExcerpt, wo
         <Prose>
           {/* Category */}
           {category && (
-            <div className="text-center mb-4">
+            <div className="mb-4">
               <Link
                 href={`/posts/?category=${category.id}`}
                 className={cn(
@@ -634,7 +634,7 @@ function DefaultLayout({ post, featuredMedia, author, category, cleanExcerpt, wo
           )}
 
           {/* Title */}
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold font-knockout text-center mb-4">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold font-knockout mb-4">
             <Balancer>
               <span dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
             </Balancer>
@@ -642,7 +642,7 @@ function DefaultLayout({ post, featuredMedia, author, category, cleanExcerpt, wo
 
           {/* Excerpt */}
           {cleanExcerpt && (
-            <div className="text-center mb-6 max-w-2xl mx-auto">
+            <div className="mb-6 max-w-2xl">
               <p className="text-base md:text-lg text-muted-foreground font-acaslon italic">
                 {cleanExcerpt}
               </p>
@@ -650,7 +650,7 @@ function DefaultLayout({ post, featuredMedia, author, category, cleanExcerpt, wo
           )}
 
           {/* Author + Date + Bookmark + Time */}
-          <div className="text-center mb-8">
+          <div className="flex flex-wrap items-center gap-4 mb-8">
             <p className="font-miller text-sm text-muted-foreground">
               Published by{" "}
               <Link
@@ -662,34 +662,34 @@ function DefaultLayout({ post, featuredMedia, author, category, cleanExcerpt, wo
               • {formattedDate}
             </p>
 
-            <div className="mt-2">
+            <div className="flex items-center gap-4">
               <BookmarkButton
                 wpPostId={post.id}
                 postTitle={post.title.rendered}
                 postSlug={post.slug}
               />
-            </div>
 
-            <div className="flex items-center justify-center mt-2 text-sm text-muted-foreground">
-              <Clock size={14} className="mr-1" />
-              <span>{readingTimeMinutes} min read</span>
+              <div className="flex items-center text-sm text-muted-foreground">
+                <Clock size={14} className="mr-1" />
+                <span>{readingTimeMinutes} min read</span>
+              </div>
             </div>
           </div>
 
           {/* Audio Player */}
           {post.acf?.article_media && (
-            <div className="max-w-2xl mx-auto mb-8">
+            <div className="max-w-2xl mb-8">
               <AudioPlayer src={post.acf.article_media} title="Listen to this article" />
             </div>
           )}
 
           {/* Featured Image */}
           {featuredMedia?.source_url && (
-            <figure className="my-4 text-center">
+            <figure className="my-4">
               <Image
                 src={featuredMedia.source_url}
                 alt={featuredMedia.alt_text || post.title.rendered}
-                className="mx-auto max-w-full h-auto !rounded-none"
+                className="max-w-full h-auto !rounded-none"
                 width={featuredMedia.media_details?.width || 1200}
                 height={featuredMedia.media_details?.height || 800}
                 style={{ borderRadius: 0 }}
