@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Post } from "@/lib/wordpress.d";
-import { Play } from "lucide-react";
+import { BookOpen } from "lucide-react";
 import {
   getFeaturedMediaById,
   getAuthorById,
@@ -11,12 +11,15 @@ export default async function MantelCard({ post }: { post: Post }) {
   const media = await getFeaturedMediaById(post.featured_media).catch(() => null);
   const author = await getAuthorById(post.author).catch(() => null);
   
-  // Use post.acf?.article_media_duration if it exists, otherwise a fallback default
-  const durationStr = post.acf?.article_media_duration || "12mins";
+  // Calculate read time from article content
+  const contentStr = post.content?.rendered || "";
+  const wordCount = contentStr.replace(/<[^>]*>/g, '').split(/\s+/).length;
+  const readTime = Math.ceil(wordCount / 200);
+  const durationStr = `${readTime} min${readTime !== 1 ? 's' : ''}`;
 
   return (
     <Link href={`/posts/${post.slug}`} className="block w-full h-full group">
-      <div className="flex flex-col h-full bg-black text-white overflow-hidden border border-black group-hover:border-gray-800 transition-all">
+      <div className="flex flex-col h-full bg-black text-white overflow-hidden bg-opacity-100 group-hover:bg-[#111] transition-all">
         
         {/* Image Section - Square/Tall aspect */}
         <div className="relative aspect-square w-full overflow-hidden">
@@ -33,11 +36,11 @@ export default async function MantelCard({ post }: { post: Post }) {
           )}
 
           {/* Gradient Overlay for bottom text visibility over image */}
-          <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex items-end justify-between p-3 z-10">
+          <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex items-end justify-between p-3 z-10 pointer-events-none">
             <div className="flex items-center text-white drop-shadow-md">
-              <Play className="w-4 h-4 fill-white text-white" />
+              <BookOpen className="w-4 h-4 text-white" />
             </div>
-            <div className="text-white font-acaslon italic text-sm tracking-wide font-medium shadow-black drop-shadow-md">
+            <div className="text-white font-acaslon italic text-sm md:text-base tracking-wide font-medium shadow-black drop-shadow-md">
               {durationStr}
             </div>
           </div>
@@ -52,10 +55,13 @@ export default async function MantelCard({ post }: { post: Post }) {
           />
           
           <div className="mt-auto">
-            {/* Author */}
-            <p className="text-white font-futura tracking-wide font-bold text-xs md:text-[13px] uppercase mb-1">
-              {author?.name || "AUTHOR"}
-            </p>
+            {/* Byline */}
+            <div className="flex items-center gap-1.5 mb-1.5">
+              <span className="text-gray-300 font-acaslon italic text-sm lowercase">by</span>
+              <span className="text-white font-futura tracking-wide font-bold text-xs md:text-[13px] uppercase">
+                {author?.name || "AUTHOR"}
+              </span>
+            </div>
             
             {/* Subtitle / Excerpt */}
             <div 
