@@ -11,9 +11,10 @@ interface FeaturedPostCardProps {
 const FeaturedPostCard: React.FC<FeaturedPostCardProps> = ({ post }) => {
     if (!post) return null;
 
-    const { title, excerpt, _embedded, slug } = post;
+    const { title, excerpt, _embedded, slug, date } = post;
     const featuredImage = _embedded?.['wp:featuredmedia']?.[0]?.source_url || '/placeholder.jpg';
     const authorName = _embedded?.author?.[0]?.name || 'Unknown Author';
+    const formattedDate = new Date(date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
 
     return (
         <section className="dark:bg-black text-black dark:text-white w-full border-b border-black dark:border-white">
@@ -30,33 +31,31 @@ const FeaturedPostCard: React.FC<FeaturedPostCardProps> = ({ post }) => {
                         </span>
                     </div>
 
-                    <div className="space-y-6 text-center md:text-left">
-                        <Link href={`/posts/${slug}`} className="block group">
-                            <h1
-                                className="text-4xl md:text-5xl lg:text-6xl font-acaslon leading-[1.1] group-hover:text-red-700 transition-colors"
-                                dangerouslySetInnerHTML={{ __html: title.rendered }}
-                            />
-                        </Link>
+                    <div className="space-y-6 flex flex-col h-full">
+                        <div className="text-center md:text-left">
+                            <Link href={`/posts/${slug}`} className="block group">
+                                <h1
+                                    className="text-4xl md:text-5xl lg:text-6xl font-acaslon leading-[1.1] group-hover:text-red-700 transition-colors"
+                                    dangerouslySetInnerHTML={{ __html: title.rendered }}
+                                />
+                            </Link>
+                        </div>
 
-                        <div
-                            className="text-lg md:text-xl font-acaslon text-gray-700 dark:text-gray-300 leading-relaxed line-clamp-4"
-                            dangerouslySetInnerHTML={{ __html: excerpt.rendered }}
-                        />
-
-                        <div className="pt-4 flex items-center gap-1.5 justify-center md:justify-start">
+                        <div className="pt-2 flex items-center gap-1.5 justify-center md:justify-start text-center md:text-left flex-wrap">
                             <span className="font-acaslon italic text-sm md:text-base text-gray-700 dark:text-gray-300 lowercase">by</span>
                             <span className="font-futura font-bold text-xs md:text-sm tracking-[0.1em] text-red-600 uppercase">
                                 {authorName}
                             </span>
+                            <span className="font-acaslon italic text-sm md:text-base text-gray-700 dark:text-gray-300 mx-1">•</span>
+                            <span className="font-acaslon italic text-sm md:text-base text-gray-700 dark:text-gray-300">
+                                {formattedDate}
+                            </span>
                         </div>
 
-                        <div className="pt-6 flex justify-center md:justify-start">
-                            <Link href={`/posts/${slug}`}>
-                                <button className="px-8 py-3 border border-black dark:border-white font-newyorker text-xs tracking-widest uppercase hover:bg-black hover:text-white dark:hover:bg-white dark:hover:text-black transition-all">
-                                    Read Article
-                                </button>
-                            </Link>
-                        </div>
+                        <div
+                            className="mt-6 md:mt-12 text-lg md:text-xl font-acaslon text-gray-700 dark:text-gray-300 leading-relaxed line-clamp-4 text-left"
+                            dangerouslySetInnerHTML={{ __html: excerpt.rendered }}
+                        />
                     </div>
                 </div>
 

@@ -11,9 +11,10 @@ interface InterviewsProps {
 const Interviews: React.FC<InterviewsProps> = ({ post }) => {
     if (!post) return null;
 
-    const { title, excerpt, _embedded, slug } = post;
+    const { title, excerpt, _embedded, slug, date } = post;
     const featuredImage = _embedded?.['wp:featuredmedia']?.[0]?.source_url || '/placeholder.jpg';
     const authorName = _embedded?.author?.[0]?.name || 'Unknown Author';
+    const formattedDate = new Date(date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
 
     return (
         <section className="relative dark:bg-black w-full border-b border-black dark:border-white overflow-hidden mt-16">
@@ -53,33 +54,31 @@ const Interviews: React.FC<InterviewsProps> = ({ post }) => {
                         </span>
                     </div>
 
-                    <div className="space-y-6 text-white md:text-black md:dark:text-white">
-                        <Link href={`/posts/${slug}`} className="block group">
-                            <h1
-                                className="text-4xl md:text-5xl lg:text-6xl font-acaslon leading-[1.1] md:group-hover:text-red-700 transition-colors"
-                                dangerouslySetInnerHTML={{ __html: title.rendered }}
-                            />
-                        </Link>
+                    <div className="space-y-6 text-white md:text-black md:dark:text-white flex flex-col h-full">
+                        <div className="text-center md:text-left">
+                            <Link href={`/posts/${slug}`} className="block group">
+                                <h1
+                                    className="text-4xl md:text-5xl lg:text-6xl font-acaslon leading-[1.1] md:group-hover:text-red-700 transition-colors"
+                                    dangerouslySetInnerHTML={{ __html: title.rendered }}
+                                />
+                            </Link>
+                        </div>
 
-                        <div
-                            className="text-lg md:text-xl font-acaslon text-gray-200 md:text-gray-700 md:dark:text-gray-300 leading-relaxed line-clamp-4"
-                            dangerouslySetInnerHTML={{ __html: excerpt.rendered }}
-                        />
-
-                        <div className="pt-4 flex items-center gap-1.5 justify-start">
+                        <div className="pt-2 flex items-center gap-1.5 justify-center md:justify-start flex-wrap">
                             <span className="font-acaslon italic text-sm md:text-base text-white/90 md:text-gray-700 md:dark:text-gray-300 lowercase">by</span>
                             <span className="font-futura font-bold text-xs md:text-sm tracking-[0.1em] text-white md:text-red-600 uppercase">
                                 {authorName}
                             </span>
+                            <span className="font-acaslon italic text-sm md:text-base text-white/90 md:text-gray-700 md:dark:text-gray-300 mx-1">•</span>
+                            <span className="font-acaslon italic text-sm md:text-base text-white/90 md:text-gray-700 md:dark:text-gray-300">
+                                {formattedDate}
+                            </span>
                         </div>
 
-                        <div className="pt-6">
-                            <Link href={`/posts/${slug}`}>
-                                <button className="px-8 py-3 border border-white md:border-black md:dark:border-white font-newyorker text-xs tracking-widest uppercase hover:bg-white hover:text-black md:hover:bg-black md:hover:text-white md:dark:hover:bg-white md:dark:hover:text-black transition-all">
-                                    Read Interview
-                                </button>
-                            </Link>
-                        </div>
+                        <div
+                            className="mt-6 md:mt-12 text-lg md:text-xl font-acaslon text-gray-200 md:text-gray-700 md:dark:text-gray-300 leading-relaxed line-clamp-4 text-left"
+                            dangerouslySetInnerHTML={{ __html: excerpt.rendered }}
+                        />
                     </div>
                 </div>
             </div>
