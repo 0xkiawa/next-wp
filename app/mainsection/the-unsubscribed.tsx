@@ -1,6 +1,6 @@
 import { Section, Container } from "@/components/craft";
 import { getAllPosts } from "@/lib/wordpress";
-import PostCard from "@/components/posts/post-card";
+import MantelCard from "@/components/posts/mantel-card";
 import {
   Carousel,
   CarouselContent,
@@ -21,8 +21,8 @@ export default async function Page({ excludedPostIds = [] }: UnsubscribedProps) 
   // Filter out excluded posts (posts already shown in other sections)
   const filteredPosts = posts.filter(post => !excludedPostIds.includes(post.id));
 
-  // Take the first 4 posts from the filtered list
-  const displayPosts = filteredPosts.slice(0, 4);
+  // Take the first 6 posts from the filtered list to show a nice row
+  const displayPosts = filteredPosts.slice(0, 6);
 
   return (
     <div>
@@ -37,7 +37,7 @@ export default async function Page({ excludedPostIds = [] }: UnsubscribedProps) 
       </div>
 
       {/* Carousel Layout with border only on this div */}
-      <div className="max-w-7xl mx-auto border-t pt-6 pl-4 md:pl-0 pr-4 md:pr-0">
+      <div className="max-w-[1400px] mx-auto border-t pt-8 pl-4 lg:pl-12 pr-4 lg:pr-12">
         <Carousel
           opts={{
             align: "start",
@@ -45,11 +45,11 @@ export default async function Page({ excludedPostIds = [] }: UnsubscribedProps) 
           }}
           className="w-full"
         >
-          <CarouselContent className="-ml-2 md:-ml-4">
+          <CarouselContent className="-ml-3 md:-ml-6">
             {displayPosts.map((post, idx) => (
-              <CarouselItem key={post.id} className="pl-2 md:pl-4 basis-[70%] md:basis-[45%] lg:basis-1/4">
-                <div className="p-1 h-96">
-                  <PostCard post={post} isLast={true} />
+              <CarouselItem key={post.id} className="pl-3 md:pl-6 basis-[85%] sm:basis-1/2 md:basis-[40%] xl:basis-1/5 lg:basis-1/4">
+                <div className="h-full py-1 min-h-[420px]">
+                  <MantelCard post={post} />
                 </div>
               </CarouselItem>
             ))}
