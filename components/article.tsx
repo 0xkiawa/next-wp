@@ -111,24 +111,62 @@ export function ArticleContent({ content, className }: ArticleContentProps) {
 
   useEffect(() => {
     if (contentRef.current) {
-      const applyDropCap = (paragraphElement: HTMLParagraphElement) => {
+      const applyLeadLetters = (paragraphElement: HTMLParagraphElement) => {
         const html = paragraphElement.innerHTML;
         const text = paragraphElement.textContent;
-        if (text && text.trim().length > 0 && !paragraphElement.querySelector('span.dropcap-span')) {
-          const firstLetterMatch = html.match(/^(\s*(?:<[^>]+>)*\s*)([a-zA-Z0-9])/);
-          if (firstLetterMatch) {
-            const beforeLetter = firstLetterMatch[1] || '';
-            const firstLetter = firstLetterMatch[2];
-            const restOfHtml = html.slice(beforeLetter.length + 1);
-            paragraphElement.innerHTML =
-              `${beforeLetter}<span class="dropcap-span float-left text-6xl md:text-7xl font-stilson text-red-600 mr-2 leading-none -mt-1">${firstLetter}</span>${restOfHtml}`;
-            return true;
+        if (text && text.trim().length > 0 && !paragraphElement.querySelector('span.lead-letters-span')) {
+          // Match leading HTML tags/whitespace followed by content
+          const leadMatch = html.match(/^(\s*(?:<[^>]+>)*\s*)([\s\S]*)/);
+          if (leadMatch) {
+            const beforeText = leadMatch[1] || '';
+            const remaining = leadMatch[2];
+            // Extract first 4 visible WORDS (skip HTML tags)
+            let wordCount = 0;
+            let i = 0;
+            let leadChars = '';
+            let inTag = false;
+            let inWord = false;
+            while (i < remaining.length && wordCount < 4) {
+              const ch = remaining[i];
+              if (ch === '<') {
+                inTag = true;
+                leadChars += ch;
+              } else if (ch === '>') {
+                inTag = false;
+                leadChars += ch;
+              } else if (inTag) {
+                leadChars += ch;
+              } else {
+                // Visible character — track word boundaries
+                const isSpace = /\s/.test(ch);
+                if (!isSpace && !inWord) {
+                  // Starting a new word
+                  wordCount++;
+                  if (wordCount > 4) break;
+                  inWord = true;
+                } else if (isSpace) {
+                  inWord = false;
+                }
+                leadChars += ch;
+              }
+              i++;
+            }
+            // Trim trailing whitespace from lead so spacing looks clean
+            const trimmedLead = leadChars.replace(/\s+$/, '');
+            const trailingSpace = leadChars.slice(trimmedLead.length);
+            const afterChars = trailingSpace + remaining.slice(i);
+            if (wordCount > 0) {
+              paragraphElement.innerHTML =
+                `${beforeText}<span class="lead-letters-span font-space-mono font-bold uppercase text-gray-950 dark:text-gray-100" style="letter-spacing: 0.05em;">${trimmedLead}</span>${afterChars}`;
+              return true;
+            }
           }
         }
         return false;
       };
 
-      contentRef.current.querySelectorAll('span.dropcap-span').forEach(span => {
+      // Clean up any existing lead-letter spans (for re-renders)
+      contentRef.current.querySelectorAll('span.lead-letters-span').forEach(span => {
         const parent = span.parentNode as HTMLElement;
         if (parent && span.textContent) {
           const textNode = document.createTextNode(span.textContent);
@@ -138,7 +176,7 @@ export function ArticleContent({ content, className }: ArticleContentProps) {
 
       const firstArticleParagraph = contentRef.current.querySelector('p');
       if (firstArticleParagraph) {
-        applyDropCap(firstArticleParagraph);
+        applyLeadLetters(firstArticleParagraph);
       }
 
       const italicElements = contentRef.current.querySelectorAll('i, em');
