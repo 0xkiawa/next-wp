@@ -43,10 +43,11 @@ const FeaturedPostCard: React.FC<FeaturedPostCardProps> = ({ post }) => {
                             dangerouslySetInnerHTML={{ __html: excerpt.rendered }}
                         />
 
-                        <div className="pt-4">
-                            <p className="font-acaslon italic [font-variant:small-caps] text-sm md:text-base tracking-wide">
-                                By <span className="text-red-600">{authorName}</span>
-                            </p>
+                        <div className="pt-4 flex items-center gap-1.5 justify-center md:justify-start">
+                            <span className="font-acaslon italic text-sm md:text-base text-gray-700 dark:text-gray-300 lowercase">by</span>
+                            <span className="font-futura font-bold text-xs md:text-sm tracking-[0.1em] text-red-600 uppercase">
+                                {authorName}
+                            </span>
                         </div>
 
                         <div className="pt-6 flex justify-center md:justify-start">

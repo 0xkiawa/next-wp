@@ -66,10 +66,11 @@ const Interviews: React.FC<InterviewsProps> = ({ post }) => {
                             dangerouslySetInnerHTML={{ __html: excerpt.rendered }}
                         />
 
-                        <div className="pt-4">
-                            <p className="font-acaslon italic [font-variant:small-caps] text-sm md:text-base tracking-wide text-white md:text-black md:dark:text-white">
-                                By <span className="text-white md:text-red-600 font-normal md:font-bold">{authorName}</span>
-                            </p>
+                        <div className="pt-4 flex items-center gap-1.5 justify-start">
+                            <span className="font-acaslon italic text-sm md:text-base text-white/90 md:text-gray-700 md:dark:text-gray-300 lowercase">by</span>
+                            <span className="font-futura font-bold text-xs md:text-sm tracking-[0.1em] text-white md:text-red-600 uppercase">
+                                {authorName}
+                            </span>
                         </div>
 
                         <div className="pt-6">
