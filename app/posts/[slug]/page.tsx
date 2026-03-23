@@ -90,33 +90,45 @@ function ReadMoreSection({ posts }: { posts: Post[] }) {
   if (!posts || posts.length === 0) return null;
 
   return (
-    <Section className="bg-white py-16">
-      <Container>
-        <div className="max-w-7xl mx-auto">
-          {/* Section Title */}
-          <div className="mb-8">
-            <h2 className="text-lg md:text-xl font-bold font-futura tracking-[0.25em] text-black uppercase mb-4">
-              Related Content
-            </h2>
-            <div className="w-full h-3 bg-black"></div>
-          </div>
+    <Section className="bg-white py-16 px-4 md:px-8">
+      {/* Replaced Container with a custom wider div for breathing room */}
+      <div className="w-full max-w-[1400px] mx-auto">
+        {/* Section Title */}
+        <div className="mb-10">
+          <h2 className="text-lg md:text-xl font-bold font-futura tracking-[0.25em] text-black uppercase mb-4">
+            Related Content
+          </h2>
+          <div className="w-full h-[14px] bg-black"></div>
+        </div>
 
-          {/* Posts Grid - 4 Columns with vertical dividers */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12 lg:divide-x lg:divide-gray-300">
-            {posts.map((post, index) => (
-              <article key={post.id} className={cn("flex flex-col h-full", index > 0 ? "lg:pl-6" : "")}>
-                <div className="flex-1 flex flex-col">
-                  {/* Category (Eyebrow) */}
-                  {post._embedded?.['wp:term']?.[0]?.[0] && (
-                    <div className="mb-2">
-                      <Link
-                        href={`/posts/?category=${post._embedded['wp:term'][0][0].id}`}
-                        className="text-base font-acaslon italic text-black hover:text-red-700 transition-colors"
-                      >
-                        {post._embedded['wp:term'][0][0].name}
-                      </Link>
-                    </div>
-                  )}
+        {/* Posts Grid - 4 Columns */}
+        {/* Removed gap-x and divide-x, using custom padding and borders per column for perfect spacing */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-12">
+          {posts.map((post, index) => (
+            <article 
+              key={post.id} 
+              className={cn(
+                "flex flex-col h-full",
+                // On large screens, add left border to columns 2, 3, 4 with left padding
+                index > 0 ? "lg:border-l lg:border-black lg:pl-8 lg:ml-0" : "",
+                // On large screens, add right padding to columns 1, 2, 3 so content breathes before the border
+                index < 3 ? "lg:pr-8" : "",
+                // On md screens (2 cols), add borders/padding accordingly
+                "md:max-lg:border-l-0 md:max-lg:pl-0 md:max-lg:pr-4"
+              )}
+            >
+              <div className="flex-1 flex flex-col">
+                {/* Category (Eyebrow) */}
+                {post._embedded?.['wp:term']?.[0]?.[0] && (
+                  <div className="mb-2">
+                    <Link
+                      href={`/posts/?category=${post._embedded['wp:term'][0][0].id}`}
+                      className="text-base font-acaslon italic text-black hover:text-red-700 transition-colors"
+                    >
+                      {post._embedded['wp:term'][0][0].name}
+                    </Link>
+                  </div>
+                )}
 
                   {/* Title */}
                   <h3 className="mb-3">
@@ -175,7 +187,7 @@ function ReadMoreSection({ posts }: { posts: Post[] }) {
             ))}
           </div>
         </div>
-      </Container>
+      </div>
     </Section>
   );
 }
