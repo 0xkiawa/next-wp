@@ -341,13 +341,6 @@ function ScienceTechLayout({ post, featuredMedia, author, category }: { post: an
             <p className="text-sm text-gray-600 font-glacial mb-3">
               presented by / {author.name}
             </p>
-            <div className="inline-block transform scale-90 origin-top">
-              <BookmarkButton
-                wpPostId={post.id}
-                postTitle={post.title.rendered}
-                postSlug={post.slug}
-              />
-            </div>
           </div>
 
           {/* Featured Image */}
@@ -375,9 +368,22 @@ function ScienceTechLayout({ post, featuredMedia, author, category }: { post: an
           )}
 
           {/* Excerpt */}
-          <div className="max-w-2xl mx-auto mb-12">
+          <div className="max-w-2xl mx-auto mb-6">
             <div className="text-base leading-relaxed text-black font-garamond italic">
               <p>{excerpt}</p>
+            </div>
+          </div>
+
+          {/* Bookmark & Time */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+            <BookmarkButton
+              wpPostId={post.id}
+              postTitle={post.title.rendered}
+              postSlug={post.slug}
+            />
+            <div className="flex items-center text-xs text-gray-500 font-futura uppercase tracking-widest font-bold">
+              <Clock size={14} className="mr-2" />
+              {calculateReadingTime(post.content.rendered)} min read
             </div>
           </div>
 
@@ -464,26 +470,32 @@ function BooksLayout({ post, featuredMedia, author, category, cleanExcerpt, form
 
           {/* Excerpt */}
           {cleanExcerpt && (
-            <div className="mb-4">
-              <p className="text-lg md:text-xl text-gray-700 font-acaslon italic leading-relaxed">
+            <div className="mb-6">
+              <p className="text-lg md:text-xl text-gray-700 font-acaslon italic leading-relaxed text-center">
                 {cleanExcerpt}
               </p>
             </div>
           )}
+
+          {/* Bookmark & Time */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+            <BookmarkButton
+              wpPostId={post.id}
+              postTitle={post.title.rendered}
+              postSlug={post.slug}
+            />
+            <div className="flex items-center text-xs text-gray-500 font-futura uppercase tracking-widest font-bold">
+              <Clock size={14} className="mr-2" />
+              {calculateReadingTime(post.content.rendered)} min read
+            </div>
+          </div>
 
           {/* Author Bio Section */}
           <div className="mb-8">
             <AboutTheAuthor authorId={author.id} />
           </div>
 
-          {/* Bookmark Button */}
-          <div className="mb-6 text-center">
-            <BookmarkButton
-              wpPostId={post.id}
-              postTitle={post.title.rendered}
-              postSlug={post.slug}
-            />
-          </div>
+          {/* Bookmark removed from here */}
 
           {/* Featured Image */}
           {featuredMedia?.source_url && (
@@ -548,6 +560,19 @@ function CultureLayout({ post, featuredMedia, author, category, cleanExcerpt, fo
             </div>
           )}
 
+          {/* Bookmark & Time */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+            <BookmarkButton
+              wpPostId={post.id}
+              postTitle={post.title.rendered}
+              postSlug={post.slug}
+            />
+            <div className="flex items-center text-xs text-gray-500 font-futura uppercase tracking-widest font-bold">
+              <Clock size={14} className="mr-2" />
+              {calculateReadingTime(post.content.rendered)} min read
+            </div>
+          </div>
+
           {/* Byline */}
           <div className="text-center mb-2 flex items-center justify-center gap-1.5">
             <span className="text-sm md:text-base font-acaslon italic text-black lowercase">
@@ -597,18 +622,8 @@ function CultureLayout({ post, featuredMedia, author, category, cleanExcerpt, fo
             </figure>
           )}
 
-          {/* Actions - Bookmark & Time (moved below image) */}
-          <div className="flex items-center justify-center gap-6 mb-10 pb-6 border-b border-gray-200">
-            <BookmarkButton
-              wpPostId={post.id}
-              postTitle={post.title.rendered}
-              postSlug={post.slug}
-            />
-            <div className="flex items-center text-xs text-gray-500 font-futura uppercase tracking-widest font-bold">
-              <Clock size={14} className="mr-2" />
-              {calculateReadingTime(post.content.rendered)} min read
-            </div>
-          </div>
+          {/* Bookmark & Time moved above */}
+          <div className="mb-10 pb-6 border-b border-gray-200"></div>
 
           {/* Article Content */}
           <div className="prose prose-lg max-w-none font-acaslon text-gray-900 leading-loose">
@@ -658,7 +673,20 @@ function DefaultLayout({ post, featuredMedia, author, category, cleanExcerpt, wo
             </div>
           )}
 
-          {/* Author + Date + Bookmark + Time */}
+          {/* Bookmark & Time */}
+          <div className="flex flex-col sm:flex-row items-start gap-4 mb-6">
+            <BookmarkButton
+              wpPostId={post.id}
+              postTitle={post.title.rendered}
+              postSlug={post.slug}
+            />
+            <div className="flex items-center text-sm text-muted-foreground h-10">
+              <Clock size={14} className="mr-1.5" />
+              <span>{readingTimeMinutes} min read</span>
+            </div>
+          </div>
+
+          {/* Author + Date */}
           <div className="flex flex-wrap items-center gap-4 mb-8">
             <p className="font-miller text-sm text-muted-foreground">
               Published by{" "}
@@ -670,19 +698,6 @@ function DefaultLayout({ post, featuredMedia, author, category, cleanExcerpt, wo
               </Link>{" "}
               • {formattedDate}
             </p>
-
-            <div className="flex items-center gap-4">
-              <BookmarkButton
-                wpPostId={post.id}
-                postTitle={post.title.rendered}
-                postSlug={post.slug}
-              />
-
-              <div className="flex items-center text-sm text-muted-foreground">
-                <Clock size={14} className="mr-1" />
-                <span>{readingTimeMinutes} min read</span>
-              </div>
-            </div>
           </div>
 
           {/* Audio Player */}
