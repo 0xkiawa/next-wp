@@ -185,7 +185,6 @@ function ReadMoreSection({ posts }: { posts: Post[] }) {
                 </div>
               </article>
             ))}
-          </div>
         </div>
       </div>
     </Section>
