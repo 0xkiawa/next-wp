@@ -505,24 +505,18 @@ function BooksLayout({ post, featuredMedia, author, category, cleanExcerpt, form
   );
 }
 
-// Culture Layout Component (WSJ Style)
+// Culture & Personal Layout Component (Centered Style)
 function CultureLayout({ post, featuredMedia, author, category, cleanExcerpt, formattedDate }: any) {
   return (
     <Section className="bg-white pt-12 pb-20">
       <Container>
         <div className="max-w-3xl mx-auto">
-          {/* Eyebrow */}
-          <div className="mb-4">
-            <Link
-              href={`/posts/?category=${category.id}`}
-              className="text-red-700 font-bold uppercase tracking-widest text-xs font-jakarta hover:text-blue-900 transition-colors"
-            >
-              {category.name}
-            </Link>
-          </div>
+          
+          {/* Top Black Bar */}
+          <div className="w-16 h-3 bg-black mx-auto mb-8"></div>
 
           {/* Headline */}
-          <h1 className="text-xl md:text-5xl lg:text-xl font-bold font-knockout text-gray-900 leading-[1.1] mb-4 text-left">
+          <h1 className="text-center text-3xl md:text-5xl lg:text-[54px] font-stilson font-bold text-gray-950 leading-[1.15] mb-6">
             <Balancer>
               <span dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
             </Balancer>
@@ -530,47 +524,25 @@ function CultureLayout({ post, featuredMedia, author, category, cleanExcerpt, fo
 
           {/* Subhead / Excerpt */}
           {cleanExcerpt && (
-            <div className="mb-6">
-              <p className="text-xl md:text-2xl text-gray-600 font-acaslon italic leading-relaxed text-left">
+            <div className="mb-6 text-center px-4">
+              <p className="text-xl md:text-2xl text-gray-800 font-acaslon italic leading-relaxed">
                 {cleanExcerpt}
               </p>
             </div>
           )}
 
-          {/* Meta Data Row */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between border-t border-b border-gray-200 py-4 mb-8 gap-4">
-            <div className="flex items-center gap-3">
-              {/* Author Info */}
-              <div className="flex flex-col">
-                <span className="font-bold text-sm font-garamond italic">
-                  <span className="text-black">By </span>
-                  <Link
-                    href={`/posts/?author=${author.id}`}
-                    className="text-red-700 hover:underline"
-                  >
-                    {author.name}
-                  </Link>
-                </span>
+          {/* Byline */}
+          <div className="text-center mb-2">
+            <span className="text-xs md:text-sm font-bold font-futura tracking-[0.15em] text-black uppercase">
+              by <Link href={`/posts/?author=${author.id}`} className="hover:text-red-700 transition-colors">{author.name}</Link>
+            </span>
+          </div>
 
-                <span className="text-xs text-gray-500 font-newyorker mt-0.5 italic ">
-                  {formattedDate}
-                </span>
-              </div>
-            </div>
-
-            {/* Actions */}
-            <div className="flex items-center gap-4">
-              <BookmarkButton
-                wpPostId={post.id}
-                postTitle={post.title.rendered}
-                postSlug={post.slug}
-              />
-              {/* Read Time */}
-              <div className="flex items-center text-xs text-gray-500 font-glacial uppercase tracking-wider">
-                <Clock size={14} className="mr-1.5" />
-                {calculateReadingTime(post.content.rendered)} min read
-              </div>
-            </div>
+          {/* Date */}
+          <div className="text-center mb-10">
+            <span className="text-sm md:text-base text-gray-700 font-acaslon italic">
+              {formattedDate}
+            </span>
           </div>
 
           {/* Audio Player */}
@@ -582,18 +554,19 @@ function CultureLayout({ post, featuredMedia, author, category, cleanExcerpt, fo
 
           {/* Featured Image */}
           {featuredMedia?.source_url && (
-            <figure className="mb-10 relative">
+            <figure className="mb-10 relative text-center">
               <Image
                 src={featuredMedia.source_url}
                 alt={featuredMedia.alt_text || post.title.rendered}
-                className="w-full h-auto object-cover"
+                className="w-full h-auto object-cover max-w-full !rounded-none"
                 width={1200}
                 height={800}
+                style={{ borderRadius: 0 }}
                 priority
               />
               {featuredMedia.caption && (
                 <figcaption
-                  className="text-xs text-gray-500 mt-2 text-right font-glacial uppercase tracking-wide"
+                  className="text-sm text-gray-500 mt-3 text-right font-acaslon italic"
                   dangerouslySetInnerHTML={{
                     __html: featuredMedia.caption.rendered,
                   }}
@@ -602,10 +575,24 @@ function CultureLayout({ post, featuredMedia, author, category, cleanExcerpt, fo
             </figure>
           )}
 
+          {/* Actions - Bookmark & Time (moved below image) */}
+          <div className="flex items-center justify-center gap-6 mb-10 pb-6 border-b border-gray-200">
+            <BookmarkButton
+              wpPostId={post.id}
+              postTitle={post.title.rendered}
+              postSlug={post.slug}
+            />
+            <div className="flex items-center text-xs text-gray-500 font-futura uppercase tracking-widest font-bold">
+              <Clock size={14} className="mr-2" />
+              {calculateReadingTime(post.content.rendered)} min read
+            </div>
+          </div>
+
           {/* Article Content */}
-          <div className="prose prose-lg max-w-none font-garamond text-gray-800 leading-loose">
+          <div className="prose prose-lg max-w-none font-acaslon text-gray-900 leading-loose">
             <ArticleContent content={post.content.rendered} />
           </div>
+
         </div>
       </Container>
     </Section>
@@ -807,6 +794,9 @@ export default async function Page({ params }: { params: { slug: string } }) {
   const isCulture = category?.slug === 'culture' ||
     category?.name?.toLowerCase().includes('culture');
 
+  const isPersonal = category?.slug === 'personal' ||
+    category?.name?.toLowerCase().includes('personal');
+
   // Render appropriate layout based on category
   if (isScienceTech) {
     return (
@@ -850,7 +840,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
     );
   }
 
-  if (isCulture) {
+  if (isCulture || isPersonal) {
     return (
       <>
         <SetNavbarTitle title={post.title.rendered} />
