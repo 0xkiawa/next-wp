@@ -90,46 +90,28 @@ function ReadMoreSection({ posts }: { posts: Post[] }) {
   if (!posts || posts.length === 0) return null;
 
   return (
-    <Section className="bg-[#fcfbf9] py-20">
+    <Section className="bg-white py-16">
       <Container>
-        <div className="max-w-6xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           {/* Section Title */}
-          <div className="text-center mb-16 relative">
-            <span className="bg-[#fcfbf9] px-4 relative z-10 font-newyorker text-red-600 tracking-widest text-xs uppercase">
-              Up Next
-            </span>
-            <h3 className="text-4xl md:text-5xl font-bold font-newyorker mt-2 mb-6">
-              Let Me Shill You More
-            </h3>
-            <div className="absolute top-3 left-0 w-full h-px bg-gray-200 -z-0"></div>
+          <div className="mb-8">
+            <h2 className="text-lg md:text-xl font-bold font-futura tracking-[0.25em] text-black uppercase mb-4">
+              Related Content
+            </h2>
+            <div className="w-full h-3 bg-black"></div>
           </div>
 
-          {/* Posts Grid */}
-          <div className="grid md:grid-cols-3 gap-x-12 gap-y-16">
-            {posts.map((post) => (
-              <article key={post.id} className="group flex flex-col h-full">
-                {/* Featured Image */}
-                {post.featured_media && post._embedded?.['wp:featuredmedia']?.[0] && (
-                  <Link href={`/posts/${post.slug}`} className="block mb-6 overflow-hidden">
-                    <div className="aspect-[3/2] relative transform transition-transform duration-700 hover:scale-[1.02]">
-                      <Image
-                        src={post._embedded['wp:featuredmedia'][0].source_url}
-                        alt={post._embedded['wp:featuredmedia'][0].alt_text || post.title.rendered}
-                        className="object-cover"
-                        fill
-                        sizes="(max-width: 768px) 100vw, 33vw"
-                      />
-                    </div>
-                  </Link>
-                )}
-
+          {/* Posts Grid - 4 Columns with vertical dividers */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12 lg:divide-x lg:divide-gray-300">
+            {posts.map((post, index) => (
+              <article key={post.id} className={cn("flex flex-col h-full", index > 0 ? "lg:pl-6" : "")}>
                 <div className="flex-1 flex flex-col">
-                  {/* Category */}
+                  {/* Category (Eyebrow) */}
                   {post._embedded?.['wp:term']?.[0]?.[0] && (
-                    <div className="mb-3 text-center">
+                    <div className="mb-2">
                       <Link
                         href={`/posts/?category=${post._embedded['wp:term'][0][0].id}`}
-                        className="text-[10px] uppercase tracking-[0.2em] text-red-600 font-newyorker hover:text-black transition-colors border-b border-transparent hover:border-red-600 pb-px"
+                        className="text-base font-acaslon italic text-black hover:text-red-700 transition-colors"
                       >
                         {post._embedded['wp:term'][0][0].name}
                       </Link>
@@ -137,36 +119,57 @@ function ReadMoreSection({ posts }: { posts: Post[] }) {
                   )}
 
                   {/* Title */}
-                  <h4 className="mb-4 text-center">
+                  <h3 className="mb-3">
                     <Link
                       href={`/posts/${post.slug}`}
-                      className="text-2xl font-bold font-stilson leading-[1.1] group-hover:text-red-700 transition-colors"
+                      className="text-2xl font-stilson leading-[1.1] text-black hover:text-red-700 transition-colors"
                       dangerouslySetInnerHTML={{ __html: post.title.rendered }}
                     />
-                  </h4>
+                  </h3>
 
                   {/* Excerpt */}
                   {post.excerpt?.rendered && (
-                    <div className="mb-6 text-center px-2">
+                    <div className="mb-6">
                       <p
-                        className="text-base text-gray-500 font-acaslon leading-relaxed line-clamp-3"
+                        className="text-[15px] text-gray-600 font-acaslon leading-relaxed line-clamp-4"
                         dangerouslySetInnerHTML={{
-                          __html: post.excerpt.rendered.replace(/<[^>]*>/g, '').substring(0, 100) + '...'
+                          __html: post.excerpt.rendered.replace(/<[^>]*>/g, '').substring(0, 150) + '...'
                         }}
                       />
                     </div>
                   )}
 
-                  {/* Read More Link */}
-                  <div className="mt-auto text-center">
-                    <Link
-                      href={`/posts/${post.slug}`}
-                      className="inline-flex items-center text-xs font-futura font-bold uppercase tracking-widest border-b border-black pb-1 hover:text-red-600 hover:border-red-600 transition-all"
-                    >
-                      Read Story
-                      <svg className="ml-2 w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="square" strokeLinejoin="miter" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-                    </Link>
+                  {/* Spacer to push byline and image to bottom */}
+                  <div className="mt-auto"></div>
+
+                  {/* Byline */}
+                  <div className="mb-4 flex items-center gap-1.5">
+                    <span className="text-sm font-acaslon italic text-black lowercase">by</span>
+                    <span className="text-xs font-bold font-futura tracking-[0.1em] text-black uppercase">
+                      {post._embedded?.author?.[0]?.name ? (
+                        <Link href={`/posts/?author=${post.author}`} className="hover:text-red-700 transition-colors">
+                          {post._embedded.author[0].name}
+                        </Link>
+                      ) : (
+                        "AUTHOR"
+                      )}
+                    </span>
                   </div>
+
+                  {/* Featured Image at Bottom */}
+                  {post.featured_media && post._embedded?.['wp:featuredmedia']?.[0] && (
+                    <Link href={`/posts/${post.slug}`} className="block overflow-hidden">
+                      <div className="aspect-[3/2] relative transform transition-transform duration-700 hover:scale-[1.02]">
+                        <Image
+                          src={post._embedded['wp:featuredmedia'][0].source_url}
+                          alt={post._embedded['wp:featuredmedia'][0].alt_text || post.title.rendered}
+                          className="object-cover"
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                        />
+                      </div>
+                    </Link>
+                  )}
                 </div>
               </article>
             ))}
@@ -741,7 +744,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   }
 
   // Get recommended posts based on shared tags
-  const recommendedPosts = await getRecommendedPosts(post, 3);
+  const recommendedPosts = await getRecommendedPosts(post, 4);
 
   // Helper function to decode HTML entities
   const decodeHtmlEntities = (text: string): string => {
