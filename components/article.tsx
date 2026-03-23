@@ -126,7 +126,7 @@ export function ArticleContent({ content, className }: ArticleContentProps) {
             let leadChars = '';
             let inTag = false;
             let inWord = false;
-            while (i < remaining.length && wordCount < 4) {
+            while (i < remaining.length && (wordCount < 4 || inWord)) {
               const ch = remaining[i];
               if (ch === '<') {
                 inTag = true;
@@ -142,7 +142,6 @@ export function ArticleContent({ content, className }: ArticleContentProps) {
                 if (!isSpace && !inWord) {
                   // Starting a new word
                   wordCount++;
-                  if (wordCount > 4) break;
                   inWord = true;
                 } else if (isSpace) {
                   inWord = false;
