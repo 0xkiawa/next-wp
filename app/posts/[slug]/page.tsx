@@ -516,7 +516,7 @@ function CultureLayout({ post, featuredMedia, author, category, cleanExcerpt, fo
           <div className="w-16 h-3 bg-black mx-auto mb-8"></div>
 
           {/* Headline */}
-          <h1 className="text-center text-3xl md:text-5xl lg:text-[54px] font-stilson font-bold text-gray-950 leading-[1.15] mb-6">
+          <h1 className="text-center text-3xl md:text-5xl lg:text-[54px] font-stilson  text-gray-950 leading-[1.15] mb-6">
             <Balancer>
               <span dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
             </Balancer>
@@ -532,9 +532,14 @@ function CultureLayout({ post, featuredMedia, author, category, cleanExcerpt, fo
           )}
 
           {/* Byline */}
-          <div className="text-center mb-2">
+          <div className="text-center mb-2 flex items-center justify-center gap-1.5">
+            <span className="text-sm md:text-base font-acaslon italic text-black lowercase">
+              by
+            </span>
             <span className="text-xs md:text-sm font-bold font-futura tracking-[0.15em] text-black uppercase">
-              by <Link href={`/posts/?author=${author.id}`} className="hover:text-red-700 transition-colors">{author.name}</Link>
+              <Link href={`/posts/?author=${author.id}`} className="hover:text-red-700 transition-colors">
+                {author.name}
+              </Link>
             </span>
           </div>
 
