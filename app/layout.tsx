@@ -33,13 +33,28 @@ import type { Metadata } from "next"
 import FixedDualNavbar from '@/components/navigation/FixedDualNavbar';
 
 export const metadata: Metadata = {
-  title: "WordPress & Next.js Starter by 9d8",
-  description:
-    "A starter template for Next.js with WordPress as a headless CMS.",
+  title: siteConfig.site_name,
+  description: siteConfig.site_description,
   metadataBase: new URL(siteConfig.site_domain),
   alternates: {
     canonical: "/",
   },
+  icons: {
+    icon: [
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    other: [
+      {
+        rel: "apple-touch-icon-precomposed",
+        url: "/apple-touch-icon.png",
+      },
+    ],
+  },
+  manifest: "/site.webmanifest",
 };
 
 import { NavbarTitleProvider } from "@/components/navigation/NavbarTitleContext";
