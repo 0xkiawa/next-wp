@@ -27,17 +27,17 @@ export default async function Page({ excludedPostIds = [] }: UnsubscribedProps) 
   return (
     <div>
       {/* Section Header - Mini Philosophy Style */}
-      <div className="text-center max-w-6xl mx-auto px-4 md:px-0 mb-10">
-        <div className="w-full h-[6px] bg-black mb-8"></div>
-        <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-3">
-          <span className="font-futura font-black uppercase tracking-[0.15em]">THE </span>
-          <span className="font-stilson tracking-[0.08em]">MANTEL</span>
+      <div className="text-center max-w-6xl mx-auto px-4 md:px-0 mb-12">
+        <div className="w-full h-[14px] md:h-[18px] bg-black mb-12"></div>
+        <h2 className="text-4xl md:text-5xl text-black mb-4 flex justify-center items-center">
+          <span className="font-futura font-black uppercase tracking-tighter">THE</span>
+          <span className="font-stilson uppercase font-medium tracking-tight ml-[2px] md:ml-1">MANTEL</span>
         </h2>
-        <p className="text-lg md:text-xl font-garamond italic text-black max-w-xl mx-auto mb-4">
+        <p className="text-xl md:text-2xl font-garamond italic text-black max-w-2xl mx-auto mb-5 leading-normal">
           Echoes of the past, resonating in the present. A curated collection of timeless stories.
         </p>
-        <p className="text-sm font-acaslon italic text-black">
-          with <span className="font-futura font-bold not-italic tracking-wide text-black uppercase">Kiawa Vurner</span>
+        <p className="text-base md:text-lg font-acaslon italic text-black">
+          with <span className="font-futura font-bold not-italic text-black ml-[4px]">Kiawa Vurner</span>
         </p>
       </div>
 
