@@ -37,7 +37,7 @@ export default async function Page({ excludedPostIds = [] }: UnsubscribedProps) 
           Echoes of the past, resonating in the present. A curated collection of timeless stories.
         </p>
         <p className="text-base md:text-lg font-acaslon italic text-black">
-          with <span className="font-futura font-bold not-italic text-black ml-[4px]">KIAWA VURNER</span>
+          with <span className="font-spacemono font-bold not-italic text-black ml-[4px]">KIAWA VURNER</span>
         </p>
       </div>
 
