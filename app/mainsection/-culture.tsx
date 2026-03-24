@@ -36,8 +36,8 @@ export default async function Page() {
         {/* Posts Grid - 4 Columns */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-12">
           {combinedPosts.map((post, index) => (
-            <article 
-              key={post.id} 
+            <article
+              key={post.id}
               className={cn(
                 "flex flex-row md:flex-col h-full",
                 // Mobile divider (hidden on desktop)

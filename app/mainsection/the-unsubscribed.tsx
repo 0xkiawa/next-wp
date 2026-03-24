@@ -26,13 +26,18 @@ export default async function Page({ excludedPostIds = [] }: UnsubscribedProps) 
 
   return (
     <div>
-      {/* Text above border */}
-      <div className="text-center max-w-6xl mx-auto pl-4 md:pl-0 pr-4 md:pr-0 mb-6">
-        <div className="text-3xl font-newyorker font-bold lowercase mb-2">
-          the mantel
-        </div>
-        <p className="text-2xl font-garamond italic text-gray-600 max-w-2xl mx-auto">
+      {/* Section Header - Mini Philosophy Style */}
+      <div className="text-center max-w-6xl mx-auto px-4 md:px-0 mb-10">
+        <div className="w-full h-[6px] bg-black mb-8"></div>
+        <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-3">
+          <span className="font-futura font-black uppercase">THE </span>
+          <span className="font-acaslon italic">Mantel</span>
+        </h2>
+        <p className="text-lg md:text-xl font-garamond italic text-gray-600 max-w-xl mx-auto mb-4">
           Echoes of the past, resonating in the present. A curated collection of timeless stories.
+        </p>
+        <p className="text-sm font-acaslon italic text-gray-500">
+          with <span className="font-futura font-bold not-italic text-gray-900 tracking-wide">Kiawa Vurner</span>
         </p>
       </div>
 
