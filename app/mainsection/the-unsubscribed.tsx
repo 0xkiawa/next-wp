@@ -42,7 +42,7 @@ export default async function Page({ excludedPostIds = [] }: UnsubscribedProps) 
       </div>
 
       {/* Carousel Layout with border only on this div */}
-      <div className="max-w-[1400px] mx-auto border-t pt-8 pl-4 lg:pl-12 pr-4 lg:pr-12">
+      <div className="max-w-[1400px] mx-auto  pt-8 pl-4 lg:pl-12 pr-4 lg:pr-12">
         <Carousel
           opts={{
             align: "start",
