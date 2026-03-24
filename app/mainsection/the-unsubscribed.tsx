@@ -30,14 +30,14 @@ export default async function Page({ excludedPostIds = [] }: UnsubscribedProps) 
       <div className="text-center max-w-6xl mx-auto px-4 md:px-0 mb-10">
         <div className="w-full h-[6px] bg-black mb-8"></div>
         <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-3">
-          <span className="font-futura font-black uppercase">THE </span>
-          <span className="font-stilson ">MANTEL</span>
+          <span className="font-futura font-black uppercase tracking-[0.15em]">THE </span>
+          <span className="font-stilson tracking-[0.08em]">MANTEL</span>
         </h2>
-        <p className="text-lg md:text-xl font-garamond italic font-bold  max-w-xl mx-auto mb-4">
+        <p className="text-lg md:text-xl font-garamond italic text-black max-w-xl mx-auto mb-4">
           Echoes of the past, resonating in the present. A curated collection of timeless stories.
         </p>
-        <p className="text-sm font-acaslon italic font-bold">
-          with <span className="font-futura font-bold not-italic tracking-wide">Kiawa Vurner</span>
+        <p className="text-sm font-acaslon italic text-black">
+          with <span className="font-futura font-bold not-italic tracking-wide text-black uppercase">Kiawa Vurner</span>
         </p>
       </div>
 
