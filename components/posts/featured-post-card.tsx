@@ -35,7 +35,7 @@ const FeaturedPostCard: React.FC<FeaturedPostCardProps> = ({ post }) => {
                         <div className="text-center md:text-left">
                             <Link href={`/posts/${slug}`} className="block group">
                                 <h1
-                                    className="text-4xl md:text-4xl lg:text-4xl font-acaslon leading-[1.1] group-hover:text-red-700 transition-colors"
+                                    className="text-4xl md:text-5xl lg:text-5xl font-acaslon leading-[1.1] group-hover:text-red-700 transition-colors"
                                     dangerouslySetInnerHTML={{ __html: title.rendered }}
                                 />
                             </Link>
