@@ -16,7 +16,11 @@ interface UnsubscribedProps {
 
 export default async function Page({ excludedPostIds = [] }: UnsubscribedProps) {
   // Fetch posts from the personal category
-  const posts = await getAllPosts({});
+  const allPosts = await getAllPosts({});
+  // Sort posts by date descending for consistent chronological flow
+  const posts = [...allPosts].sort((a, b) => 
+    new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
 
   // Filter out excluded posts (posts already shown in other sections)
   const filteredPosts = posts.filter(post => !excludedPostIds.includes(post.id));

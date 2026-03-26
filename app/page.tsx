@@ -47,7 +47,11 @@ export const metadata: Metadata = {
 
 export default async function Home() {
   // Fetch the latest posts
-  const posts = await getAllPosts({});
+  const allPosts = await getAllPosts({});
+  // Sort posts by date descending to ensure absolute latest is at index 0 (bypassing sticky)
+  const posts = [...allPosts].sort((a, b) => 
+    new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
 
   // Fetch the science category to get its ID
   const scienceCategory = await getCategoryBySlug("science");
