@@ -541,8 +541,8 @@ function CultureLayout({ post, featuredMedia, author, category, cleanExcerpt, fo
       <Container>
         <div className="max-w-3xl mx-auto">
           
-          {/* Top Black Bar */}
-          <div className="w-16 h-3 bg-black mx-auto mb-8"></div>
+          {/* Top Red bar */}
+          <div className="w-16 h-3 bg-red-700 mx-auto mb-4"></div>
 
           {/* Headline */}
           <h1 className="text-center text-3xl md:text-5xl lg:text-[54px] font-stilson  text-gray-950 leading-[1.15] mb-6">
