@@ -34,8 +34,18 @@ export default async function Page({ excludedPostIds = [] }: UnsubscribedProps) 
       <div className="text-center max-w-6xl mx-auto px-4 md:px-0 mb-12">
         <div className="w-full h-[14px] md:h-[18px] bg-black mb-12"></div>
         <h2 className="text-4xl md:text-5xl text-black mb-4 flex justify-center items-center">
-          <span className="font-futura font-black uppercase tracking-tighter">THE</span>
-          <span className="font-stilson uppercase font-medium tracking-tight ml-[2px] md:ml-1">MANTEL</span>
+          <span 
+            className="font-futura font-black uppercase tracking-tighter"
+            style={{ lineHeight: 1 }}
+          >
+            THE
+          </span>
+          <span 
+            className="font-stilson uppercase font-medium tracking-tight ml-[2px] md:ml-1"
+            style={{ lineHeight: 1 }}
+          >
+            MANTEL
+          </span>
         </h2>
         <p className="text-xl md:text-2xl font-garamond italic text-black max-w-2xl mx-auto mb-5 leading-normal">
           Echoes of the past, resonating in the present. A curated collection of timeless stories.
