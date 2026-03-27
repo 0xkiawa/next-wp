@@ -18,7 +18,7 @@ export default async function Page({ excludedPostIds = [] }: UnsubscribedProps) 
   // Fetch posts from the personal category
   const allPosts = await getAllPosts({});
   // Sort posts by date descending for consistent chronological flow
-  const posts = [...allPosts].sort((a, b) => 
+  const posts = [...allPosts].sort((a, b) =>
     new Date(b.date).getTime() - new Date(a.date).getTime()
   );
 
@@ -33,10 +33,10 @@ export default async function Page({ excludedPostIds = [] }: UnsubscribedProps) 
       {/* Section Header - Mini Philosophy Style */}
       <div className="text-center max-w-6xl mx-auto px-4 md:px-0 mb-12">
         <div className="w-full h-[14px] md:h-[18px] bg-black mb-12"></div>
-        <h2 className="text-4xl md:text-5xl text-black mb-4 flex justify-center items-end leading-none">
-  <span className="font-futura font-black uppercase tracking-tighter text-[0.6em] pb-[0.12em]">THE</span>
-  <span className="font-stilson uppercase font-medium tracking-tight ml-[2px] md:ml-1">MANTEL</span>
-</h2>
+        <h2 className="text-4xl md:text-5xl text-black mb-4 flex justify-center items-center">
+          <span className="font-futura font-black uppercase tracking-tighter">THE</span>
+          <span className="font-stilson uppercase font-medium tracking-tight ml-[2px] md:ml-1">MANTEL</span>
+        </h2>
         <p className="text-xl md:text-2xl font-garamond italic text-black max-w-2xl mx-auto mb-5 leading-normal">
           Echoes of the past, resonating in the present. A curated collection of timeless stories.
         </p>
