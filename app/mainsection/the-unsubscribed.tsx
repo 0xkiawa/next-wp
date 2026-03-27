@@ -35,8 +35,8 @@ export default async function Page({ excludedPostIds = [] }: UnsubscribedProps) 
         <div className="w-full h-[14px] md:h-[18px] bg-black mb-12"></div>
         <h2 className="text-4xl md:text-5xl text-black mb-4 flex justify-center items-center">
           <span 
-            className="font-futura font-black uppercase tracking-tighter text-[0.85em]"
-            style={{ lineHeight: 1 }}
+            className="font-futura font-black uppercase tracking-tighter text-[1.1em] inline-block mr-[2px] mt-0 mb-1 px-0 relative top-0"
+            style={{ lineHeight: 0.5 }}
           >
             THE
           </span>
