@@ -35,13 +35,13 @@ export default async function Page({ excludedPostIds = [] }: UnsubscribedProps) 
         <div className="w-full h-[14px] md:h-[18px] bg-black mb-12"></div>
         <h2 className="text-4xl md:text-5xl text-black mb-4 flex justify-center items-center">
           <span 
-            className="font-futura font-black uppercase tracking-tighter"
+            className="font-futura font-black uppercase tracking-tighter text-[0.85em]"
             style={{ lineHeight: 1 }}
           >
             THE
           </span>
           <span 
-            className="font-stilson uppercase font-medium tracking-tight ml-[2px] md:ml-1"
+            className="font-stilson uppercase font-medium tracking-tight ml-[2px] md:ml-[4px]"
             style={{ lineHeight: 1 }}
           >
             MANTEL
