@@ -152,7 +152,7 @@ export function BookmarkButton({ wpPostId, postTitle, postSlug }: BookmarkButton
           group cursor-pointer disabled:opacity-50 overflow-hidden
           inline-flex items-center gap-2 h-12
           border-[0.5px] border-gray-300 bg-white shadow-[0_2px_8px_rgb(0,0,0,0.04)]
-          transition-all duration-300 ease-in-out hover:border-black active:scale-95
+          transition-all duration-500 ease-out hover:border-black active:scale-95
           ${isBookmarked
             ? 'rounded-[14px] pl-3 pr-4 max-w-[220px]'
             : 'rounded-[14px] pl-[11px] pr-[11px] max-w-[48px] hover:max-w-[220px] hover:pl-3 hover:pr-4'
@@ -166,7 +166,7 @@ export function BookmarkButton({ wpPostId, postTitle, postSlug }: BookmarkButton
           viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className={`flex-shrink-0 transition-colors duration-300 ${isBookmarked ? 'text-black' : 'text-black group-hover:text-black'}`}
+          className={`flex-shrink-0 transition-colors duration-500 ${isBookmarked ? 'text-black' : 'text-black group-hover:text-black'}`}
         >
           {isBookmarked ? (
             <path
@@ -195,7 +195,7 @@ export function BookmarkButton({ wpPostId, postTitle, postSlug }: BookmarkButton
 
         {/* Text appears only when bookmarked or hovered */}
         <div 
-          className={`transition-all duration-300 flex-shrink-0 overflow-hidden ${
+          className={`transition-all duration-500 ease-out flex-shrink-0 overflow-hidden ${
             isBookmarked 
               ? 'opacity-100 max-w-[120px]' 
               : 'opacity-0 max-w-0 group-hover:opacity-100 group-hover:max-w-[120px]'
