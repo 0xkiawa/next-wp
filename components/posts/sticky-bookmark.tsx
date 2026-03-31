@@ -146,16 +146,16 @@ export function StickyBookmark({ wpPostId, postTitle, postSlug, children }: Stic
               border-[0.5px] border-gray-300 bg-white shadow-[0_2px_8px_rgb(0,0,0,0.04)]
               transition-all duration-300 ease-in-out hover:border-black active:scale-95
               ${isExpanded
-                ? 'rounded-xl px-4 py-2.5 max-w-[200px]'
+                ? 'rounded-xl pl-3 pr-4 py-2.5 max-w-[220px]'
                 : 'rounded-[14px] w-12 h-12 justify-center max-w-[48px]'
               }
             `}
           >
             {/* Bookmark icon with thin line */}
             <svg
-              width="24"
+              width="26"
               height="24"
-              viewBox="0 0 24 24"
+              viewBox="0 0 26 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
               className={`flex-shrink-0 transition-colors duration-300 ${isBookmarked ? 'text-black fill-black' : 'text-black group-hover:text-black'}`}
@@ -169,17 +169,17 @@ export function StickyBookmark({ wpPostId, postTitle, postSlug, children }: Stic
               />
               {!isBookmarked && (
                 <>
-                  <line x1="17" y1="4" x2="17" y2="10" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
-                  <line x1="14" y1="7" x2="20" y2="7" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+                  <line x1="20.5" y1="1" x2="20.5" y2="6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+                  <line x1="18" y1="3.5" x2="23" y2="3.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
                 </>
               )}
             </svg>
 
             {/* Text appears only when bookmarked */}
             <div 
-              className={`transition-all duration-300 flex-shrink-0 ${isExpanded ? 'opacity-100 max-w-[100px] w-auto inline-block' : 'opacity-0 max-w-0 hidden'}`}
+              className={`transition-all duration-300 flex-shrink-0 overflow-hidden ${isExpanded ? 'opacity-100 max-w-[120px]' : 'opacity-0 max-w-0'}`}
             >
-              <span className="text-xs font-glacial font-bold tracking-widest text-black uppercase whitespace-nowrap">
+              <span className="text-[11px] font-glacial font-bold tracking-widest text-black uppercase whitespace-nowrap">
                 {isBookmarked ? 'SAVED' : 'SAVE ARTICLE'}
               </span>
             </div>
