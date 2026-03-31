@@ -141,28 +141,21 @@ export function BookmarkButton({ wpPostId, postTitle, postSlug }: BookmarkButton
     setShowShareOptions(false);
   };
 
-  const [isHovered, setIsHovered] = useState(false);
-
-  // Check if expanded based on hover or bookmarked state
-  const isExpanded = isBookmarked || isHovered;
-
   return (
     <div className="flex items-center gap-3">
       {/* Bookmark button — rounded square (icon only) → expands to rounded rect with text when bookmarked */}
       <button
         onClick={handleBookmarkToggle}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
         disabled={isLoading}
         aria-label={isBookmarked ? 'Remove bookmark' : 'Save article'}
         className={`
-          group cursor-pointer disabled:opacity-50
-          inline-flex items-center gap-2 overflow-hidden
+          group cursor-pointer disabled:opacity-50 overflow-hidden
+          inline-flex items-center gap-2 h-12
           border-[0.5px] border-gray-300 bg-white shadow-[0_2px_8px_rgb(0,0,0,0.04)]
           transition-all duration-300 ease-in-out hover:border-black active:scale-95
-          ${isExpanded
-            ? 'rounded-[14px] pl-3 pr-4 py-2.5 max-w-[220px]'
-            : 'rounded-[14px] w-12 h-12 justify-center max-w-[48px]'
+          ${isBookmarked
+            ? 'rounded-[14px] pl-3 pr-4 max-w-[220px]'
+            : 'rounded-[14px] pl-[11px] pr-[11px] max-w-[48px] hover:max-w-[220px] hover:pl-3 hover:pr-4'
           }
         `}
       >
@@ -202,7 +195,11 @@ export function BookmarkButton({ wpPostId, postTitle, postSlug }: BookmarkButton
 
         {/* Text appears only when bookmarked or hovered */}
         <div 
-          className={`transition-all duration-300 flex-shrink-0 overflow-hidden ${isExpanded ? 'opacity-100 max-w-[120px]' : 'opacity-0 max-w-0'}`}
+          className={`transition-all duration-300 flex-shrink-0 overflow-hidden ${
+            isBookmarked 
+              ? 'opacity-100 max-w-[120px]' 
+              : 'opacity-0 max-w-0 group-hover:opacity-100 group-hover:max-w-[120px]'
+          }`}
         >
           <span className="text-[11px] font-glacial font-bold tracking-widest text-black uppercase whitespace-nowrap">
             {isBookmarked ? 'SAVED' : 'SAVE ARTICLE'}
