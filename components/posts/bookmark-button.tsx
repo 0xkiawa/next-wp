@@ -151,23 +151,22 @@ export function BookmarkButton({ wpPostId, postTitle, postSlug }: BookmarkButton
         className={`
           group cursor-pointer disabled:opacity-50
           inline-flex items-center gap-2
-          border border-gray-300 bg-white
-          transition-all duration-300 ease-in-out
-          hover:border-gray-500 active:scale-95
+          border-[0.5px] border-gray-300 bg-white shadow-[0_2px_8px_rgb(0,0,0,0.04)]
+          transition-all duration-300 ease-in-out hover:border-black active:scale-95
           ${isBookmarked
-            ? 'rounded-xl px-4 py-2.5'
-            : 'rounded-xl w-10 h-10 justify-center'
+            ? 'rounded-[14px] px-4 py-2.5'
+            : 'rounded-[14px] w-12 h-12 justify-center'
           }
         `}
       >
         {/* Thin-line bookmark SVG */}
         <svg
-          width="20"
-          height="20"
+          width="24"
+          height="24"
           viewBox="0 0 24 24"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className={`flex-shrink-0 transition-colors duration-300 ${isBookmarked ? 'text-black fill-black' : 'text-black'}`}
+          className={`flex-shrink-0 transition-colors duration-300 ${isBookmarked ? 'text-black fill-black' : 'text-black group-hover:text-black'}`}
         >
           <path
             d="M5 5C5 3.89543 5.89543 3 7 3H17C18.1046 3 19 3.89543 19 5V21L12 17.5L5 21V5Z"
@@ -191,11 +190,11 @@ export function BookmarkButton({ wpPostId, postTitle, postSlug }: BookmarkButton
         <PopoverTrigger asChild>
           <button
             aria-label="Share article"
-            className="cursor-pointer w-10 h-10 rounded-xl border border-gray-300 bg-white flex items-center justify-center transition-all duration-200 hover:border-gray-500 active:scale-95"
+            className="cursor-pointer w-12 h-12 rounded-[14px] border-[0.5px] border-gray-300 bg-white flex items-center justify-center shadow-[0_2px_8px_rgb(0,0,0,0.04)] transition-all duration-200 hover:border-black active:scale-95"
           >
             <svg
-              width="18"
-              height="18"
+              width="20"
+              height="20"
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
