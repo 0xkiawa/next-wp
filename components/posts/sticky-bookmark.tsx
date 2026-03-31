@@ -120,7 +120,7 @@ export function StickyBookmark({ wpPostId, postTitle, postSlug, children }: Stic
       <div
         className={`
           hidden lg:block
-          absolute -left-20 lg:-left-28 xl:-left-40 2xl:-left-48 top-0
+          absolute -left-24 lg:-left-32 xl:-left-44 2xl:-left-52 top-0
           h-full
         `}
       >
