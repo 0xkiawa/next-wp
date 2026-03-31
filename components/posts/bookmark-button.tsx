@@ -150,30 +150,47 @@ export function BookmarkButton({ wpPostId, postTitle, postSlug }: BookmarkButton
         className="flex items-center gap-2 rounded-l-full px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-gray-900 font-futura tracking-widest text-xs font-bold"
         aria-label={isBookmarked ? 'Remove bookmark' : 'Add bookmark'}
       >
-        <svg
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className={`transition-colors duration-300 ${isBookmarked ? 'text-black' : 'text-gray-700'}`}
-        >
-          {/* Ribbon bookmark shape */}
-          <path
-            d="M7 4H14V13L10.5 10.5L7 13V4Z"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            fill={isBookmarked ? 'currentColor' : 'none'}
-          />
-          {/* "+" sign at top-right */}
-          <line x1="17" y1="4" x2="17" y2="10" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-          <line x1="14" y1="7" x2="20" y2="7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-          {/* Bottom bar */}
-          <line x1="5" y1="19" x2="19" y2="19" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
-        </svg>
-        <span>{isBookmarked ? 'SAVED' : 'SAVE ARTICLE'}</span>
+        {isBookmarked ? (
+          <>
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="text-black fill-black"
+            >
+              <path
+                d="M5 5C5 3.89543 5.89543 3 7 3H17C18.1046 3 19 3.89543 19 5V21L12 17.5L5 21V5Z"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            <span>SAVED</span>
+          </>
+        ) : (
+          <>
+            <svg
+              width="18"
+              height="18"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="text-black"
+            >
+              <path
+                d="M5 5C5 3.89543 5.89543 3 7 3H17C18.1046 3 19 3.89543 19 5V21L12 17.5L5 21V5Z"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            <span>SAVE ARTICLE</span>
+          </>
+        )}
       </Button>
 
       <div className="h-6 w-px bg-gray-200 mx-1"></div>
