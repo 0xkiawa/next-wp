@@ -114,6 +114,9 @@ export function StickyBookmark({ wpPostId, postTitle, postSlug, children }: Stic
     }
   };
 
+  const [isHovered, setIsHovered] = useState(false);
+  const isExpanded = isBookmarked || isHovered;
+
   return (
     <div ref={contentRef} className="relative">
       {/* Sticky bookmark icon on the left */}
@@ -133,16 +136,18 @@ export function StickyBookmark({ wpPostId, postTitle, postSlug, children }: Stic
         >
           <button
             onClick={handleBookmarkToggle}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
             disabled={isLoading}
-            aria-label={isBookmarked ? 'Remove bookmark' : 'Save this story'}
+            aria-label={isBookmarked ? 'Remove bookmark' : 'Save article'}
             className={`
-              group cursor-pointer disabled:opacity-50
+              group cursor-pointer disabled:opacity-50 overflow-hidden
               inline-flex items-center gap-2
               border-[0.5px] border-gray-300 bg-white shadow-[0_2px_8px_rgb(0,0,0,0.04)]
               transition-all duration-300 ease-in-out hover:border-black active:scale-95
-              ${isBookmarked
-                ? 'rounded-xl px-4 py-2.5'
-                : 'rounded-[14px] w-12 h-12 justify-center'
+              ${isExpanded
+                ? 'rounded-xl px-4 py-2.5 max-w-[200px]'
+                : 'rounded-[14px] w-12 h-12 justify-center max-w-[48px]'
               }
             `}
           >
@@ -162,14 +167,22 @@ export function StickyBookmark({ wpPostId, postTitle, postSlug, children }: Stic
                 strokeLinecap="round"
                 strokeLinejoin="round"
               />
+              {!isBookmarked && (
+                <>
+                  <line x1="17" y1="4" x2="17" y2="10" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+                  <line x1="14" y1="7" x2="20" y2="7" stroke="currentColor" strokeWidth="1" strokeLinecap="round" />
+                </>
+              )}
             </svg>
 
             {/* Text appears only when bookmarked */}
-            {isBookmarked && (
-              <span className="text-xs font-futura font-bold tracking-widest text-black uppercase whitespace-nowrap">
-                Save this story
+            <div 
+              className={`transition-all duration-300 flex-shrink-0 ${isExpanded ? 'opacity-100 max-w-[100px] w-auto inline-block' : 'opacity-0 max-w-0 hidden'}`}
+            >
+              <span className="text-xs font-glacial font-bold tracking-widest text-black uppercase whitespace-nowrap">
+                {isBookmarked ? 'SAVED' : 'SAVE ARTICLE'}
               </span>
-            )}
+            </div>
           </button>
         </div>
       </div>
