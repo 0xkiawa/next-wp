@@ -153,24 +153,34 @@ export function StickyBookmark({ wpPostId, postTitle, postSlug, children }: Stic
           >
             {/* Bookmark icon with thin line */}
             <svg
-              width="26"
+              width="24"
               height="24"
-              viewBox="0 0 26 24"
+              viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              className={`flex-shrink-0 transition-colors duration-300 ${isBookmarked ? 'text-black fill-black' : 'text-black group-hover:text-black'}`}
+              className={`flex-shrink-0 transition-colors duration-300 ${isBookmarked ? 'text-black' : 'text-black group-hover:text-black'}`}
             >
-              <path
-                d="M5 5C5 3.89543 5.89543 3 7 3H17C18.1046 3 19 3.89543 19 5V21L12 17.5L5 21V5Z"
-                stroke="currentColor"
-                strokeWidth="1"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-              {!isBookmarked && (
+              {isBookmarked ? (
+                <path
+                  d="M7 5H17V19L12 15L7 19Z"
+                  stroke="currentColor"
+                  strokeWidth="1.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  fill="currentColor"
+                />
+              ) : (
                 <>
-                  <line x1="20.5" y1="1" x2="20.5" y2="6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
-                  <line x1="18" y1="3.5" x2="23" y2="3.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+                  <path
+                    d="M13 5H7V19L12 15L17 19V9"
+                    stroke="currentColor"
+                    strokeWidth="1.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  {/* "+" sign perfectly fitting the top-right cutout */}
+                  <line x1="17" y1="2" x2="17" y2="8" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
+                  <line x1="14" y1="5" x2="20" y2="5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
                 </>
               )}
             </svg>
