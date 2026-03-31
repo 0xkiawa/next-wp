@@ -7,6 +7,7 @@ import Image from "next/image";
 import Balancer from "react-wrap-balancer";
 import { Clock, Cpu, Zap } from "lucide-react";
 import { BookmarkButton } from "@/components/posts/bookmark-button";
+import { StickyBookmark } from "@/components/posts/sticky-bookmark";
 
 interface ScienceTechPostLayoutProps {
   post: any;
@@ -86,7 +87,8 @@ export function ScienceTechPostLayout({
               • {formattedDate}
             </p>
 
-            <div className="mt-2">
+            {/* Bookmark — mobile only */}
+            <div className="mt-2 lg:hidden">
               <BookmarkButton
                 wpPostId={post.id}
                 postTitle={post.title.rendered}
@@ -131,10 +133,12 @@ export function ScienceTechPostLayout({
         {/* Tech-themed separator */}
         <div className="w-full h-px bg-gradient-to-r from-blue-500 to-purple-500 my-8"></div>
 
-        {/* Article Body with Tech Styling */}
-        <div className="prose prose-lg max-w-none">
-          <ArticleContent content={post.content.rendered} className="mt-2" />
-        </div>
+        {/* Article Body with Tech Styling + sticky sidebar bookmark */}
+        <StickyBookmark wpPostId={post.id} postTitle={post.title.rendered} postSlug={post.slug}>
+          <div className="prose prose-lg max-w-none">
+            <ArticleContent content={post.content.rendered} className="mt-2" />
+          </div>
+        </StickyBookmark>
       </Container>
     </Section>
   );

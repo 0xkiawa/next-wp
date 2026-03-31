@@ -22,6 +22,7 @@ import type { Post } from "@/lib/wordpress.d";
 
 import { calculateWordCount, calculateReadingTime } from "@/lib/utils/text";
 import { BookmarkButton } from "@/components/posts/bookmark-button";
+import { StickyBookmark } from "@/components/posts/sticky-bookmark";
 import AboutTheAuthor from "@/components/posts/about-the-author";
 import SetNavbarTitle from "@/components/navigation/SetNavbarTitle";
 import { AudioPlayer } from "@/components/posts/audio-player";
@@ -374,8 +375,8 @@ function ScienceTechLayout({ post, featuredMedia, author, category }: { post: an
             </div>
           </div>
 
-          {/* Bookmark & Time */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+          {/* Bookmark & Time — mobile only */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12 lg:hidden">
             <BookmarkButton
               wpPostId={post.id}
               postTitle={post.title.rendered}
@@ -387,21 +388,29 @@ function ScienceTechLayout({ post, featuredMedia, author, category }: { post: an
             </div>
           </div>
 
+          {/* Reading time — desktop only */}
+          <div className="hidden lg:flex items-center justify-center text-xs text-gray-500 font-futura uppercase tracking-widest font-bold mb-12">
+            <Clock size={14} className="mr-2" />
+            {calculateReadingTime(post.content.rendered)} min read
+          </div>
+
           {/* Divider */}
           <div className="flex justify-center mb-8">
             <div className="w-16 h-px bg-black"></div>
           </div>
 
-          {/* Full Article Content */}
+          {/* Full Article Content with sticky sidebar bookmark */}
           <div className="max-w-2xl mx-auto">
-            <div className="text-base leading-relaxed text-black prose prose-lg max-w-none" style={{ fontFamily: 'Georgia, serif', lineHeight: '1.7' }}>
-              <div className="md:first-letter:text-5xl md:first-letter:font-bold md:first-letter:float-left md:first-letter:mr-2 md:first-letter:leading-none">
-                <ArticleContent
-                  content={post.content.rendered}
-                  className="line-clamp-none"
-                />
+            <StickyBookmark wpPostId={post.id} postTitle={post.title.rendered} postSlug={post.slug}>
+              <div className="text-base leading-relaxed text-black prose prose-lg max-w-none" style={{ fontFamily: 'Georgia, serif', lineHeight: '1.7' }}>
+                <div className="md:first-letter:text-5xl md:first-letter:font-bold md:first-letter:float-left md:first-letter:mr-2 md:first-letter:leading-none">
+                  <ArticleContent
+                    content={post.content.rendered}
+                    className="line-clamp-none"
+                  />
+                </div>
               </div>
-            </div>
+            </StickyBookmark>
           </div>
 
           {/* Article Details Footer */}
@@ -477,8 +486,8 @@ function BooksLayout({ post, featuredMedia, author, category, cleanExcerpt, form
             </div>
           )}
 
-          {/* Bookmark & Time */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+          {/* Bookmark & Time — mobile only */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8 lg:hidden">
             <BookmarkButton
               wpPostId={post.id}
               postTitle={post.title.rendered}
@@ -490,12 +499,16 @@ function BooksLayout({ post, featuredMedia, author, category, cleanExcerpt, form
             </div>
           </div>
 
+          {/* Reading time — desktop only */}
+          <div className="hidden lg:flex items-center justify-center text-xs text-gray-500 font-futura uppercase tracking-widest font-bold mb-8">
+            <Clock size={14} className="mr-2" />
+            {calculateReadingTime(post.content.rendered)} min read
+          </div>
+
           {/* Author Bio Section */}
           <div className="mb-8">
             <AboutTheAuthor authorId={author.id} />
           </div>
-
-          {/* Bookmark removed from here */}
 
           {/* Featured Image */}
           {featuredMedia?.source_url && (
@@ -524,10 +537,12 @@ function BooksLayout({ post, featuredMedia, author, category, cleanExcerpt, form
           {/* Divider */}
           <div className="w-full h-px bg-gray-300 mb-8"></div>
 
-          {/* Article Content */}
-          <div className="prose prose-lg max-w-none">
-            <ArticleContent content={post.content.rendered} className="mt-2" />
-          </div>
+          {/* Article Content with sticky sidebar bookmark */}
+          <StickyBookmark wpPostId={post.id} postTitle={post.title.rendered} postSlug={post.slug}>
+            <div className="prose prose-lg max-w-none">
+              <ArticleContent content={post.content.rendered} className="mt-2" />
+            </div>
+          </StickyBookmark>
         </div>
       </Container>
     </Section>
@@ -560,8 +575,8 @@ function CultureLayout({ post, featuredMedia, author, category, cleanExcerpt, fo
             </div>
           )}
 
-          {/* Bookmark & Time */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+          {/* Bookmark & Time — mobile only */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8 lg:hidden">
             <BookmarkButton
               wpPostId={post.id}
               postTitle={post.title.rendered}
@@ -571,6 +586,12 @@ function CultureLayout({ post, featuredMedia, author, category, cleanExcerpt, fo
               <Clock size={14} className="mr-2" />
               {calculateReadingTime(post.content.rendered)} min read
             </div>
+          </div>
+
+          {/* Reading time — desktop only */}
+          <div className="hidden lg:flex items-center justify-center text-xs text-gray-500 font-futura uppercase tracking-widest font-bold mb-8">
+            <Clock size={14} className="mr-2" />
+            {calculateReadingTime(post.content.rendered)} min read
           </div>
 
           {/* Byline */}
@@ -622,13 +643,14 @@ function CultureLayout({ post, featuredMedia, author, category, cleanExcerpt, fo
             </figure>
           )}
 
-          {/* Bookmark & Time moved above */}
           <div className="mb-10 pb-6 border-b border-gray-200"></div>
 
-          {/* Article Content */}
-          <div className="prose prose-lg max-w-none font-acaslon text-gray-900 leading-loose">
-            <ArticleContent content={post.content.rendered} />
-          </div>
+          {/* Article Content with sticky sidebar bookmark */}
+          <StickyBookmark wpPostId={post.id} postTitle={post.title.rendered} postSlug={post.slug}>
+            <div className="prose prose-lg max-w-none font-acaslon text-gray-900 leading-loose">
+              <ArticleContent content={post.content.rendered} />
+            </div>
+          </StickyBookmark>
 
         </div>
       </Container>
@@ -673,8 +695,8 @@ function DefaultLayout({ post, featuredMedia, author, category, cleanExcerpt, wo
             </div>
           )}
 
-          {/* Bookmark & Time */}
-          <div className="flex flex-col sm:flex-row items-start gap-4 mb-6">
+          {/* Bookmark & Time — mobile only */}
+          <div className="flex flex-col sm:flex-row items-start gap-4 mb-6 lg:hidden">
             <BookmarkButton
               wpPostId={post.id}
               postTitle={post.title.rendered}
@@ -684,6 +706,12 @@ function DefaultLayout({ post, featuredMedia, author, category, cleanExcerpt, wo
               <Clock size={14} className="mr-1.5" />
               <span>{readingTimeMinutes} min read</span>
             </div>
+          </div>
+
+          {/* Reading time — desktop only */}
+          <div className="hidden lg:flex items-center text-sm text-muted-foreground h-10 mb-6">
+            <Clock size={14} className="mr-1.5" />
+            <span>{readingTimeMinutes} min read</span>
           </div>
 
           {/* Author + Date */}
@@ -734,8 +762,10 @@ function DefaultLayout({ post, featuredMedia, author, category, cleanExcerpt, wo
 
         <div className="w-full h-px bg-dark my-8"></div>
 
-        {/* Article Body */}
-        <ArticleContent content={post.content.rendered} className="mt-2" />
+        {/* Article Body with sticky sidebar bookmark */}
+        <StickyBookmark wpPostId={post.id} postTitle={post.title.rendered} postSlug={post.slug}>
+          <ArticleContent content={post.content.rendered} className="mt-2" />
+        </StickyBookmark>
       </Container>
     </Section>
   );
