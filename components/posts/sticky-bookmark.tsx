@@ -135,39 +135,36 @@ export function StickyBookmark({ wpPostId, postTitle, postSlug, children }: Stic
             onClick={handleBookmarkToggle}
             disabled={isLoading}
             aria-label={isBookmarked ? 'Remove bookmark' : 'Add bookmark'}
-            className="relative group cursor-pointer disabled:opacity-50 transition-transform duration-200 hover:scale-110 active:scale-95"
+            className={`
+              group cursor-pointer disabled:opacity-50
+              w-12 h-12 rounded-xl border border-gray-300 bg-white
+              flex items-center justify-center
+              transition-all duration-200 hover:shadow-md hover:border-gray-400 active:scale-95
+            `}
           >
-            {/* Bookmark icon */}
             <svg
-              width="36"
-              height="36"
+              width="26"
+              height="26"
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
-              className={`transition-colors duration-300 ${isBookmarked ? 'text-black fill-black' : 'text-gray-500 group-hover:text-black'}`}
+              className={`transition-colors duration-300 ${isBookmarked ? 'text-black' : 'text-gray-700 group-hover:text-black'}`}
             >
+              {/* Ribbon bookmark shape */}
               <path
-                d="M5 5C5 3.89543 5.89543 3 7 3H17C18.1046 3 19 3.89543 19 5V21L12 17.5L5 21V5Z"
+                d="M7 4H14V13L10.5 10.5L7 13V4Z"
                 stroke="currentColor"
-                strokeWidth="2"
+                strokeWidth="1.8"
                 strokeLinecap="round"
                 strokeLinejoin="round"
+                fill={isBookmarked ? 'currentColor' : 'none'}
               />
+              {/* "+" sign at top-right */}
+              <line x1="17" y1="4" x2="17" y2="10" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+              <line x1="14" y1="7" x2="20" y2="7" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+              {/* Bottom bar */}
+              <line x1="5" y1="19" x2="19" y2="19" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
             </svg>
-
-            {/* "+" badge on the top-right corner */}
-            {!isBookmarked && (
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-black text-white text-[10px] font-bold rounded-full flex items-center justify-center leading-none shadow-sm">
-                +
-              </span>
-            )}
-
-            {/* Check mark when bookmarked */}
-            {isBookmarked && (
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-green-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center leading-none shadow-sm">
-                ✓
-              </span>
-            )}
           </button>
         </div>
       </div>
