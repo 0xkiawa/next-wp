@@ -66,7 +66,7 @@ export default async function Page({ excludedPostIds = [] }: UnsubscribedProps) 
         >
           <CarouselContent className="-ml-2 md:-ml-3">
             {displayPosts.map((post, idx) => (
-              <CarouselItem key={post.id} className="pl-2 md:pl-3 basis-[85%] sm:basis-[48%] md:basis-[32%] lg:basis-1/5 xl:basis-1/5">
+              <CarouselItem key={post.id} className="pl-2 md:pl-3 basis-[65%] sm:basis-[48%] md:basis-[32%] lg:basis-1/5 xl:basis-1/5">
                 <div className="h-full py-1 min-h-[420px]">
                   <MantelCard post={post} />
                 </div>
