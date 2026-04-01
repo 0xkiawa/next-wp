@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Post } from "@/lib/wordpress.d";
-import { BookOpen } from "lucide-react";
+import { BookOpen, Headphones } from "lucide-react";
 import {
   getFeaturedMediaById,
   getAuthorById,
@@ -16,6 +16,14 @@ export default async function MantelCard({ post }: { post: Post }) {
   const wordCount = contentStr.replace(/<[^>]*>/g, '').split(/\s+/).length;
   const readTime = Math.ceil(wordCount / 200);
   const durationStr = `${readTime} min${readTime !== 1 ? 's' : ''}`;
+
+  // Smart detection for audio content
+  // Checks if the WordPress content contains HTML5 audio tags or common podcast embeds
+  const hasAudio = 
+    contentStr.includes('<audio') || 
+    contentStr.includes('spotify.com/embed') || 
+    contentStr.includes('soundcloud.com/player') || 
+    contentStr.includes('embed.podcasts.apple.com');
 
   return (
     <Link href={`/posts/${post.slug}`} className="block w-full h-full group">
@@ -38,7 +46,11 @@ export default async function MantelCard({ post }: { post: Post }) {
           {/* Gradient Overlay for bottom text visibility over image */}
           <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex items-end justify-between p-3 z-10 pointer-events-none">
             <div className="flex items-center text-white drop-shadow-md">
-              <BookOpen className="w-4 h-4 text-white" />
+              {hasAudio ? (
+                <Headphones className="w-4 h-4 text-white" />
+              ) : (
+                <BookOpen className="w-4 h-4 text-white" />
+              )}
             </div>
             <div className="text-white font-acaslon italic text-sm md:text-base tracking-wide font-medium shadow-black drop-shadow-md">
               {durationStr}
