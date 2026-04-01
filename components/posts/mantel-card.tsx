@@ -18,12 +18,10 @@ export default async function MantelCard({ post }: { post: Post }) {
   const durationStr = `${readTime} min${readTime !== 1 ? 's' : ''}`;
 
   // Smart detection for audio content
-  // Checks if the WordPress content contains HTML5 audio tags or common podcast embeds
+  // Checks post format, ACF fields, HTML5 audio tags, mp3 links, or common podcast/video embeds
   const hasAudio = 
-    contentStr.includes('<audio') || 
-    contentStr.includes('spotify.com/embed') || 
-    contentStr.includes('soundcloud.com/player') || 
-    contentStr.includes('embed.podcasts.apple.com');
+    post.format === 'audio' ||
+    /<audio|wp-block-audio|spotify\.com|soundcloud\.com|apple\.com.*podcast|podbean\.com|anchor\.fm|castbox\.fm|youtube\.com|youtu\.be|\.mp3|\.m4a/i.test(contentStr);
 
   return (
     <Link href={`/posts/${post.slug}`} className="block w-full h-full group">
