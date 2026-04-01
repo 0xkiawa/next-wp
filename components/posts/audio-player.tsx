@@ -100,20 +100,20 @@ export function AudioPlayer({ src, title }: { src: string; title?: string }) {
                 </div>
             )}
             
-            <div className="w-full bg-white border border-gray-200 rounded-sm p-2 flex items-center gap-3 md:gap-4 flex-wrap sm:flex-nowrap">
+            <div className="w-full bg-white border border-gray-200 rounded-sm p-1.5 sm:p-2 flex items-center gap-1.5 sm:gap-3 md:gap-4 flex-nowrap">
                 <audio ref={audioRef} src={src} preload="metadata" />
 
                 {/* Play Button */}
                 <button
                     onClick={togglePlay}
-                    className="w-12 h-12 md:w-[50px] md:h-[50px] flex items-center justify-center bg-[#1a1a1a] text-white rounded-full hover:bg-black transition-transform active:scale-95 shrink-0"
+                    className="w-9 h-9 sm:w-12 sm:h-12 md:w-[50px] md:h-[50px] flex items-center justify-center bg-[#1a1a1a] text-white rounded-full hover:bg-black transition-transform active:scale-95 shrink-0"
                     aria-label={isPlaying ? "Pause" : "Play"}
                 >
-                    {isPlaying ? <Pause size={22} fill="currentColor" /> : <Play size={22} fill="currentColor" className="ml-1" />}
+                    {isPlaying ? <Pause className="w-4 h-4 sm:w-[22px] sm:h-[22px]" fill="currentColor" /> : <Play className="w-4 h-4 sm:w-[22px] sm:h-[22px] ml-0.5" fill="currentColor" />}
                 </button>
 
                 {/* Waveform Section */}
-                <div className="flex-1 bg-[#eeeeee] min-w-[200px] rounded-sm h-12 relative overflow-hidden group">
+                <div className="flex-1 bg-[#eeeeee] min-w-[70px] sm:min-w-[200px] rounded-sm h-9 sm:h-12 relative overflow-hidden group">
                     <svg className="absolute inset-0 w-full h-full text-[#d4d4d4]" preserveAspectRatio="none" viewBox="0 0 200 100">
                         <path d={waveformPath} fill="currentColor" />
                     </svg>
@@ -125,10 +125,10 @@ export function AudioPlayer({ src, title }: { src: string; title?: string }) {
                     />
 
                     {/* Time Labels */}
-                    <div className="absolute left-2 top-1/2 -translate-y-1/2 px-1.5 py-0.5 bg-[#fef08a] text-black text-[11px] font-mono font-bold rounded-sm z-20 pointer-events-none shadow-sm">
+                    <div className="absolute left-1 sm:left-2 top-1/2 -translate-y-1/2 px-1 py-0.5 sm:px-1.5 bg-[#fef08a] text-black text-[8px] sm:text-[11px] font-mono font-bold rounded-sm z-20 pointer-events-none shadow-sm">
                         {formatTime(progress)}
                     </div>
-                    <div className="absolute right-2 top-1/2 -translate-y-1/2 px-1.5 py-0.5 bg-white text-black text-[11px] font-mono font-bold rounded-sm z-20 shadow-sm pointer-events-none">
+                    <div className="absolute right-1 sm:right-2 top-1/2 -translate-y-1/2 px-1 py-0.5 sm:px-1.5 bg-white text-black text-[8px] sm:text-[11px] font-mono font-bold rounded-sm z-20 shadow-sm pointer-events-none">
                         {formatTime(duration)}
                     </div>
 
@@ -144,31 +144,31 @@ export function AudioPlayer({ src, title }: { src: string; title?: string }) {
                 </div>
 
                 {/* Skip Controls & Menu */}
-                <div className="flex items-center justify-between w-full sm:w-auto gap-2 sm:gap-4 shrink-0 px-1">
-                    <div className="flex items-center gap-1 sm:gap-2 text-[#1a1a1a]">
+                <div className="flex items-center justify-between w-auto gap-0.5 sm:gap-2 md:gap-4 shrink-0 px-0 sm:px-1">
+                    <div className="flex items-center gap-0 sm:gap-1 text-[#1a1a1a]">
                         <button 
                             onClick={() => handleSkip(-15)}
-                            className="w-10 h-10 flex flex-col items-center justify-center hover:bg-gray-100 rounded-md transition"
+                            className="w-8 h-8 sm:w-10 sm:h-10 flex flex-col items-center justify-center hover:bg-gray-100 rounded-md transition"
                             aria-label="Skip back 15s"
                         >
-                            <Undo size={18} strokeWidth={2} className="mb-[1px]" />
-                            <span className="text-[9px] font-black leading-none tracking-tighter">15</span>
+                            <Undo strokeWidth={2} className="w-3.5 h-3.5 sm:w-[18px] sm:h-[18px] mb-[1px]" />
+                            <span className="text-[7.5px] sm:text-[9px] font-black leading-none tracking-tighter">15</span>
                         </button>
                         <button 
                             onClick={() => handleSkip(15)}
-                            className="w-10 h-10 flex flex-col items-center justify-center hover:bg-gray-100 rounded-md transition"
+                            className="w-8 h-8 sm:w-10 sm:h-10 flex flex-col items-center justify-center hover:bg-gray-100 rounded-md transition"
                             aria-label="Skip forward 15s"
                         >
-                            <Redo size={18} strokeWidth={2} className="mb-[1px]" />
-                            <span className="text-[9px] font-black leading-none tracking-tighter">15</span>
+                            <Redo strokeWidth={2} className="w-3.5 h-3.5 sm:w-[18px] sm:h-[18px] mb-[1px]" />
+                            <span className="text-[7.5px] sm:text-[9px] font-black leading-none tracking-tighter">15</span>
                         </button>
                     </div>
 
                     <button 
-                        className="w-10 h-10 border border-[#1a1a1a] rounded text-[#1a1a1a] flex items-center justify-center hover:bg-gray-100 transition shrink-0 ml-1 sm:ml-2"
+                        className="w-8 h-8 sm:w-10 sm:h-10 border border-[#1a1a1a] rounded text-[#1a1a1a] flex items-center justify-center hover:bg-gray-100 transition shrink-0 ml-0.5 sm:ml-2"
                         aria-label="Menu"
                     >
-                        <Menu size={22} strokeWidth={1.5} />
+                        <Menu strokeWidth={1.5} className="w-4 h-4 sm:w-[22px] sm:h-[22px]" />
                     </button>
                 </div>
             </div>
