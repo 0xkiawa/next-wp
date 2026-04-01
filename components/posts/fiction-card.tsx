@@ -64,9 +64,10 @@ export default async function TheWeekendEssay() {
 
           {/* Subtitle/Excerpt */}
           {excerptText && (
-            <p className="weekend-essay-subtitle">
-              {excerptText}
-            </p>
+            <p 
+              className="weekend-essay-subtitle"
+              dangerouslySetInnerHTML={{ __html: excerptText }}
+            />
           )}
 
           {/* Author & Date */}
@@ -79,7 +80,7 @@ export default async function TheWeekendEssay() {
         {/* Image - Right Side */}
         {media && (
           <div className="weekend-essay-image-wrapper">
-            <Link href={`/posts/${post.slug}`}>
+            <Link href={`/posts/${post.slug}`} style={{ display: 'block', width: '100%' }}>
               <div className="weekend-essay-image-container">
                 <Image
                   src={media.source_url}
