@@ -44,6 +44,18 @@ export default async function TheWeekendEssay() {
 
   return (
     <section className="weekend-essay-section">
+      {/* Decorative GIF Divider */}
+      <div className="weekend-essay-divider-wrapper">
+        <Image 
+          src="/scroll.gif" 
+          alt="Divider scroll" 
+          width={1200} 
+          height={60} 
+          className="weekend-essay-divider-img" 
+          unoptimized 
+        />
+      </div>
+
       <div className="weekend-essay-header">
         {/* Category Label */}
         <Link
@@ -128,9 +140,22 @@ export default async function TheWeekendEssay() {
           max-width: 72rem;
           margin: 0 auto;
           background: #ffffff;
-          padding: 3rem 2rem 2rem;
+          padding: 1rem 2rem 2rem;
           position: relative;
-          border-top: 8px solid #000000;
+        }
+
+        .weekend-essay-divider-wrapper {
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          margin-bottom: 2rem;
+        }
+
+        .weekend-essay-divider-img {
+          width: 100%;
+          max-width: 100%;
+          height: auto;
+          object-fit: contain;
         }
 
         .weekend-essay-header {
