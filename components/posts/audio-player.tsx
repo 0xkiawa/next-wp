@@ -1,6 +1,6 @@
 "use client";
 
-import { Play, Pause, RotateCcw, RotateCw, Menu } from "lucide-react";
+import { Play, Pause, RotateCcw, RotateCw, Menu, Undo, Redo } from "lucide-react";
 import { useState, useRef, useEffect, useMemo } from "react";
 import { cn } from "@/lib/utils";
 
@@ -148,19 +148,19 @@ export function AudioPlayer({ src, title }: { src: string; title?: string }) {
                     <div className="flex items-center gap-1 sm:gap-2 text-[#1a1a1a]">
                         <button 
                             onClick={() => handleSkip(-15)}
-                            className="w-10 h-10 flex items-center justify-center hover:bg-gray-100 rounded-md transition relative group"
+                            className="w-10 h-10 flex flex-col items-center justify-center hover:bg-gray-100 rounded-md transition"
                             aria-label="Skip back 15s"
                         >
-                            <RotateCcw size={22} strokeWidth={1.5} className="mt-[-2px] ml-[-2px]" />
-                            <span className="absolute inset-0 flex items-center justify-center mt-3 text-[9px] font-black tracking-tighter">15</span>
+                            <Undo size={18} strokeWidth={2} className="mb-[1px]" />
+                            <span className="text-[9px] font-black leading-none tracking-tighter">15</span>
                         </button>
                         <button 
                             onClick={() => handleSkip(15)}
-                            className="w-10 h-10 flex items-center justify-center hover:bg-gray-100 rounded-md transition relative group"
+                            className="w-10 h-10 flex flex-col items-center justify-center hover:bg-gray-100 rounded-md transition"
                             aria-label="Skip forward 15s"
                         >
-                            <RotateCw size={22} strokeWidth={1.5} className="mt-[-2px] ml-[2px]" />
-                            <span className="absolute inset-0 flex items-center justify-center mt-3 text-[9px] font-black tracking-tighter">15</span>
+                            <Redo size={18} strokeWidth={2} className="mb-[1px]" />
+                            <span className="text-[9px] font-black leading-none tracking-tighter">15</span>
                         </button>
                     </div>
 
