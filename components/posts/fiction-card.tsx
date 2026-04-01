@@ -44,70 +44,69 @@ export default async function TheWeekendEssay() {
 
   return (
     <section className="weekend-essay-section">
-      <div className="weekend-essay-container">
-        {/* Text Content - Left Side */}
-        <div className="weekend-essay-text">
-          {/* Category Label */}
-          <Link
-            href={`/posts/?category=${category.id}`}
-            className="weekend-essay-category"
-          >
-            {category.name}
+      <div className="weekend-essay-header">
+        {/* Category Label */}
+        <Link
+          href={`/posts/?category=${category.id}`}
+          className="weekend-essay-category"
+        >
+          {category.name}
+        </Link>
+
+        {/* Title */}
+        <h2 className="weekend-essay-title">
+          <Link href={`/posts/${post.slug}`}>
+            <span dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
           </Link>
+        </h2>
 
-          {/* Title */}
-          <h2 className="weekend-essay-title">
-            <Link href={`/posts/${post.slug}`}>
-              <span dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
-            </Link>
-          </h2>
-
-          {/* Subtitle/Excerpt */}
-          {excerptText && (
-            <p 
-              className="weekend-essay-subtitle"
-              dangerouslySetInnerHTML={{ __html: excerptText }}
-            />
-          )}
-
-          {/* Author & Date */}
-          <div className="weekend-essay-meta">
-            <p className="weekend-essay-author">By {author.name}</p>
-            <p className="weekend-essay-date">{formattedDate}</p>
-          </div>
-        </div>
-
-        {/* Image - Right Side */}
-        {media && (
-          <div className="weekend-essay-image-wrapper">
-            <Link href={`/posts/${post.slug}`} style={{ display: 'block', width: '100%' }}>
-              <div className="weekend-essay-image-container">
-                <Image
-                  src={media.source_url}
-                  alt={media.alt_text || titleText}
-                  fill
-                  className="weekend-essay-image"
-                  sizes="(max-width: 768px) 100vw, 55vw"
-                />
-              </div>
-            </Link>
-          </div>
+        {/* Subtitle/Excerpt */}
+        {excerptText && (
+          <p 
+            className="weekend-essay-subtitle"
+            dangerouslySetInnerHTML={{ __html: excerptText }}
+          />
         )}
       </div>
 
-      {/* Caption Bar */}
-      {imageCaption && (
-        <div className="weekend-essay-caption">
-          <span dangerouslySetInnerHTML={{ __html: imageCaption }} />
+      <div className="weekend-essay-body">
+        {/* Left Column: Author & Date */}
+        <div className="weekend-essay-meta">
+          <p className="weekend-essay-author">By {author.name}</p>
+          <p className="weekend-essay-date">{formattedDate}</p>
         </div>
-      )}
 
-      {/* If no caption from media, show a default */}
-      {!imageCaption && (
-        <div className="weekend-essay-caption">
-          illustration by {author.name.toLowerCase()}
+        {/* Right Column: Image and Caption */}
+        <div className="weekend-essay-content">
+          {/* Image */}
+          {media && (
+            <div className="weekend-essay-image-wrapper">
+              <Link href={`/posts/${post.slug}`} style={{ display: 'block', width: '100%' }}>
+                <div className="weekend-essay-image-container">
+                  <Image
+                    src={media.source_url}
+                    alt={media.alt_text || titleText}
+                    fill
+                    className="weekend-essay-image"
+                    sizes="(max-width: 768px) 100vw, 75vw"
+                  />
+                </div>
+              </Link>
+            </div>
+          )}
+
+          {/* Caption Bar */}
+          {imageCaption ? (
+            <div className="weekend-essay-caption">
+              <span dangerouslySetInnerHTML={{ __html: imageCaption }} />
+            </div>
+          ) : (
+            <div className="weekend-essay-caption">
+              illustration by {author.name.toLowerCase()}
+            </div>
+          )}
         </div>
-      )}
+      </div>
 
       {/* Bottom Link */}
       <div className="weekend-essay-footer">
@@ -128,7 +127,11 @@ export default async function TheWeekendEssay() {
           position: relative;
         }
 
-        .weekend-essay-container {
+        .weekend-essay-header {
+          margin-bottom: 2rem;
+        }
+
+        .weekend-essay-body {
           display: grid;
           grid-template-columns: 1fr;
           gap: 2rem;
@@ -136,8 +139,8 @@ export default async function TheWeekendEssay() {
         }
 
         @media (min-width: 768px) {
-          .weekend-essay-container {
-            grid-template-columns: 45% 55%;
+          .weekend-essay-body {
+            grid-template-columns: 25% 1fr;
             gap: 2.5rem;
           }
         }
@@ -200,7 +203,7 @@ export default async function TheWeekendEssay() {
 
         /* Author & Date */
         .weekend-essay-meta {
-          margin-top: auto;
+          /* No top margin needed for sidebar alignment */
         }
 
         .weekend-essay-author {
@@ -296,12 +299,8 @@ export default async function TheWeekendEssay() {
             padding: 2rem 1.25rem 1.5rem;
           }
 
-          .weekend-essay-text {
-            order: 1;
-          }
-
-          .weekend-essay-image-wrapper {
-            order: 2;
+          .weekend-essay-header {
+            margin-bottom: 1.5rem;
           }
 
           .weekend-essay-meta {
