@@ -96,15 +96,20 @@ export default async function TheWeekendEssay() {
           )}
 
           {/* Caption Bar */}
-          {imageCaption ? (
-            <div className="weekend-essay-caption">
-              <span dangerouslySetInnerHTML={{ __html: imageCaption }} />
-            </div>
-          ) : (
-            <div className="weekend-essay-caption">
-              illustration by {author.name.toLowerCase()}
-            </div>
-          )}
+          <div className="weekend-essay-caption">
+            {media?.alt_text && (
+              <span className="weekend-essay-caption-bold">
+                {media.alt_text}.
+              </span>
+            )}{" "}
+            <span className="weekend-essay-caption-light">
+              {imageCaption ? (
+                <span dangerouslySetInnerHTML={{ __html: imageCaption }} />
+              ) : (
+                `illustration by ${author.name.toLowerCase()}`
+              )}
+            </span>
+          </div>
         </div>
       </div>
 
@@ -257,15 +262,26 @@ export default async function TheWeekendEssay() {
 
         /* Caption Bar */
         .weekend-essay-caption {
-          font-family: var(--font-futura), var(--font-knockout), sans-serif;
-          font-size: 0.85rem;
-          color: #e8635a;
-          font-weight: 600;
           text-align: center;
           padding: 1rem 1rem 0.5rem;
           margin-top: 1rem;
-          letter-spacing: 0.02em;
           line-height: 1.5;
+        }
+
+        .weekend-essay-caption-bold {
+          font-family: var(--font-coolvetica), var(--font-stilson), sans-serif;
+          font-weight: 700;
+          font-size: 0.95rem;
+          color: #1a3a4a;
+          letter-spacing: 0.01em;
+        }
+
+        .weekend-essay-caption-light {
+          font-family: var(--font-futura), var(--font-knockout), sans-serif;
+          font-size: 0.85rem;
+          color: #2a5a6a;
+          font-weight: 400;
+          letter-spacing: 0.02em;
         }
 
         /* Footer */
