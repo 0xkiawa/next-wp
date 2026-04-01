@@ -10,6 +10,9 @@ import Interviews from '@/app/mainsection/interviews';
 import SubscribePopup from '@/app/mainsection/subscribe-popup';
 import Podcast from '@/app/mainsection/podcast';
 
+// Revalidate the homepage every 60 seconds so WordPress updates appear quickly
+export const revalidate = 60;
+
 // Define metadata for the home page
 export const metadata: Metadata = {
   title: 'KiawaNotes | The Blog of Kiawa Vurner',

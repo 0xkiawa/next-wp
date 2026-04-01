@@ -29,13 +29,13 @@ function getUrl(path: string, query?: Record<string, any>) {
 }
 
 // In development, use a short revalidation time so new posts show up quickly.
-// In production, use a longer time (1 hour) to reduce server load.
-// You can also set up on-demand revalidation via a webhook from WordPress.
+// In production, use a short time too (60s) so WordPress updates appear fast.
+// The WordPress webhook plugin also triggers on-demand revalidation for instant updates.
 const isDev = process.env.NODE_ENV === 'development';
 
 const defaultFetchOptions: FetchOptions = {
   next: {
-    revalidate: isDev ? 60 : 3600, // 60 seconds in dev, 1 hour in production
+    revalidate: 60, // 60 seconds in both dev and production for fast updates
   },
 };
 
