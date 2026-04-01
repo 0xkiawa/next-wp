@@ -130,6 +130,7 @@ export default async function TheWeekendEssay() {
           background: #ffffff;
           padding: 3rem 2rem 2rem;
           position: relative;
+          border-top: 6px solid #000000;
         }
 
         .weekend-essay-header {
