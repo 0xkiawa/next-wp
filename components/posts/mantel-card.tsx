@@ -18,8 +18,9 @@ export default async function MantelCard({ post }: { post: Post }) {
   const durationStr = `${readTime} min${readTime !== 1 ? 's' : ''}`;
 
   // Smart detection for audio content
-  // Checks post format, ACF fields, HTML5 audio tags, mp3 links, or common podcast/video embeds
+  // Checks for the Custom Field "article_media" (where Cloudinary links are hosted), plus fallbacks for other embeds
   const hasAudio = 
+    !!post.acf?.article_media ||
     post.format === 'audio' ||
     /<audio|wp-block-audio|spotify\.com|soundcloud\.com|apple\.com.*podcast|podbean\.com|anchor\.fm|castbox\.fm|youtube\.com|youtu\.be|\.mp3|\.m4a/i.test(contentStr);
 
