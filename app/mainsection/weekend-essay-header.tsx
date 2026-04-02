@@ -15,7 +15,7 @@ export default function WeekendEssayHeader() {
           />
         </div>
         <div className="weekend-essay-top-text">
-          <h3 className="font-newyorker text-black uppercase tracking-widest font-bold text-3xl md:text-5xl mb-3">
+          <h3 className="font-newyorker text-black tracking-widest text-xs uppercase">
             WHAT WE'RE READING
           </h3>
           <p className="font-acaslon text-gray-700 text-base md:text-xl max-w-lg mx-auto">
@@ -30,8 +30,8 @@ export default function WeekendEssayHeader() {
           grid-template-columns: 1fr;
           gap: 2rem;
           align-items: center;
-          margin-top: 4rem;
-          margin-bottom: 2rem;
+          margin-top: 8rem;
+          margin-bottom: 6rem;
         }
 
         @media (min-width: 768px) {
