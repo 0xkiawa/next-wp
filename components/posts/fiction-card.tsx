@@ -44,6 +44,7 @@ export default async function TheWeekendEssay() {
 
   return (
     <section className="weekend-essay-section">
+      <div className="w-full h-[14px] md:h-[18px] bg-black mb-12"></div>
       <div className="weekend-essay-header">
         {/* Category Label */}
         <Link
