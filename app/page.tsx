@@ -9,6 +9,7 @@ import Books from '@/app/mainsection/-books';
 import Interviews from '@/app/mainsection/interviews';
 import SubscribePopup from '@/app/mainsection/subscribe-popup';
 import Podcast from '@/app/mainsection/podcast';
+import WeekendEssayHeader from '@/app/mainsection/weekend-essay-header';
 
 // Revalidate the homepage every 60 seconds so WordPress updates appear quickly
 export const revalidate = 60;
@@ -126,6 +127,7 @@ export default async function Home() {
       <Culture />
 
       {/* Fiction section (The Weekend Essay) - fetches latest post internally */}
+      <WeekendEssayHeader />
       <Fiction />
       <Books />
       <SubscribePopup />
