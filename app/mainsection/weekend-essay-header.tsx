@@ -31,7 +31,7 @@ export default function WeekendEssayHeader() {
           gap: 2rem;
           align-items: center;
           margin-top: 8rem;
-          margin-bottom: 6rem;
+          margin-bottom: 14rem;
         }
 
         @media (min-width: 768px) {
