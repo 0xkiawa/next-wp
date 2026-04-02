@@ -44,16 +44,24 @@ export default async function TheWeekendEssay() {
 
   return (
     <section className="weekend-essay-section">
-      {/* Decorative GIF Divider */}
-      <div className="weekend-essay-divider-wrapper">
+      {/* Decorative GIF Banner */}
+      <div className="weekend-essay-top-banner">
         <Image 
           src="/scroll.gif" 
           alt="Divider scroll" 
-          width={1200} 
-          height={60} 
-          className="weekend-essay-divider-img" 
+          width={80} 
+          height={80} 
+          className="weekend-essay-top-gif" 
           unoptimized 
         />
+        <div className="weekend-essay-top-text">
+          <h3 className="font-newyorker text-[#e8635a] uppercase tracking-widest font-bold text-xl md:text-2xl mb-1">
+            Weekend Essay
+          </h3>
+          <p className="font-acaslon italic text-gray-500 text-sm">
+            Curated long-form features for your weekend reading.
+          </p>
+        </div>
       </div>
 
       <div className="weekend-essay-header">
@@ -144,18 +152,24 @@ export default async function TheWeekendEssay() {
           position: relative;
         }
 
-        .weekend-essay-divider-wrapper {
-          width: 100%;
+        .weekend-essay-top-banner {
           display: flex;
-          justify-content: center;
-          margin-bottom: 2rem;
+          align-items: center;
+          gap: 1.5rem;
+          margin-bottom: 2.5rem;
+          padding-bottom: 1.5rem;
+          border-bottom: 1px solid #f0f0f0;
         }
 
-        .weekend-essay-divider-img {
-          width: 100%;
-          max-width: 100%;
-          height: auto;
+        .weekend-essay-top-gif {
+          width: auto;
+          height: 60px;
           object-fit: contain;
+        }
+
+        .weekend-essay-top-text {
+          display: flex;
+          flex-direction: column;
         }
 
         .weekend-essay-header {
