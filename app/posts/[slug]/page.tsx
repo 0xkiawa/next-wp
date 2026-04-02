@@ -254,7 +254,8 @@ export async function generateMetadata({
       url: `${siteConfig.site_domain}/posts/${post.slug}`,
       images: [
         {
-          url: ogUrl.toString(),
+          // Directly use the featured image URL so social networks can fetch it perfectly, fallback to dynamic generator
+          url: featuredMedia?.source_url || ogUrl.toString(),
           width: 1200,
           height: 630,
           alt: title,
@@ -265,7 +266,8 @@ export async function generateMetadata({
       card: "summary_large_image",
       title,
       description,
-      images: [ogUrl.toString()],
+      // Same logic for Twitter card
+      images: [featuredMedia?.source_url || ogUrl.toString()],
     },
   };
 }
