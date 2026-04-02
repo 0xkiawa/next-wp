@@ -42,6 +42,21 @@ export default async function TheWeekendEssay() {
     ? media.caption.rendered.replace(/<[^>]+>/g, '').trim()
     : '';
 
+  // Parse Alt Text to split at "illustration"
+  let altTextBold = media?.alt_text || "";
+  let altTextLight = "";
+
+  if (altTextBold) {
+    const lowerAlt = altTextBold.toLowerCase();
+    const splitKeyword = "illustration";
+    const illustrationIndex = lowerAlt.indexOf(splitKeyword);
+    
+    if (illustrationIndex !== -1) {
+      altTextLight = altTextBold.substring(illustrationIndex);
+      altTextBold = altTextBold.substring(0, illustrationIndex).replace(/[\.\s]+$/, '');
+    }
+  }
+
   return (
     <section className="weekend-essay-section">
       <div className="w-full h-[14px] md:h-[18px] bg-black mb-12"></div>
@@ -98,13 +113,15 @@ export default async function TheWeekendEssay() {
 
           {/* Caption Bar */}
           <div className="weekend-essay-caption">
-            {media?.alt_text && (
+            {altTextBold && (
               <span className="weekend-essay-caption-bold">
-                {media.alt_text}.
+                {altTextBold}.
               </span>
             )}{" "}
             <span className="weekend-essay-caption-light">
-              {imageCaption ? (
+              {altTextLight ? (
+                altTextLight
+              ) : imageCaption ? (
                 <span dangerouslySetInnerHTML={{ __html: imageCaption }} />
               ) : (
                 `illustration by ${author.name.toLowerCase()}`
