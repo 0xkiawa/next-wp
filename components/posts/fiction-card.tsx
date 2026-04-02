@@ -62,7 +62,7 @@ export default async function TheWeekendEssay() {
 
         {/* Subtitle/Excerpt */}
         {excerptText && (
-          <p 
+          <p
             className="weekend-essay-subtitle"
             dangerouslySetInnerHTML={{ __html: excerptText }}
           />

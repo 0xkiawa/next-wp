@@ -127,8 +127,10 @@ export default async function Home() {
       <Culture />
 
       {/* Fiction section (The Weekend Essay) - fetches latest post internally */}
-      <WeekendEssayHeader />
-      <Fiction />
+      <div className="py-24 md:py-32">
+        <WeekendEssayHeader />
+        <Fiction />
+      </div>
       <Books />
       <SubscribePopup />
     </>

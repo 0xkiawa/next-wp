@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function WeekendEssayHeader() {
   return (
-    <div className="max-w-[72rem] mx-auto px-4 md:px-0">
+    <div className="max-w-[72rem] mx-auto px-9 md:px-0">
       <div className="weekend-essay-top-banner">
         <div className="weekend-essay-top-gif-wrapper">
           <Image 
@@ -15,8 +15,8 @@ export default function WeekendEssayHeader() {
           />
         </div>
         <div className="weekend-essay-top-text">
-          <h3 className="font-newyorker text-black tracking-widest text-xs uppercase">
-            WHAT WE'RE READING
+          <h3 className="font-newyorker text-black  text-2xl uppercase md-4 mb-4">
+            "WHAT WE'RE READING THIS WEEKEND"
           </h3>
           <p className="font-acaslon text-gray-700 text-base md:text-xl max-w-lg mx-auto">
             A book of essays that explores what we want from the lives that we secretly imagine for ourselves; an engrossing novel that follows a teen-age girl in working-class Tokyo as she desperately tries to achieve financial stability; and more.
