@@ -256,14 +256,14 @@ export async function generateMetadata({
       url: `${siteConfig.site_domain}/posts/${post.slug}`,
       siteName: siteConfig.site_name,
       images: [
-        // ✅ Put the raw featured image FIRST — WhatsApp reads the first image tag
+        // ✅ Direct Cloudinary URL first — WhatsApp fetches this instantly
         ...(featuredMedia?.source_url ? [{
           url: featuredMedia.source_url,
           width: featuredMedia.media_details?.width || 1200,
           height: featuredMedia.media_details?.height || 630,
           alt: title,
         }] : []),
-        // Keep the OG generator as fallback for platforms that support it (Twitter, Slack etc)
+        // OG generator as fallback for platforms that support it (Twitter, Slack etc)
         {
           url: ogUrl.toString(),
           width: 1200,
@@ -276,8 +276,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title,
       description,
-      // Provide both for Twitter
-      images: [featuredMedia?.source_url || ogUrl.toString()],
+      images: [ogUrl.toString()], // Twitter can handle dynamic OG
     },
   };
 }
@@ -802,9 +801,9 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
   // ✅ Use embedded data from the post fetch (media, author, term)
   // This avoids redundant API calls and is more reliable
-  const featuredMedia = post._embedded?.["wp:featuredmedia"]?.[0] ?? null;
-  const author = post._embedded?.["author"]?.[0] ?? await getAuthorById(post.author).catch(() => null);
-  const category = post._embedded?.["wp:term"]?.[0]?.[0] ?? (post.categories?.[0] ? await getCategoryById(post.categories[0]).catch(() => null) : null);
+  const featuredMedia = (post._embedded?.["wp:featuredmedia"]?.[0] as any) ?? null;
+  const author = (post._embedded?.["author"]?.[0] as any) ?? await getAuthorById(post.author).catch(() => null);
+  const category = (post._embedded?.["wp:term"]?.[0]?.[0] as any) ?? (post.categories?.[0] ? await getCategoryById(post.categories[0]).catch(() => null) : null);
 
   // Handle article_media (audio)
   // Simple pass-through: We assume the user provides a valid, accessible URL (e.g., Cloudinary)
