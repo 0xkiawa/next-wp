@@ -252,22 +252,29 @@ export async function generateMetadata({
       description,
       type: "article",
       url: `${siteConfig.site_domain}/posts/${post.slug}`,
+      siteName: siteConfig.site_name,
       images: [
         {
-          // Directly use the featured image URL so social networks can fetch it perfectly, fallback to dynamic generator
-          url: featuredMedia?.source_url || ogUrl.toString(),
+          // We prioritize the dynamic OG image generator as it is perfectly sized (1200x630)
+          // and includes the title/author overlay which performs better on social media.
+          url: ogUrl.toString(),
           width: 1200,
           height: 630,
           alt: title,
         },
+        // Fallback to the raw featured image if the generator is slow or fails
+        ...(featuredMedia?.source_url ? [{
+          url: featuredMedia.source_url,
+          alt: title,
+        }] : []),
       ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      // Same logic for Twitter card
-      images: [featuredMedia?.source_url || ogUrl.toString()],
+      // Same prioritized logic for Twitter card
+      images: [ogUrl.toString()],
     },
   };
 }
