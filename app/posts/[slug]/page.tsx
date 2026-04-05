@@ -215,11 +215,13 @@ export async function generateMetadata({
   };
 
   // Fetch additional data for rich OG image
-  const [featuredMedia, author, category] = await Promise.all([
-    post.featured_media ? getFeaturedMediaById(post.featured_media).catch(() => null) : null,
+  const [author, category] = await Promise.all([
     getAuthorById(post.author).catch(() => null),
     post.categories?.[0] ? getCategoryById(post.categories[0]).catch(() => null) : null,
   ]);
+
+  // ✅ Get image from embedded data — no separate API call that can fail
+  const featuredMedia = post._embedded?.["wp:featuredmedia"]?.[0] ?? null;
 
   const title = post.title.rendered.replace(/<[^>]*>/g, "");
   const description = post.excerpt?.rendered?.replace(/<[^>]*>/g, "").trim() || "";
@@ -798,11 +800,11 @@ export default async function Page({ params }: { params: { slug: string } }) {
     );
   }
 
-  const [featuredMedia, author, category] = await Promise.all([
-    post.featured_media ? getFeaturedMediaById(post.featured_media) : null,
-    getAuthorById(post.author),
-    getCategoryById(post.categories[0]),
-  ]);
+  // ✅ Use embedded data from the post fetch (media, author, term)
+  // This avoids redundant API calls and is more reliable
+  const featuredMedia = post._embedded?.["wp:featuredmedia"]?.[0] ?? null;
+  const author = post._embedded?.["author"]?.[0] ?? await getAuthorById(post.author).catch(() => null);
+  const category = post._embedded?.["wp:term"]?.[0]?.[0] ?? (post.categories?.[0] ? await getCategoryById(post.categories[0]).catch(() => null) : null);
 
   // Handle article_media (audio)
   // Simple pass-through: We assume the user provides a valid, accessible URL (e.g., Cloudinary)
