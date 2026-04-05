@@ -221,45 +221,28 @@ export async function generateMetadata({
   const awaitedParams = await params;
   const post = await getPostBySlug(awaitedParams.slug);
 
-  if (!post || !post.title) return {
-    title: "Post Not Found",
-  };
+  if (!post || !post.title) return { title: "Post Not Found" };
 
-  // Fetch additional data for rich OG image
   const [author, category] = await Promise.all([
     getAuthorById(post.author).catch(() => null),
     post.categories?.[0] ? getCategoryById(post.categories[0]).catch(() => null) : null,
   ]);
 
-  // ✅ Get image from embedded data — no separate API call that can fail
+  // Get featured image from embedded data
   const featuredMedia = post._embedded?.["wp:featuredmedia"]?.[0] ?? null;
+  
+  // Get raw source URL
+  const rawImageUrl = featuredMedia?.source_url ?? null;
+
+  // Force landscape crop for WhatsApp/social — works for Cloudinary and any image
+  const ogImageUrl = rawImageUrl
+    ? rawImageUrl.includes("res.cloudinary.com")
+      ? rawImageUrl.replace("/upload/", "/upload/w_1200,h_630,c_fill,q_auto,f_auto/")
+      : rawImageUrl
+    : null;
 
   const title = post.title.rendered.replace(/<[^>]*>/g, "");
   const description = post.excerpt?.rendered?.replace(/<[^>]*>/g, "").trim() || "";
-
-  // Build OG image URL with all parameters
-  const ogUrl = new URL(`${siteConfig.site_domain}/api/og`);
-  ogUrl.searchParams.append("title", title);
-  ogUrl.searchParams.append("description", description.substring(0, 150));
-
-  // Use transformed image URL if it's from Cloudinary
-  const imageUrl = featuredMedia?.source_url
-    ? toOgImage(featuredMedia.source_url)
-    : null;
-
-  if (imageUrl) {
-    ogUrl.searchParams.append("image", imageUrl);
-  }
-
-  // Add category if available
-  if (category?.name) {
-    ogUrl.searchParams.append("category", category.name);
-  }
-
-  // Add author if available
-  if (author?.name) {
-    ogUrl.searchParams.append("author", author.name);
-  }
 
   return {
     title,
@@ -270,32 +253,18 @@ export async function generateMetadata({
       type: "article",
       url: `${siteConfig.site_domain}/posts/${post.slug}`,
       siteName: siteConfig.site_name,
-      images: [
-        // ✅ Direct transformed URL first — WhatsApp/X fetches this optimally
-        ...(imageUrl ? [{
-          url: imageUrl,
-          width: 1200,
-          height: 630,
-          alt: title,
-        }] : []),
-        // OG generator as fallback
-        {
-          url: ogUrl.toString(),
-          width: 1200,
-          height: 630,
-          alt: title,
-        },
-      ],
+      images: ogImageUrl
+        ? [{ url: ogImageUrl, width: 1200, height: 630, alt: title }]
+        : [],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: [ogUrl.toString()], // Twitter can handle dynamic OG best
+      images: ogImageUrl ? [ogImageUrl] : [],
     },
   };
 }
-
 // Science-Tech Layout Component
 function ScienceTechLayout({ post, featuredMedia, author, category }: { post: any; featuredMedia: any; author: any; category: any }) {
   const postDate = new Date(post.date);
