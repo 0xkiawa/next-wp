@@ -254,27 +254,28 @@ export async function generateMetadata({
       url: `${siteConfig.site_domain}/posts/${post.slug}`,
       siteName: siteConfig.site_name,
       images: [
+        // ✅ Put the raw featured image FIRST — WhatsApp reads the first image tag
+        ...(featuredMedia?.source_url ? [{
+          url: featuredMedia.source_url,
+          width: featuredMedia.media_details?.width || 1200,
+          height: featuredMedia.media_details?.height || 630,
+          alt: title,
+        }] : []),
+        // Keep the OG generator as fallback for platforms that support it (Twitter, Slack etc)
         {
-          // We prioritize the dynamic OG image generator as it is perfectly sized (1200x630)
-          // and includes the title/author overlay which performs better on social media.
           url: ogUrl.toString(),
           width: 1200,
           height: 630,
           alt: title,
         },
-        // Fallback to the raw featured image if the generator is slow or fails
-        ...(featuredMedia?.source_url ? [{
-          url: featuredMedia.source_url,
-          alt: title,
-        }] : []),
       ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      // Same prioritized logic for Twitter card
-      images: [ogUrl.toString()],
+      // Provide both for Twitter
+      images: [featuredMedia?.source_url || ogUrl.toString()],
     },
   };
 }
