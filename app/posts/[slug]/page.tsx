@@ -201,6 +201,17 @@ export async function generateStaticParams() {
   return posts.map((post) => ({ slug: post.slug }));
 }
 
+// Auto-transform Cloudinary images to 1200x630 landscape for OG
+function toOgImage(url: string): string {
+  if (url.includes('res.cloudinary.com')) {
+    // Check if it already has transformations (contains /upload/...)
+    if (url.includes('/upload/') && !url.includes('w_1200')) {
+      return url.replace('/upload/', '/upload/w_1200,h_630,c_fill,q_auto,f_auto/');
+    }
+  }
+  return url;
+}
+
 // ✅ SEO metadata
 export async function generateMetadata({
   params,
@@ -231,9 +242,13 @@ export async function generateMetadata({
   ogUrl.searchParams.append("title", title);
   ogUrl.searchParams.append("description", description.substring(0, 150));
 
-  // Add featured image if available
-  if (featuredMedia?.source_url) {
-    ogUrl.searchParams.append("image", featuredMedia.source_url);
+  // Use transformed image URL if it's from Cloudinary
+  const imageUrl = featuredMedia?.source_url
+    ? toOgImage(featuredMedia.source_url)
+    : null;
+
+  if (imageUrl) {
+    ogUrl.searchParams.append("image", imageUrl);
   }
 
   // Add category if available
@@ -256,14 +271,14 @@ export async function generateMetadata({
       url: `${siteConfig.site_domain}/posts/${post.slug}`,
       siteName: siteConfig.site_name,
       images: [
-        // ✅ Direct Cloudinary URL first — WhatsApp fetches this instantly
-        ...(featuredMedia?.source_url ? [{
-          url: featuredMedia.source_url,
-          width: featuredMedia.media_details?.width || 1200,
-          height: featuredMedia.media_details?.height || 630,
+        // ✅ Direct transformed URL first — WhatsApp/X fetches this optimally
+        ...(imageUrl ? [{
+          url: imageUrl,
+          width: 1200,
+          height: 630,
           alt: title,
         }] : []),
-        // OG generator as fallback for platforms that support it (Twitter, Slack etc)
+        // OG generator as fallback
         {
           url: ogUrl.toString(),
           width: 1200,
@@ -276,7 +291,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title,
       description,
-      images: [ogUrl.toString()], // Twitter can handle dynamic OG
+      images: [ogUrl.toString()], // Twitter can handle dynamic OG best
     },
   };
 }
