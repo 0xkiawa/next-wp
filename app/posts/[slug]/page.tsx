@@ -656,113 +656,117 @@ function CultureLayout({ post, featuredMedia, author, category, cleanExcerpt, fo
 // Default Layout Component
 function DefaultLayout({ post, featuredMedia, author, category, cleanExcerpt, wordCount, readingTimeMinutes, formattedDate }: any) {
   return (
-    <Section>
-      <Container>
-        <Prose>
-          {/* Category */}
-          {category && (
-            <div className="mb-4">
-              <Link
-                href={`/posts/?category=${category.id}`}
-                className={cn(
-                  "text-xs lg:text-2xl font-newyorker uppercase text-red-700 transition-colors",
-                  "!no-underline"
-                )}
-              >
-                <span dangerouslySetInnerHTML={{ __html: category.name }} />
-              </Link>
-            </div>
-          )}
+    <>
+      {/* Two-column header — mirrors FeaturedPostCard */}
+      <section className="w-full border-b border-black dark:border-white">
+        <div className="flex flex-col md:flex-row min-h-auto md:min-h-[700px]">
 
-          {/* Title */}
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold font-knockout mb-4">
-            <Balancer>
-              <span dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
-            </Balancer>
-          </h1>
+          {/* LEFT: Content */}
+          <div className="w-full md:w-1/2 flex flex-col justify-center p-6 md:p-16 lg:p-24 order-1 md:border-r border-black dark:border-white">
 
-          {/* Excerpt */}
-          {cleanExcerpt && (
-            <div className="mb-6 max-w-2xl">
-              <p className="text-base md:text-lg text-muted-foreground font-acaslon italic">
-                {cleanExcerpt}
-              </p>
-            </div>
-          )}
+            {/* Category label — replaces "Featured Story" */}
+            {category && (
+              <div className="mb-6 md:mb-8 text-center md:text-left">
+                <Link
+                  href={`/posts/?category=${category.id}`}
+                  className="font-newyorker text-red-600 tracking-widest text-xs uppercase hover:text-red-800 transition-colors"
+                >
+                  <span dangerouslySetInnerHTML={{ __html: category.name }} />
+                </Link>
+              </div>
+            )}
 
-          {/* Bookmark & Time — mobile only */}
-          <div className="flex flex-col sm:flex-row items-start gap-4 mb-6 lg:hidden">
-            <BookmarkButton
-              wpPostId={post.id}
-              postTitle={post.title.rendered}
-              postSlug={post.slug}
-            />
-            <div className="flex items-center text-sm text-muted-foreground h-10">
-              <Clock size={14} className="mr-1.5" />
-              <span>{readingTimeMinutes} min read</span>
-            </div>
-          </div>
-
-          {/* Reading time — desktop only */}
-          <div className="hidden lg:flex items-center text-sm text-muted-foreground h-10 mb-6">
-            <Clock size={14} className="mr-1.5" />
-            <span>{readingTimeMinutes} min read</span>
-          </div>
-
-          {/* Author + Date */}
-          <div className="flex flex-wrap items-center gap-4 mb-8">
-            <p className="font-miller text-sm text-muted-foreground">
-              Published by{" "}
-              <Link
-                href={`/posts/?author=${author.id}`}
-                className="font-stilson text-primary/90"
-              >
-                {author.name}
-              </Link>{" "}
-              • {formattedDate}
-            </p>
-          </div>
-
-          {/* Audio Player */}
-          {post.acf?.article_media && (
-            <div className="max-w-2xl mb-8">
-              <AudioPlayer src={post.acf.article_media} title="Listen to this article" />
-            </div>
-          )}
-
-          {/* Featured Image */}
-          {featuredMedia?.source_url && (
-            <figure className="my-4">
-              <Image
-                src={featuredMedia.source_url}
-                alt={featuredMedia.alt_text || post.title.rendered}
-                className="max-w-full h-auto !rounded-none"
-                width={featuredMedia.media_details?.width || 1200}
-                height={featuredMedia.media_details?.height || 800}
-                style={{ borderRadius: 0 }}
-                loading="lazy"
-                priority={false}
-              />
-              {featuredMedia.caption && (
-                <figcaption
-                  className="text-sm text-muted-foreground mt-2 italic"
-                  dangerouslySetInnerHTML={{
-                    __html: featuredMedia.caption.rendered,
-                  }}
+            <div className="space-y-6 flex flex-col h-full">
+              {/* Title */}
+              <div className="text-center md:text-left">
+                <h1
+                  className="text-4xl md:text-5xl lg:text-5xl font-acaslon leading-[1.1]"
+                  dangerouslySetInnerHTML={{ __html: post.title.rendered }}
                 />
+              </div>
+
+              {/* Byline + Date */}
+              <div className="pt-2 flex items-center gap-1.5 justify-center md:justify-start flex-wrap">
+                <span className="font-acaslon italic text-sm md:text-base text-gray-700 dark:text-gray-300 lowercase">by</span>
+                <span className="font-futura font-bold text-xs md:text-sm tracking-[0.1em] text-red-600 uppercase">
+                  <Link href={`/posts/?author=${author.id}`} className="hover:text-red-800 transition-colors">
+                    {author.name}
+                  </Link>
+                </span>
+                <span className="font-acaslon italic text-sm md:text-base text-gray-700 dark:text-gray-300 mx-1">•</span>
+                <span className="font-acaslon italic text-sm md:text-base text-gray-700 dark:text-gray-300">
+                  {formattedDate}
+                </span>
+              </div>
+
+              {/* Excerpt */}
+              {cleanExcerpt && (
+                <div className="mt-6 md:mt-12 text-lg md:text-xl font-acaslon text-gray-700 dark:text-gray-300 leading-relaxed line-clamp-4 text-left italic">
+                  {cleanExcerpt}
+                </div>
               )}
-            </figure>
-          )}
-        </Prose>
 
-        <div className="w-full h-px bg-dark my-8"></div>
+              {/* Reading time + Bookmark */}
+              <div className="flex flex-col sm:flex-row items-center md:items-start gap-4 mt-auto pt-4">
+                <BookmarkButton
+                  wpPostId={post.id}
+                  postTitle={post.title.rendered}
+                  postSlug={post.slug}
+                />
+                <div className="flex items-center text-sm text-muted-foreground h-10">
+                  <Clock size={14} className="mr-1.5" />
+                  <span>{readingTimeMinutes} min read</span>
+                </div>
+              </div>
+            </div>
+          </div>
 
-        {/* Article Body with sticky sidebar bookmark */}
-        <StickyBookmark wpPostId={post.id} postTitle={post.title.rendered} postSlug={post.slug}>
-          <ArticleContent content={post.content.rendered} className="mt-2" />
-        </StickyBookmark>
-      </Container>
-    </Section>
+          {/* RIGHT: Image + caption below */}
+          <div className="relative w-full md:w-1/2 min-h-[400px] md:h-auto order-2 border-t md:border-t-0 border-black dark:border-white flex flex-col">
+            {featuredMedia?.source_url && (
+              <>
+                <div className="relative w-full flex-1 min-h-[400px] md:min-h-0 md:h-full">
+                  <Image
+                    src={featuredMedia.source_url}
+                    alt={featuredMedia.alt_text || post.title.rendered}
+                    fill
+                    className="object-cover !rounded-none"
+                    priority
+                  />
+                </div>
+                {/* Caption below the image */}
+                {featuredMedia.caption?.rendered && (
+                  <div
+                    className="px-4 py-2 text-xs text-gray-500 dark:text-gray-400 font-acaslon italic border-t border-black dark:border-white"
+                    dangerouslySetInnerHTML={{ __html: featuredMedia.caption.rendered }}
+                  />
+                )}
+              </>
+            )}
+          </div>
+
+        </div>
+      </section>
+
+      {/* Audio Player (if present) */}
+      {post.acf?.article_media && (
+        <div className="max-w-2xl mx-auto px-4 pt-8">
+          <AudioPlayer src={post.acf.article_media} title="Listen to this article" />
+        </div>
+      )}
+
+      {/* Black divider — content starts after this */}
+      <div className="w-full h-[3px] bg-black dark:bg-white mt-0"></div>
+
+      {/* Article body */}
+      <Section>
+        <Container>
+          <StickyBookmark wpPostId={post.id} postTitle={post.title.rendered} postSlug={post.slug}>
+            <ArticleContent content={post.content.rendered} className="mt-2" />
+          </StickyBookmark>
+        </Container>
+      </Section>
+    </>
   );
 }
 
