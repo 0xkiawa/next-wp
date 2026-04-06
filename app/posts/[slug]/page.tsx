@@ -551,8 +551,17 @@ function CultureLayout({ post, featuredMedia, author, category, cleanExcerpt, fo
       <Container>
         <div className="max-w-3xl mx-auto">
 
-          {/* Top Red bar */}
-          <div className="w-16 h-3 bg-red-700 mx-auto mb-3"></div>
+          {/* Category */}
+          {category && (
+            <div className="mb-4 text-center">
+              <Link
+                href={`/posts/?category=${category.id}`}
+                className="font-newyorker text-red-600 tracking-widest text-xs uppercase hover:text-red-800 transition-colors"
+              >
+                <span dangerouslySetInnerHTML={{ __html: category.name }} />
+              </Link>
+            </div>
+          )}
 
           {/* Headline */}
           <h1 className="text-center text-3xl md:text-5xl lg:text-[54px] font-stilson text-gray-950 leading-[1.15] mb-4">
