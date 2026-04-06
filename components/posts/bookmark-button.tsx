@@ -130,6 +130,29 @@ export function BookmarkButton({ wpPostId, postTitle, postSlug }: BookmarkButton
     setShowShareOptions(false);
   };
 
+  const handleShare = async () => {
+    // On mobile/tablets, try the native share API first
+    if (typeof navigator !== 'undefined' && navigator.share && window.innerWidth < 768) {
+      try {
+        const url = `${window.location.origin}/posts/${postSlug}`;
+        await navigator.share({
+          title: postTitle,
+          text: `Check out this article: ${postTitle}`,
+          url: url,
+        });
+        return; // Success, don't show custom popover
+      } catch (err) {
+        if ((err as Error).name !== 'AbortError') {
+          console.error('Error sharing:', err);
+        } else {
+          return; // User cancelled, don't show custom popover
+        }
+      }
+    }
+    // Fallback or desktop: show custom share options
+    setShowShareOptions(true);
+  };
+
   const BookmarkSvg = () => (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="flex-shrink-0 text-black">
       {isBookmarked ? (
@@ -158,21 +181,8 @@ export function BookmarkButton({ wpPostId, postTitle, postSlug }: BookmarkButton
   );
 
   const ShareSvg = () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path
-        d="M12 3L8 7M12 3L16 7M12 3V15"
-        stroke="black"
-        strokeWidth="1.2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-      <path
-        d="M8 10H5C4.44772 10 4 10.4477 4 11V19C4 19.5523 4.44772 20 5 20H19C19.5523 20 20 19.5523 20 19V11C20 10.4477 19.5523 10 19 10H16"
-        stroke="black"
-        strokeWidth="1.2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg" className="flex-shrink-0">
+      <path d="M14 9V5L21 12L14 19V14.9C9 14.9 5.5 16.5 3 20C4 15 7 10 14 9Z" />
     </svg>
   );
 
@@ -224,15 +234,14 @@ export function BookmarkButton({ wpPostId, postTitle, postSlug }: BookmarkButton
         <div className="w-px h-6 bg-gray-300 flex-shrink-0" />
 
         {/* Share side */}
+        <button
+          onClick={handleShare}
+          aria-label="Share article"
+          className="flex items-center justify-center h-full px-4 active:bg-gray-50 transition-colors"
+        >
+          <ShareSvg />
+        </button>
         <Popover open={showShareOptions} onOpenChange={setShowShareOptions}>
-          <PopoverTrigger asChild>
-            <button
-              aria-label="Share article"
-              className="flex items-center justify-center h-full px-4 active:bg-gray-50 transition-colors"
-            >
-              <ShareSvg />
-            </button>
-          </PopoverTrigger>
           <SharePopoverContent />
         </Popover>
       </div>
@@ -274,15 +283,14 @@ export function BookmarkButton({ wpPostId, postTitle, postSlug }: BookmarkButton
       </button>
 
       {/* Share button */}
+      <button
+        onClick={handleShare}
+        aria-label="Share article"
+        className="hidden md:flex cursor-pointer w-12 h-12 rounded-[14px] border-[0.5px] border-gray-300 bg-white items-center justify-center shadow-[0_2px_8px_rgb(0,0,0,0.04)] transition-all duration-200 hover:border-black active:scale-95"
+      >
+        <ShareSvg />
+      </button>
       <Popover open={showShareOptions} onOpenChange={setShowShareOptions}>
-        <PopoverTrigger asChild>
-          <button
-            aria-label="Share article"
-            className="hidden md:flex cursor-pointer w-12 h-12 rounded-[14px] border-[0.5px] border-gray-300 bg-white items-center justify-center shadow-[0_2px_8px_rgb(0,0,0,0.04)] transition-all duration-200 hover:border-black active:scale-95"
-          >
-            <ShareSvg />
-          </button>
-        </PopoverTrigger>
         <SharePopoverContent />
       </Popover>
 
