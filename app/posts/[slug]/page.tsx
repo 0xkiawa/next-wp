@@ -547,7 +547,7 @@ function BooksLayout({ post, featuredMedia, author, category, cleanExcerpt, form
 // Culture & Personal Layout Component (Centered Style)
 function CultureLayout({ post, featuredMedia, author, category, cleanExcerpt, formattedDate }: any) {
   return (
-    <Section className="bg-white pt-6 pb-20">
+    <Section className="bg-white pt-4 pb-20">
       <Container>
         <div className="max-w-3xl mx-auto">
 
@@ -615,7 +615,7 @@ function CultureLayout({ post, featuredMedia, author, category, cleanExcerpt, fo
             </div>
           )}
 
-          {/* Featured Image — tall enough to peek into viewport */}
+          {/* Featured Image */}
           {featuredMedia?.source_url && (
             <figure className="mb-10">
               <div className="relative w-full overflow-hidden" style={{ height: 'clamp(280px, 45vw, 520px)' }}>
