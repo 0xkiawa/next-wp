@@ -547,15 +547,15 @@ function BooksLayout({ post, featuredMedia, author, category, cleanExcerpt, form
 // Culture & Personal Layout Component (Centered Style)
 function CultureLayout({ post, featuredMedia, author, category, cleanExcerpt, formattedDate }: any) {
   return (
-    <Section className="bg-white pt-12 pb-20">
+    <Section className="bg-white pt-6 pb-20">
       <Container>
         <div className="max-w-3xl mx-auto">
-          
+
           {/* Top Red bar */}
-          <div className="w-16 h-3 bg-red-700 mx-auto mb-4"></div>
+          <div className="w-16 h-3 bg-red-700 mx-auto mb-3"></div>
 
           {/* Headline */}
-          <h1 className="text-center text-3xl md:text-5xl lg:text-[54px] font-stilson  text-gray-950 leading-[1.15] mb-6">
+          <h1 className="text-center text-3xl md:text-5xl lg:text-[54px] font-stilson text-gray-950 leading-[1.15] mb-4">
             <Balancer>
               <span dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
             </Balancer>
@@ -563,15 +563,34 @@ function CultureLayout({ post, featuredMedia, author, category, cleanExcerpt, fo
 
           {/* Subhead / Excerpt */}
           {cleanExcerpt && (
-            <div className="mb-6 text-center px-4">
+            <div className="mb-4 text-center px-4">
               <p className="text-xl md:text-2xl text-gray-800 font-acaslon italic leading-relaxed">
                 {cleanExcerpt}
               </p>
             </div>
           )}
 
+          {/* Byline */}
+          <div className="text-center mb-1 flex items-center justify-center gap-1.5">
+            <span className="text-sm md:text-base font-acaslon italic text-black lowercase">
+              by
+            </span>
+            <span className="text-xs md:text-sm font-bold font-futura tracking-[0.15em] text-black uppercase">
+              <Link href={`/posts/?author=${author.id}`} className="hover:text-red-700 transition-colors">
+                {author.name}
+              </Link>
+            </span>
+          </div>
+
+          {/* Date */}
+          <div className="text-center mb-4">
+            <span className="text-sm md:text-base text-gray-700 font-acaslon italic">
+              {formattedDate}
+            </span>
+          </div>
+
           {/* Bookmark & Time — mobile only */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8 lg:hidden">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-4 lg:hidden">
             <BookmarkButton
               wpPostId={post.id}
               postTitle={post.title.rendered}
@@ -584,46 +603,27 @@ function CultureLayout({ post, featuredMedia, author, category, cleanExcerpt, fo
           </div>
 
           {/* Reading time — desktop only */}
-          <div className="hidden lg:flex items-center justify-center text-xs text-gray-500 font-futura uppercase tracking-widest font-bold mb-8">
+          <div className="hidden lg:flex items-center justify-center text-xs text-gray-500 font-futura uppercase tracking-widest font-bold mb-4">
             <Clock size={14} className="mr-2" />
             {calculateReadingTime(post.content.rendered)} min read
           </div>
 
-          {/* Byline */}
-          <div className="text-center mb-2 flex items-center justify-center gap-1.5">
-            <span className="text-sm md:text-base font-acaslon italic text-black lowercase">
-              by
-            </span>
-            <span className="text-xs md:text-sm font-bold font-futura tracking-[0.15em] text-black uppercase">
-              <Link href={`/posts/?author=${author.id}`} className="hover:text-red-700 transition-colors">
-                {author.name}
-              </Link>
-            </span>
-          </div>
-
-          {/* Date */}
-          <div className="text-center mb-10">
-            <span className="text-sm md:text-base text-gray-700 font-acaslon italic">
-              {formattedDate}
-            </span>
-          </div>
-
           {/* Audio Player */}
           {post.acf?.article_media && (
-            <div className="mb-8">
+            <div className="mb-4">
               <AudioPlayer src={post.acf.article_media} title="Listen to this article" />
             </div>
           )}
 
-          {/* Featured Image */}
+          {/* Featured Image — tall enough to peek into viewport */}
           {featuredMedia?.source_url && (
             <figure className="mb-10">
-              <div className="relative w-full aspect-[3/2] overflow-hidden">
+              <div className="relative w-full overflow-hidden" style={{ height: 'clamp(280px, 45vw, 520px)' }}>
                 <Image
                   src={featuredMedia.source_url}
                   alt={featuredMedia.alt_text || post.title.rendered}
                   fill
-                  className="object-cover !rounded-none"
+                  className="object-cover object-top !rounded-none"
                   style={{ borderRadius: 0 }}
                   sizes="(max-width: 768px) 100vw, 800px"
                   priority
@@ -640,7 +640,7 @@ function CultureLayout({ post, featuredMedia, author, category, cleanExcerpt, fo
 
           <div className="mb-10 pb-6 border-b border-gray-200"></div>
 
-          {/* Article Content with sticky sidebar bookmark */}
+          {/* Article Content */}
           <StickyBookmark wpPostId={post.id} postTitle={post.title.rendered} postSlug={post.slug}>
             <div className="prose prose-lg max-w-none font-acaslon text-gray-900 leading-loose">
               <ArticleContent content={post.content.rendered} />
