@@ -617,22 +617,22 @@ function CultureLayout({ post, featuredMedia, author, category, cleanExcerpt, fo
 
           {/* Featured Image */}
           {featuredMedia?.source_url && (
-            <figure className="mb-10 relative text-center">
-              <Image
-                src={featuredMedia.source_url}
-                alt={featuredMedia.alt_text || post.title.rendered}
-                className="w-full h-auto object-cover max-w-full !rounded-none"
-                width={1200}
-                height={800}
-                style={{ borderRadius: 0 }}
-                priority
-              />
+            <figure className="mb-10">
+              <div className="relative w-full aspect-[3/2] overflow-hidden">
+                <Image
+                  src={featuredMedia.source_url}
+                  alt={featuredMedia.alt_text || post.title.rendered}
+                  fill
+                  className="object-cover !rounded-none"
+                  style={{ borderRadius: 0 }}
+                  sizes="(max-width: 768px) 100vw, 800px"
+                  priority
+                />
+              </div>
               {featuredMedia.caption && (
                 <figcaption
                   className="text-sm text-gray-500 mt-3 text-right font-acaslon italic"
-                  dangerouslySetInnerHTML={{
-                    __html: featuredMedia.caption.rendered,
-                  }}
+                  dangerouslySetInnerHTML={{ __html: featuredMedia.caption.rendered }}
                 />
               )}
             </figure>
