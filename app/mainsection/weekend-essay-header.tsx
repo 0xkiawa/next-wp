@@ -6,7 +6,7 @@ export default function WeekendEssayHeader() {
       <div className="weekend-essay-top-banner">
         <div className="weekend-essay-top-gif-wrapper">
           <Image 
-            src="/scroll.gif" 
+            src="/scrollgif.gif" 
             alt="Divider scroll" 
             width={800} 
             height={400} 
@@ -16,10 +16,10 @@ export default function WeekendEssayHeader() {
         </div>
         <div className="weekend-essay-top-text">
           <h3 className="font-newyorker text-black  text-2xl uppercase md-4 mb-4">
-            "WHAT WE'RE READING THIS WEEKEND"
+            "WHAT WE'RE CURRENTLY READING"
           </h3>
           <p className="font-acaslon text-gray-700 text-base md:text-xl max-w-lg mx-auto">
-            A book of essays that explores what we want from the lives that we secretly imagine for ourselves; an engrossing novel that follows a teen-age girl in working-class Tokyo as she desperately tries to achieve financial stability; and more.
+           The US-Israel war on Iran enters its 38th day as Trump's deadline for the Strait of Hormuz expires tonight — and Tehran shows no signs of backing down.
           </p>
         </div>
       </div>
