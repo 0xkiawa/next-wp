@@ -556,7 +556,7 @@ function CultureLayout({ post, featuredMedia, author, category, cleanExcerpt, fo
             <div className="mb-4 text-center">
               <Link
                 href={`/posts/?category=${category.id}`}
-                className="font-newyorker text-red-600 tracking-widest text-xs uppercase hover:text-red-800 transition-colors"
+                className="font-space-mono text-red-600 tracking-widest text-xs uppercase hover:text-red-800 transition-colors"
               >
                 <span dangerouslySetInnerHTML={{ __html: category.name }} />
               </Link>
