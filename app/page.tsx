@@ -117,22 +117,23 @@ export default async function Home() {
         )}
       </div>
       {/* ── Subscribe banner — between section 1 and The Mantel ── */}
-      <div className="w-full max-w-[1400px] mx-auto px-4 lg:px-10 py-3 flex items-center gap-3">
-        {/* Favicon icon — rounded */}
+      <div className="w-full max-w-[1400px] mx-auto px-4 lg:px-10 py-3 flex items-center gap-3 border-t border-b border-gray-200">
+        {/* Illustrated icon — square crop like New Yorker monocle man */}
         <img
-          src="/favicon-32x32.png"
+          src="/favicon.ico"
           alt="KiawaNotes"
-          width={32}
-          height={32}
-          className="rounded-full flex-shrink-0"
+          width={48}
+          height={48}
+          className="flex-shrink-0 object-cover"
         />
         {/* Text */}
-        <p className="font-futura text-sm md:text-base text-black leading-snug">
-          <span className="font-black uppercase tracking-tight">Support KiawaNotes</span>{" "}
-          <span className="font-medium">bold, unwavered and independent voices.</span>{" "}
+        <p className="font-serif text-sm md:text-base text-black leading-snug">
+          Support{" "}
+          <em className="font-bold not-italic" style={{ fontStyle: "italic" }}>KiawaNotes</em>
+          {"'s"} Bold, Unwavered and Independent Journalism.{" "}
           <a
             href="/sign-up"
-            className="font-black uppercase tracking-tight underline underline-offset-2 hover:text-red-700 transition-colors duration-200"
+            className="font-bold underline underline-offset-2 hover:text-red-700 transition-colors duration-200"
           >
             Subscribe today »
           </a>
