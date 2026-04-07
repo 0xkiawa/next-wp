@@ -1,92 +1,183 @@
-import { Section, Container } from "@/components/craft";
-import { getAllPosts } from "@/lib/wordpress";
+import Image from "next/image";
+import Link from "next/link";
 import MantelCard from "@/components/posts/mantel-card";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
-import { Info } from "lucide-react";
+import { getAllPosts } from "@/lib/wordpress";
+import { Post } from "@/lib/wordpress.d";
 
+/* ─────────────────────────────────────────────────────────────────
+   Helpers
+───────────────────────────────────────────────────────────────── */
+function getEmbeddedImageUrl(post: Post): string | null {
+  return post._embedded?.["wp:featuredmedia"]?.[0]?.source_url ?? null;
+}
+
+function getEmbeddedImageAlt(post: Post): string {
+  return (
+    (post._embedded?.["wp:featuredmedia"]?.[0] as any)?.alt_text ||
+    stripHtml(post.title?.rendered ?? "")
+  );
+}
+
+function formatMonthYear(dateStr: string): string {
+  return new Date(dateStr)
+    .toLocaleDateString("en-US", { month: "long", year: "numeric" })
+    .toUpperCase();
+}
+
+function stripHtml(html: string): string {
+  return html.replace(/<[^>]*>/g, "").trim();
+}
+
+/* ─────────────────────────────────────────────────────────────────
+   Props
+───────────────────────────────────────────────────────────────── */
 interface UnsubscribedProps {
   excludedPostIds?: number[];
 }
 
-export default async function Page({ excludedPostIds = [] }: UnsubscribedProps) {
-  // Fetch posts from the personal category
+/* ─────────────────────────────────────────────────────────────────
+   Component
+───────────────────────────────────────────────────────────────── */
+export default async function TheUnsubscribed({
+  excludedPostIds = [],
+}: UnsubscribedProps) {
+  /* ── Data ──────────────────────────────────── */
   const allPosts = await getAllPosts({});
-  // Sort posts by date descending for consistent chronological flow
-  const posts = [...allPosts].sort((a, b) =>
-    new Date(b.date).getTime() - new Date(a.date).getTime()
-  );
+  const posts = [...allPosts]
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .filter((p) => !excludedPostIds.includes(p.id));
 
-  // Filter out excluded posts (posts already shown in other sections)
-  const filteredPosts = posts.filter(post => !excludedPostIds.includes(post.id));
+  if (posts.length === 0) return null;
 
-  // Take the first 6 posts from the filtered list to show a nice row
-  const displayPosts = filteredPosts.slice(0, 6);
+  const featuredPost = posts[0];
+  const articlePosts = posts.slice(1, 7);
 
+  const imageUrl = getEmbeddedImageUrl(featuredPost);
+  const imageAlt = getEmbeddedImageAlt(featuredPost);
+  const dateLabel = formatMonthYear(featuredPost.date);
+  const excerpt = stripHtml(featuredPost.excerpt?.rendered ?? "").substring(0, 200);
+
+  /* ── Render ────────────────────────────────── */
   return (
-    <div>
-      {/* Section Header - Mini Philosophy Style */}
-      <div className="text-center max-w-6xl mx-auto px-4 md:px-0 mb-12">
-        <div className="w-full h-[14px] md:h-[18px] bg-black mb-12"></div>
-        <h2 className="text-4xl md:text-5xl text-black mb-4 flex justify-center items-center">
-          <span 
-            className="font-futura font-black uppercase tracking-tighter text-[1.1em] inline-block mr-[2px] mt-0 mb-1 px-0 relative top-0"
-            style={{ lineHeight: 0.5 }}
-          >
-            THE
-          </span>
-          <span 
-            className="font-stilson uppercase font-medium tracking-tight ml-[2px] md:ml-[4px]"
-            style={{ lineHeight: 1 }}
-          >
-            MANTEL
-          </span>
-        </h2>
-        <p className="text-xl md:text-2xl font-garamond italic text-black max-w-2xl mx-auto mb-5 leading-normal">
-          Echoes of the past, resonating in the present. A curated collection of timeless stories.
-        </p>
-        <p className="text-base md:text-lg font-acaslon italic text-black">
-          with <span className="font-space-mono font-bold not-italic text-black ml-[2px]">KIAWAVURNER</span>
-        </p>
-      </div>
+    <section className="w-full max-w-[1400px] mx-auto px-4 lg:px-10 py-0">
 
-      {/* Carousel Layout with border only on this div */}
-      <div className="max-w-[1400px] mx-auto  pt-8 pl-4 lg:pl-12 pr-4 lg:pr-12">
-        <Carousel
-          opts={{
-            align: "start",
-            loop: true,
-          }}
-          className="w-full"
+      {/* TOP RULE */}
+      <div className="w-full h-[2px] bg-black" />
+
+      {/* TWO-COLUMN WRAPPER */}
+      <div className="flex w-full" style={{ minHeight: "640px" }}>
+
+        {/* ═══════════════════════════════════════
+            LEFT  3/4 — Monthly Issue (black card)
+        ═══════════════════════════════════════ */}
+        <div
+          className="flex flex-col bg-black p-8 md:p-12"
+          style={{ width: "75%" }}
         >
-          <CarouselContent className="-ml-2 md:-ml-3">
-            {displayPosts.map((post, idx) => (
-              <CarouselItem key={post.id} className="pl-2 md:pl-3 basis-[65%] sm:basis-[48%] md:basis-[32%] lg:basis-1/5 xl:basis-1/5">
-                <div className="h-full py-1 min-h-[420px]">
+          {/* Monthly Issue label */}
+          <div className="mb-7 flex-shrink-0">
+            <p className="font-space-mono text-white/50 text-[10px] tracking-[0.22em] uppercase leading-none mb-0.5">
+              MONTHLY ISSUE
+            </p>
+            <p className="font-space-mono text-white text-[11px] tracking-[0.18em] uppercase">
+              {dateLabel}
+            </p>
+            <div className="w-10 h-px bg-white/20 mt-3" />
+          </div>
+
+          {/* Title */}
+          <Link href={`/posts/${featuredPost.slug}`} className="group mb-5 block flex-shrink-0">
+            <h2
+              className="text-white font-stilson text-3xl md:text-4xl lg:text-[2.7rem] leading-[1.1] tracking-tight group-hover:text-gray-300 transition-colors duration-300 line-clamp-4"
+              dangerouslySetInnerHTML={{ __html: featuredPost.title?.rendered ?? "" }}
+            />
+          </Link>
+
+          {/* Excerpt */}
+          <p className="text-gray-400 font-garamond italic text-lg md:text-xl leading-relaxed mb-8 line-clamp-3 flex-shrink-0">
+            {excerpt}
+          </p>
+
+          {/* Featured Image — centred in remaining flex space */}
+          <div className="flex-1 flex items-center justify-center">
+            {imageUrl ? (
+              <Link
+                href={`/posts/${featuredPost.slug}`}
+                className="relative block w-full max-w-lg overflow-hidden group"
+                style={{ aspectRatio: "4/3" }}
+              >
+                <Image
+                  src={imageUrl}
+                  alt={imageAlt}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                  sizes="(max-width: 768px) 70vw, 45vw"
+                />
+                <div className="absolute inset-0 border border-white/10 pointer-events-none" />
+              </Link>
+            ) : (
+              <div
+                className="w-full max-w-lg bg-neutral-900 border border-white/10"
+                style={{ aspectRatio: "4/3" }}
+              />
+            )}
+          </div>
+        </div>
+
+        {/* Vertical divider */}
+        <div className="w-[2px] bg-black flex-shrink-0" />
+
+        {/* ═══════════════════════════════════════
+            RIGHT  1/4 — split 50/50 top / bottom
+        ═══════════════════════════════════════ */}
+        <div className="flex flex-col" style={{ width: "25%" }}>
+
+          {/* TOP HALF — decorative breathing room */}
+          <div className="flex-1 bg-white border-b-2 border-black flex items-center justify-center overflow-hidden">
+            <span
+              className="font-space-mono text-[9px] tracking-[0.3em] text-black/15 uppercase select-none"
+              style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
+            >
+              KIAWANOTES
+            </span>
+          </div>
+
+          {/* BOTTOM HALF — swipeable article reel */}
+          <div className="flex-1 bg-white flex flex-col overflow-hidden p-4">
+
+            {/* "FEATURED ARTICLES" heading */}
+            <p className="font-space-mono text-black text-[9px] tracking-[0.22em] uppercase mb-3 flex-shrink-0">
+              FEATURED ARTICLES
+            </p>
+
+            {/* Scroll reel — shows 1.5 cards to hint at swiping */}
+            <div
+              className="no-scrollbar flex gap-3 overflow-x-auto flex-1"
+              style={{ scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}
+            >
+              {articlePosts.map((post) => (
+                <div
+                  key={post.id}
+                  className="flex-shrink-0"
+                  style={{ width: "72%", scrollSnapAlign: "start" }}
+                >
                   <MantelCard post={post} />
                 </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
+              ))}
+            </div>
 
-          {/* Swipe indicator */}
-          <div className="flex items-center justify-center mt-2 mb-2 text-blue-500">
-            <Info size={16} className="mr-1" />
-            <span className="text-sm font-newyorker font-medium">swipe more</span>
+            {/* Swipe hint */}
+            <p className="font-space-mono mt-2 text-[8px] tracking-[0.2em] text-black/30 uppercase flex-shrink-0">
+              ← swipe
+            </p>
           </div>
 
-          <div className="flex justify-center mt-2">
-            <CarouselPrevious className="relative mr-2" />
-            <CarouselNext className="relative ml-2" />
-          </div>
-        </Carousel>
+        </div>
       </div>
 
-    </div>
+      {/* BOTTOM RULE */}
+      <div className="w-full h-[2px] bg-black" />
+
+    </section>
   );
 }
