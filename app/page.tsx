@@ -116,28 +116,30 @@ export default async function Home() {
             : <FeaturedPostCard post={latestNonInterviewPost} />
         )}
       </div>
-      {/* ── Subscribe banner — between section 1 and The Mantel ── */}
-      <div className="w-full max-w-[1400px] mx-auto px-4 lg:px-10 py-3 flex items-center gap-3 border-t border-b border-gray-200">
-        {/* Illustrated icon — square crop like New Yorker monocle man */}
-        <img
-          src="/favicon.ico"
-          alt="KiawaNotes"
-          width={48}
-          height={48}
-          className="flex-shrink-0 object-cover"
-        />
-        {/* Text */}
-        <p className="font-serif text-sm md:text-base text-black leading-snug">
-          Support{" "}
-          <em className="font-bold not-italic" style={{ fontStyle: "italic" }}>KiawaNotes</em>
-          {"'s"} Bold, Unwavered and Independent Journalism.{" "}
-          <a
-            href="/sign-up"
-            className="font-bold underline underline-offset-2 hover:text-red-700 transition-colors duration-200"
-          >
-            Subscribe today »
-          </a>
-        </p>
+      {/* ── Subscribe banner — centered in the space between sections ── */}
+      <div className="w-full border-b border-black/10">
+        <div className="max-w-[1400px] mx-auto px-4 lg:px-10 py-8 md:py-10 flex flex-col items-center justify-center gap-4 text-center">
+          {/* Icon */}
+          <img
+            src="/kiawanotesicon.png"
+            alt="KiawaNotes"
+            width={48}
+            height={48}
+            className="flex-shrink-0 object-cover"
+          />
+          {/* Text — centred on all screen sizes */}
+          <p className="font-serif text-sm md:text-base text-black leading-snug max-w-lg">
+            Support{" "}
+            <em className="font-bold font-acaslon" style={{ fontStyle: "italic" }}>KiawaNotes</em>
+            {"'s"} Bold, Unwavered and Independent Journalism.{" "}
+            <a
+              href="/sign-up"
+              className="font-bold underline underline-offset-2 hover:text-red-700 transition-colors duration-200 whitespace-nowrap"
+            >
+              Subscribe today »
+            </a>
+          </p>
+        </div>
       </div>
 
       <Unsubscribed excludedPostIds={excludedPostIds} />
