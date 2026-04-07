@@ -59,81 +59,80 @@ export default async function TheUnsubscribed({
 
   /* ── Render ────────────────────────────────── */
   return (
-    <section className="w-full max-w-[1400px] mx-auto px-4 lg:px-10 py-0">
+    <section className="w-full max-w-[1400px] mx-auto">
 
-      {/* TOP RULE */}
-      <div className="w-full h-[2px] bg-black" />
+      {/* ══════════════════════════════════════════════
+          DESKTOP LAYOUT  (md and up)
+          Left 75%: white bg + inset black card
+          Thin 1px divider
+          Right 25%: white — no top/bottom black rules
+      ══════════════════════════════════════════════ */}
+      <div className="hidden md:flex w-full bg-white" style={{ minHeight: "640px" }}>
 
-      {/* TWO-COLUMN WRAPPER */}
-      <div className="flex w-full" style={{ minHeight: "640px" }}>
+        {/* LEFT 75% — white padding wrapping the inset black card */}
+        <div className="bg-white p-3 lg:p-4" style={{ width: "75%" }}>
+          <div className="bg-black h-full flex flex-col p-8 lg:p-10">
 
-        {/* ═══════════════════════════════════════
-            LEFT  3/4 — Monthly Issue (black card)
-        ═══════════════════════════════════════ */}
-        <div
-          className="flex flex-col bg-black p-8 md:p-12"
-          style={{ width: "75%" }}
-        >
-          {/* Monthly Issue label */}
-          <div className="mb-7 flex-shrink-0">
-            <p className="font-space-mono text-white/50 text-[10px] tracking-[0.22em] uppercase leading-none mb-0.5">
-              MONTHLY ISSUE
-            </p>
-            <p className="font-space-mono text-white text-[11px] tracking-[0.18em] uppercase">
-              {dateLabel}
-            </p>
-            <div className="w-10 h-px bg-white/20 mt-3" />
-          </div>
+            {/* Monthly Issue label */}
+            <div className="mb-7 flex-shrink-0">
+              <p className="font-space-mono text-white/50 text-[10px] tracking-[0.22em] uppercase leading-none mb-0.5">
+                MONTHLY ISSUE
+              </p>
+              <p className="font-space-mono text-white text-[11px] tracking-[0.18em] uppercase">
+                {dateLabel}
+              </p>
+              <div className="w-10 h-px bg-white/20 mt-3" />
+            </div>
 
-          {/* Title */}
-          <Link href={`/posts/${featuredPost.slug}`} className="group mb-5 block flex-shrink-0">
-            <h2
-              className="text-white font-stilson text-3xl md:text-4xl lg:text-[2.7rem] leading-[1.1] tracking-tight group-hover:text-gray-300 transition-colors duration-300 line-clamp-4"
-              dangerouslySetInnerHTML={{ __html: featuredPost.title?.rendered ?? "" }}
-            />
-          </Link>
-
-          {/* Excerpt */}
-          <p className="text-gray-400 font-garamond italic text-lg md:text-xl leading-relaxed mb-8 line-clamp-3 flex-shrink-0">
-            {excerpt}
-          </p>
-
-          {/* Featured Image — centred in remaining flex space */}
-          <div className="flex-1 flex items-center justify-center">
-            {imageUrl ? (
-              <Link
-                href={`/posts/${featuredPost.slug}`}
-                className="relative block w-full max-w-lg overflow-hidden group"
-                style={{ aspectRatio: "4/3" }}
-              >
-                <Image
-                  src={imageUrl}
-                  alt={imageAlt}
-                  fill
-                  className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-                  sizes="(max-width: 768px) 70vw, 45vw"
-                />
-                <div className="absolute inset-0 border border-white/10 pointer-events-none" />
-              </Link>
-            ) : (
-              <div
-                className="w-full max-w-lg bg-neutral-900 border border-white/10"
-                style={{ aspectRatio: "4/3" }}
+            {/* Title */}
+            <Link href={`/posts/${featuredPost.slug}`} className="group mb-5 block flex-shrink-0">
+              <h2
+                className="text-white font-stilson text-3xl md:text-4xl lg:text-[2.7rem] leading-[1.1] tracking-tight group-hover:text-gray-300 transition-colors duration-300 line-clamp-4"
+                dangerouslySetInnerHTML={{ __html: featuredPost.title?.rendered ?? "" }}
               />
-            )}
+            </Link>
+
+            {/* Excerpt */}
+            <p className="text-gray-400 font-garamond italic text-lg md:text-xl leading-relaxed mb-8 line-clamp-3 flex-shrink-0">
+              {excerpt}
+            </p>
+
+            {/* Featured Image — centred in remaining flex space */}
+            <div className="flex-1 flex items-center justify-center">
+              {imageUrl ? (
+                <Link
+                  href={`/posts/${featuredPost.slug}`}
+                  className="relative block w-full max-w-lg overflow-hidden group"
+                  style={{ aspectRatio: "4/3" }}
+                >
+                  <Image
+                    src={imageUrl}
+                    alt={imageAlt}
+                    fill
+                    className="object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                    sizes="(max-width: 768px) 70vw, 45vw"
+                  />
+                  <div className="absolute inset-0 border border-white/10 pointer-events-none" />
+                </Link>
+              ) : (
+                <div
+                  className="w-full max-w-lg bg-neutral-900 border border-white/10"
+                  style={{ aspectRatio: "4/3" }}
+                />
+              )}
+            </div>
+
           </div>
         </div>
 
-        {/* Vertical divider */}
-        <div className="w-[2px] bg-black flex-shrink-0" />
+        {/* Thin 1px vertical divider */}
+        <div className="w-px bg-black flex-shrink-0" />
 
-        {/* ═══════════════════════════════════════
-            RIGHT  1/4 — split 50/50 top / bottom
-        ═══════════════════════════════════════ */}
-        <div className="flex flex-col" style={{ width: "25%" }}>
+        {/* RIGHT 25% — clean white, no top/bottom black rules */}
+        <div className="flex flex-col bg-white" style={{ width: "25%" }}>
 
           {/* TOP HALF — decorative breathing room */}
-          <div className="flex-1 bg-white border-b-2 border-black flex items-center justify-center overflow-hidden">
+          <div className="flex-1 flex items-center justify-center overflow-hidden">
             <span
               className="font-space-mono text-[9px] tracking-[0.3em] text-black/15 uppercase select-none"
               style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
@@ -142,15 +141,15 @@ export default async function TheUnsubscribed({
             </span>
           </div>
 
-          {/* BOTTOM HALF — swipeable article reel */}
-          <div className="flex-1 bg-white flex flex-col overflow-hidden p-4">
+          {/* Subtle mid-divider between the two halves */}
+          <div className="h-px bg-black/15 mx-4" />
 
-            {/* "FEATURED ARTICLES" heading */}
+          {/* BOTTOM HALF — swipeable article reel */}
+          <div className="flex-1 flex flex-col overflow-hidden p-4">
             <p className="font-space-mono text-black text-[9px] tracking-[0.22em] uppercase mb-3 flex-shrink-0">
               FEATURED ARTICLES
             </p>
 
-            {/* Scroll reel — shows 1.5 cards to hint at swiping */}
             <div
               className="no-scrollbar flex gap-3 overflow-x-auto flex-1"
               style={{ scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}
@@ -166,7 +165,6 @@ export default async function TheUnsubscribed({
               ))}
             </div>
 
-            {/* Swipe hint */}
             <p className="font-space-mono mt-2 text-[8px] tracking-[0.2em] text-black/30 uppercase flex-shrink-0">
               ← swipe
             </p>
@@ -175,8 +173,102 @@ export default async function TheUnsubscribed({
         </div>
       </div>
 
-      {/* BOTTOM RULE */}
-      <div className="w-full h-[2px] bg-black" />
+      {/* ══════════════════════════════════════════════
+          MOBILE LAYOUT  (below md)
+          1. Black card — full width
+             – image full width on top
+             – label / title / excerpt below
+          2. Small white gap
+          3. 3px black divider
+          4. Featured Articles — swipeable 1.5 cards
+      ══════════════════════════════════════════════ */}
+      <div className="md:hidden flex flex-col">
+
+        {/* Black card — full width */}
+        <div className="bg-black w-full flex flex-col">
+
+          {/* Image — full width, top of card */}
+          {imageUrl ? (
+            <Link
+              href={`/posts/${featuredPost.slug}`}
+              className="relative block w-full overflow-hidden"
+              style={{ aspectRatio: "4/3" }}
+            >
+              <Image
+                src={imageUrl}
+                alt={imageAlt}
+                fill
+                className="object-cover"
+                sizes="100vw"
+              />
+            </Link>
+          ) : (
+            <div className="w-full bg-neutral-900" style={{ aspectRatio: "4/3" }} />
+          )}
+
+          {/* Text below the image */}
+          <div className="p-6 pb-8">
+
+            {/* Monthly Issue label */}
+            <div className="mb-4">
+              <p className="font-space-mono text-white/50 text-[10px] tracking-[0.22em] uppercase leading-none mb-0.5">
+                MONTHLY ISSUE
+              </p>
+              <p className="font-space-mono text-white text-[11px] tracking-[0.18em] uppercase">
+                {dateLabel}
+              </p>
+              <div className="w-10 h-px bg-white/20 mt-3" />
+            </div>
+
+            {/* Title */}
+            <Link href={`/posts/${featuredPost.slug}`} className="group block mb-4">
+              <h2
+                className="text-white font-stilson text-2xl leading-[1.15] tracking-tight group-hover:text-gray-300 transition-colors line-clamp-4"
+                dangerouslySetInnerHTML={{ __html: featuredPost.title?.rendered ?? "" }}
+              />
+            </Link>
+
+            {/* Excerpt */}
+            <p className="text-gray-400 font-garamond italic text-base leading-relaxed line-clamp-3">
+              {excerpt}
+            </p>
+
+          </div>
+        </div>
+
+        {/* White space gap */}
+        <div className="h-5 bg-white" />
+
+        {/* 3px black divider */}
+        <div className="h-[3px] bg-black" />
+
+        {/* Featured Articles reel */}
+        <div className="bg-white px-4 pt-4 pb-6">
+          <p className="font-space-mono text-black text-[9px] tracking-[0.22em] uppercase mb-3">
+            FEATURED ARTICLES
+          </p>
+
+          <div
+            className="no-scrollbar flex gap-3 overflow-x-auto"
+            style={{ scrollSnapType: "x mandatory", WebkitOverflowScrolling: "touch" }}
+          >
+            {articlePosts.map((post) => (
+              <div
+                key={post.id}
+                className="flex-shrink-0"
+                style={{ width: "72%", scrollSnapAlign: "start" }}
+              >
+                <MantelCard post={post} />
+              </div>
+            ))}
+          </div>
+
+          <p className="font-space-mono mt-3 text-[8px] tracking-[0.2em] text-black/30 uppercase">
+            ← swipe
+          </p>
+        </div>
+
+      </div>
 
     </section>
   );
