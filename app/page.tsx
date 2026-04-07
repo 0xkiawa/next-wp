@@ -116,6 +116,29 @@ export default async function Home() {
             : <FeaturedPostCard post={latestNonInterviewPost} />
         )}
       </div>
+      {/* ── Subscribe banner — between section 1 and The Mantel ── */}
+      <div className="w-full max-w-[1400px] mx-auto px-4 lg:px-10 py-3 flex items-center gap-3">
+        {/* Favicon icon — rounded */}
+        <img
+          src="/favicon-32x32.png"
+          alt="KiawaNotes"
+          width={32}
+          height={32}
+          className="rounded-full flex-shrink-0"
+        />
+        {/* Text */}
+        <p className="font-futura text-sm md:text-base text-black leading-snug">
+          <span className="font-black uppercase tracking-tight">Support KiawaNotes</span>{" "}
+          <span className="font-medium">bold, unwavered and independent voices.</span>{" "}
+          <a
+            href="/sign-up"
+            className="font-black uppercase tracking-tight underline underline-offset-2 hover:text-red-700 transition-colors duration-200"
+          >
+            Subscribe today »
+          </a>
+        </p>
+      </div>
+
       <Unsubscribed excludedPostIds={excludedPostIds} />
       <Podcast />
       {interviewPost && <Interviews post={interviewPost} />}

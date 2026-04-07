@@ -131,11 +131,15 @@ export default async function TheUnsubscribed({
         {/* RIGHT 25% — clean white, no top/bottom black rules */}
         <div className="flex flex-col bg-white" style={{ width: "25%" }}>
 
-          {/* TOP HALF — decorative breathing room */}
-          <div className="flex-1 flex items-center justify-center overflow-hidden">
+          {/* TOP HALF — Sign Up CTA (desktop only) */}
+          <div className="flex-1 flex flex-col items-center justify-center overflow-hidden gap-3 px-4">
+            <p
+              className="font-space-mono text-red-700 text-[10px] tracking-[0.2em] uppercase text-center leading-relaxed"
+            >
+              Sign Up
+            </p>
             <span
-              className="font-space-mono text-[9px] tracking-[0.3em] text-black/15 uppercase select-none"
-              style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
+              className="font-space-mono text-[8px] tracking-[0.15em] text-black/20 uppercase select-none text-center"
             >
               KIAWANOTES
             </span>
@@ -146,7 +150,7 @@ export default async function TheUnsubscribed({
 
           {/* BOTTOM HALF — swipeable article reel */}
           <div className="flex-1 flex flex-col overflow-hidden p-4">
-            <p className="font-space-mono text-black text-[9px] tracking-[0.22em] uppercase mb-3 flex-shrink-0">
+            <p className="font-space-mono text-black text-xs tracking-widest uppercase font-bold mb-3 flex-shrink-0">
               FEATURED ARTICLES
             </p>
 
@@ -244,7 +248,7 @@ export default async function TheUnsubscribed({
 
         {/* Featured Articles reel */}
         <div className="bg-white px-4 pt-4 pb-6">
-          <p className="font-space-mono text-black text-[9px] tracking-[0.22em] uppercase mb-3">
+          <p className="font-space-mono text-black text-xs tracking-widest uppercase font-bold mb-3">
             FEATURED ARTICLES
           </p>
 
