@@ -116,10 +116,11 @@ export default async function Home() {
             : <FeaturedPostCard post={latestNonInterviewPost} />
         )}
       </div>
-      {/* ── Subscribe banner — centered in the space between sections ── */}
-      <div className="w-full border-b border-black/10">
-        <div className="max-w-[1400px] mx-auto px-4 lg:px-10 py-8 md:py-10 flex flex-col items-center justify-center gap-4 text-center">
-          {/* Icon */}
+      {/* ── Subscribe banner ── */}
+
+      {/* Mobile only: icon + inline text */}
+      <div className="lg:hidden w-full border-t border-b border-black/10">
+        <div className="max-w-[1400px] mx-auto px-4 py-3 flex items-center gap-3">
           <img
             src="/kiawanotesicon.png"
             alt="KiawaNotes"
@@ -127,10 +128,9 @@ export default async function Home() {
             height={48}
             className="flex-shrink-0 object-cover"
           />
-          {/* Text — centred on all screen sizes */}
-          <p className="font-serif text-sm md:text-base text-black leading-snug max-w-lg">
+          <p className="font-serif text-sm text-black leading-snug">
             Support{" "}
-            <em className="font-bold font-acaslon" style={{ fontStyle: "italic" }}>KiawaNotes</em>
+            <em style={{ fontStyle: "italic" }} className="font-bold font-acaslon">KiawaNotes</em>
             {"'s"} Bold, Unwavered and Independent Journalism.{" "}
             <a
               href="/sign-up"
@@ -139,6 +139,37 @@ export default async function Home() {
               Subscribe today »
             </a>
           </p>
+        </div>
+      </div>
+
+      {/* Desktop only (lg+): Vox-style banner */}
+      <div className="hidden lg:block w-full border border-dashed border-black/30 my-8">
+        <div className="max-w-[1400px] mx-auto px-10 py-8 flex items-center gap-10">
+          <div className="flex-shrink-0 w-56">
+            <div className="w-12 h-3 bg-red-700 mb-4" />
+            <h2 className="font-serif text-2xl font-black leading-tight text-black">
+              The context you need, when you need it
+            </h2>
+          </div>
+          <div className="w-px self-stretch bg-black/10 flex-shrink-0" />
+          <div className="flex-1 flex items-center gap-8">
+            <div className="flex-1 space-y-3">
+              <p className="font-serif text-sm text-black leading-relaxed">
+                When news breaks, you need to understand what actually matters — and what to do about it. At KiawaNotes,
+                our mission to help you make sense of the world has never been more vital. But we can{"'"}t do it on our own.
+              </p>
+              <p className="font-serif text-sm text-black leading-relaxed">
+                We rely on readers like you to fund our journalism.{" "}
+                <strong>Will you support our work and become a KiawaNotes Member today?</strong>
+              </p>
+            </div>
+            <a
+              href="/sign-up"
+              className="flex-shrink-0 bg-red-700 hover:bg-red-700 transition-colors duration-200 px-8 py-5 font-sans font-bold text-base text-black text-center leading-tight"
+            >
+              Join now
+            </a>
+          </div>
         </div>
       </div>
 
