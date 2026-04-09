@@ -11,6 +11,7 @@ import { useNavbarTitle } from './NavbarTitleContext';
 const FixedDualNavbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [navTheme, setNavTheme] = useState<'light' | 'dark'>('light'); // 'light' means section is white (navbar black), 'dark' means section is black (navbar white)
   const lastScrollY = useRef(0);
   const menuRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
@@ -40,6 +41,40 @@ const FixedDualNavbar = () => {
       }
 
       lastScrollY.current = currentScrollY;
+
+      // Theme detection based on section background
+      // Check the elements behind the middle of the navbar
+      const elementsAtHeader = document.elementsFromPoint(window.innerWidth / 2, 32);
+      let detectedTheme: 'light' | 'dark' = 'light'; // default to light
+      
+      const bgElement = elementsAtHeader.find(el => {
+        // Skip navbar itself
+        if (el.closest('header')) return false;
+        // Check for specific background classes. Add more if needed.
+        if (el.classList.contains('bg-black') || el.classList.contains('dark:bg-black') || el.classList.contains('bg-gray-900') || el.classList.contains('bg-[#0f0f0f]')) {
+          detectedTheme = 'dark';
+          return true;
+        }
+        if (el.classList.contains('bg-white') || el.classList.contains('bg-gray-50') || el.tagName === 'BODY' || el.tagName === 'MAIN' || el.tagName === 'HTML') {
+          detectedTheme = 'light';
+          return true;
+        }
+        
+        // As a fallback, check computed style if it's a structural element
+        if (el.tagName === 'SECTION' || el.tagName === 'MAIN') {
+           const style = window.getComputedStyle(el);
+           if (style.backgroundColor === 'rgb(0, 0, 0)' || style.backgroundColor === 'rgba(0, 0, 0, 1)' || style.backgroundColor.startsWith('rgb(15, 15, 15)')) {
+             detectedTheme = 'dark';
+             return true;
+           } else if (style.backgroundColor === 'rgb(255, 255, 255)' || style.backgroundColor === 'rgba(255, 255, 255, 1)') {
+             detectedTheme = 'light';
+             return true;
+           }
+        }
+        return false;
+      });
+
+      setNavTheme(detectedTheme);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -88,7 +123,12 @@ const FixedDualNavbar = () => {
         <div className="relative h-16">
           {/* Navbar - Transforms content on scroll */}
           <div
-            className="bg-white dark:bg-background h-16 flex items-center justify-between px-4 md:px-6 transition-all duration-700 ease-in-out z-50 border-b border-gray-200 dark:border-gray-800"
+            className={cn(
+              "h-16 flex items-center justify-between px-4 md:px-6 transition-all duration-700 ease-in-out z-50 border-b",
+              navTheme === 'light' 
+                ? "bg-black text-white border-black" 
+                : "bg-white text-black border-gray-200 dark:bg-background dark:border-gray-800 dark:text-white"
+            )}
           >
             {/* Left section with menu button and blog title (when scrolled) */}
             <div className="flex items-center">
