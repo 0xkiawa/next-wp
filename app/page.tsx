@@ -122,7 +122,7 @@ export default async function Home() {
       <div className="lg:hidden w-full border-t border-b border-black/10">
         <div className="max-w-[1400px] mx-auto px-4 py-3 flex items-center gap-3">
           <img
-            src="/popup.jpg"
+            src="/kiawanotesicon.png"
             alt="KiawaNotes"
             width={48}
             height={48}
