@@ -143,7 +143,7 @@ export default async function Home() {
       </div>
 
       {/* Desktop only (lg+): Vox-style banner */}
-      <div className="hidden lg:block w-full max-w-[1200px] mx-auto border border-dashed border-black/30 my-8">
+      <div className="hidden lg:block w-full max-w-[900px] mx-auto border border-dashed border-black/30 my-8">
         <div className="px-10 py-8 flex flex-col items-center gap-8">
           <div className="flex-shrink-0 text-center">
             <div className="w-12 h-3 bg-red-700 mb-4 mx-auto" />
