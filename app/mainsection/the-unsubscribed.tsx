@@ -3,6 +3,7 @@ import Link from "next/link";
 import MantelCard from "@/components/posts/mantel-card";
 import { getAllPosts } from "@/lib/wordpress";
 import { Post } from "@/lib/wordpress.d";
+import he from "he";
 
 /* ─────────────────────────────────────────────────────────────────
    Helpers
@@ -25,7 +26,7 @@ function formatMonthYear(dateStr: string): string {
 }
 
 function stripHtml(html: string): string {
-  return html.replace(/<[^>]*>/g, "").trim();
+  return he.decode(html.replace(/<[^>]*>/g, "").trim());
 }
 
 /* ─────────────────────────────────────────────────────────────────
