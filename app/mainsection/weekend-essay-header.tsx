@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function WeekendEssayHeader() {
   return (
-    <div className="max-w-[72rem] mx-auto px-9 md:px-0">
+    <div className="max-w-[72rem] mx-auto px-9 md:px-0 lg:px-24">
       <div className="weekend-essay-top-banner">
         <div className="weekend-essay-top-gif-wrapper">
           <Image 

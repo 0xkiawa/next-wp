@@ -21,7 +21,7 @@ export default function PremiumFooter() {
 
   return (
     <footer className="bg-black text-white pt-20 pb-12 border-t border-gray-800">
-      <div className="max-w-screen-xl mx-auto px-6 md:px-12">
+      <div className="max-w-screen-xl mx-auto px-6 md:px-12 lg:px-24">
 
         {/* Top Section: Newsletter & Branding */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 mb-20 border-b border-white/20 pb-16">

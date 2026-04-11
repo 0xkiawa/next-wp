@@ -24,7 +24,7 @@ export default async function Page() {
   return (
     <Section className="bg-white py-16 px-4 md:px-8">
       {/* Replaced Container with a custom wider div for breathing room */}
-      <div className="w-full max-w-[1400px] mx-auto">
+      <div className="w-full max-w-[1400px] mx-auto lg:px-24">
         {/* Section Title */}
         <div className="mb-10">
           <h2 className="text-lg md:text-xl font-bold font-futura tracking-[0.25em] text-black uppercase mb-4">

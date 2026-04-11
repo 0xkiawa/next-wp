@@ -60,7 +60,7 @@ export default async function TheUnsubscribed({
 
   /* ── Render ────────────────────────────────── */
   return (
-    <section className="w-full max-w-[1400px] mx-auto">
+    <section className="w-full max-w-[1400px] mx-auto lg:px-24">
 
       {/* ══════════════════════════════════════════════
           DESKTOP LAYOUT  (md and up)

@@ -3,7 +3,7 @@ import React from 'react';
 
 const ChefQuote = () => {
   return (
-    <section className="my-12 px-4 flex flex-col md:flex-row items-center gap-8 max-w-4xl mx-auto">
+    <section className="my-12 px-4 flex flex-col md:flex-row items-center gap-8 max-w-4xl mx-auto lg:px-24">
       {/* Chef image with shadow visible in both light and dark mode */}
       <div className="w-full md:w-1/2">
         <Image

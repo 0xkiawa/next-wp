@@ -6,7 +6,7 @@ import Link from 'next/link';
 const NewsletterGrid = () => {
   return (
     <section className="bg-[#fcfbf9] dark:bg-black text-black dark:text-white px-4 py-16">
-      <div className="max-w-screen-xl mx-auto">
+      <div className="max-w-screen-xl mx-auto lg:px-24">
         {/* Header */}
         <div className="flex flex-col items-center mb-16">
           <span className="font-newyorker text-red-600 tracking-widest text-xs uppercase mb-3">
