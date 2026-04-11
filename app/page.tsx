@@ -120,7 +120,7 @@ export default async function Home() {
 
       {/* Mobile only: icon + inline text */}
       <div className="lg:hidden w-full border-t border-b border-black/10">
-        <div className="max-w-[1400px] mx-auto pt-4 flex items-center gap-3">
+        <div className="max-w-[1400px] mx-auto px-7  flex items-center gap-3">
           <img
             src="/kiawanotesicon.png"
             alt="KiawaNotes"
