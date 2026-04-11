@@ -53,7 +53,7 @@ export default async function Home() {
   // Fetch the latest posts
   const allPosts = await getAllPosts({});
   // Sort posts by date descending to ensure absolute latest is at index 0 (bypassing sticky)
-  const posts = [...allPosts].sort((a, b) => 
+  const posts = [...allPosts].sort((a, b) =>
     new Date(b.date).getTime() - new Date(a.date).getTime()
   );
 
@@ -120,7 +120,7 @@ export default async function Home() {
 
       {/* Mobile only: icon + inline text */}
       <div className="lg:hidden w-full border-t border-b border-black/10">
-        <div className="max-w-[1400px] mx-auto px-4 py-3 flex items-center gap-3">
+        <div className="max-w-[1400px] mx-auto pt-4 flex items-center gap-3">
           <img
             src="/kiawanotesicon.png"
             alt="KiawaNotes"
