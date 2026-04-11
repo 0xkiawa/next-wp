@@ -126,7 +126,7 @@ export default async function Home() {
             alt="KiawaNotes"
             width={48}
             height={48}
-            className="flex-shrink-0 object-cover rounded-1.5xl"
+            className="flex-shrink-0 object-cover rounded-1xl"
           />
           <p className="font-acaslon text-sm text-black leading-snug">
             Support{" "}
