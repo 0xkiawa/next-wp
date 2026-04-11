@@ -125,7 +125,7 @@ export default async function Home() {
             src="/kiawanotesicon.png"
             alt="KiawaNotes"
             width={48}
-            height={48}
+            height={40}
             className="flex-shrink-0 object-cover rounded-4xl"
           />
           <p className="font-acaslon text-sm text-black leading-snug">
