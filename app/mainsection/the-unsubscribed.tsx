@@ -133,17 +133,20 @@ export default async function TheUnsubscribed({
         <div className="flex flex-col bg-white" style={{ width: "25%" }}>
 
           {/* TOP HALF — Sign Up CTA (desktop only) */}
-          <div className="flex-1 flex flex-col items-center justify-center overflow-hidden gap-3 px-4">
-            <p
-              className="font-space-mono text-red-700 text-[10px] tracking-[0.2em] uppercase text-center leading-relaxed"
-            >
-              Sign Up
-            </p>
-            <span
-              className="font-space-mono text-[8px] tracking-[0.15em] text-black/20 uppercase select-none text-center"
-            >
-              KIAWANOTES
-            </span>
+          <div className="flex-1 flex flex-col items-center justify-center overflow-hidden px-5 py-6">
+            <div className="relative w-full">
+              <span className="absolute -top-2 -left-1 text-red-700 leading-none select-none font-space-mono"
+                style={{ fontSize: "2.6rem", lineHeight: 1 }}>
+                &ldquo;
+              </span>
+              <p className="font-space-mono text-black text-[9px] tracking-[0.18em] uppercase leading-[1.85] text-center px-4 pt-5 pb-4">
+                How am I supposed to calculate volume when I don't have the speakers?
+              </p>
+              <span className="absolute -bottom-4 -right-1 text-red-700 leading-none select-none font-space-mono"
+                style={{ fontSize: "2.6rem", lineHeight: 1 }}>
+                &rdquo;
+              </span>
+            </div>
           </div>
 
           {/* Subtle mid-divider between the two halves */}
@@ -191,6 +194,20 @@ export default async function TheUnsubscribed({
 
         {/* Black card — full width */}
         <div className="bg-black w-full flex flex-col">
+
+          <div className="relative w-full bg-black px-8 pt-8 pb-6">
+            <span className="absolute top-4 left-4 text-red-700 leading-none select-none font-space-mono"
+              style={{ fontSize: "2.6rem", lineHeight: 1 }}>
+              &ldquo;
+            </span>
+            <p className="font-space-mono text-white text-[9px] tracking-[0.18em] uppercase leading-[1.85] text-center px-2">
+              How am I supposed to calculate volume when I don't have the speakers?
+            </p>
+            <span className="absolute bottom-2 right-4 text-red-700 leading-none select-none font-space-mono"
+              style={{ fontSize: "2.6rem", lineHeight: 1 }}>
+              &rdquo;
+            </span>
+          </div>
 
           {/* Image — full width, top of card */}
           {imageUrl ? (
