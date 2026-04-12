@@ -259,6 +259,41 @@ export default async function TheUnsubscribed({
           </div>
         </div>
 
+        {/* Subscribe banner — slides in after 5s, mobile only */}
+        <style>{`
+          @keyframes slideUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to   { opacity: 1; transform: translateY(0); }
+          }
+          .subscribe-slide {
+            opacity: 0;
+            animation: slideUp 0.6s ease-out 5s forwards;
+          }
+        `}</style>
+
+        <div className="subscribe-slide lg:hidden w-full border-t border-b border-black/10">
+          <div className="max-w-[1400px] mx-auto px-7 flex items-center gap-3">
+            <img
+              src="/kiawanotesicon.png"
+              alt="KiawaNotes"
+              width={48}
+              height={48}
+              className="flex-shrink-0 object-cover rounded-[10px]"
+            />
+            <p className="font-acaslon text-sm text-black leading-snug">
+              Support{" "}
+              <em style={{ fontStyle: "italic" }} className="font-bold font-acaslon">KiawaNotes</em>
+              {"'s"} Bold, Unwavered and Independent Journalism.{" "}
+              <a
+                href="/sign-up"
+                className="font-bold underline underline-offset-2 hover:text-red-700 transition-colors duration-200 whitespace-nowrap"
+              >
+                Subscribe today »
+              </a>
+            </p>
+          </div>
+        </div>
+
         {/* White space gap */}
         <div className="h-5 bg-white" />
 

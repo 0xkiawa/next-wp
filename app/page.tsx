@@ -118,29 +118,7 @@ export default async function Home() {
       </div>
       {/* ── Subscribe banner ── */}
 
-      {/* Mobile only: icon + inline text */}
-      <div className="lg:hidden w-full border-t border-b border-black/10">
-        <div className="max-w-[1400px] mx-auto px-7  flex items-center gap-3">
-          <img
-            src="/kiawanotesicon.png"
-            alt="KiawaNotes"
-            width={48}
-            height={48}
-            className="flex-shrink-0 object-cover rounded-[10px]"
-          />
-          <p className="font-acaslon text-sm text-black leading-snug">
-            Support{" "}
-            <em style={{ fontStyle: "italic" }} className="font-bold font-acaslon">KiawaNotes</em>
-            {"'s"} Bold, Unwavered and Independent Journalism.{" "}
-            <a
-              href="/sign-up"
-              className="font-bold underline underline-offset-2 hover:text-red-700 transition-colors duration-200 whitespace-nowrap"
-            >
-              Subscribe today »
-            </a>
-          </p>
-        </div>
-      </div>
+
 
       {/* Desktop only (lg+): Vox-style banner */}
       <div className="hidden lg:block w-full max-w-[900px] mx-auto border border-dashed border-black/30 my-8">
