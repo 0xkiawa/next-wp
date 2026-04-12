@@ -198,7 +198,7 @@ export default async function TheUnsubscribed({
             style={{ fontSize: "2.8rem", lineHeight: 1 }}>
             &#10077;
           </span>
-          <p className="font-space-mono text-black text-3xl tracking-[0.18em] uppercase leading-[1.85] text-center px-4">
+          <p className="font-space-mono font-bold text-black text-3xl tracking-normal uppercase leading-[1.85] text-center px-4">
             How am I supposed to calculate volume when I don't have the speakers?
           </p>
           <span className="absolute bottom-2 right-4 text-red-700 leading-none select-none font-space-mono"
