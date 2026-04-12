@@ -271,7 +271,7 @@ export default async function TheUnsubscribed({
           }
         `}</style>
 
-        <div className="subscribe-slide lg:hidden w-full border-t border-b border-black/10">
+        <div className="subscribe-slide lg:hidden w-full">
           <div className="max-w-[1400px] mx-auto px-7 flex items-center gap-3">
             <img
               src="/kiawanotesicon.png"
