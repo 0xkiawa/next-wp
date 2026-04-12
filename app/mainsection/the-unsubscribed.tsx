@@ -267,12 +267,12 @@ export default async function TheUnsubscribed({
           }
           .subscribe-slide {
             opacity: 0;
-            animation: slideUp 0.6s ease-out 5s forwards;
+            animation: slideUp 0.6s ease-out 20s forwards;
           }
         `}</style>
 
         <div className="subscribe-slide lg:hidden w-full">
-          <div className="max-w-[1400px] mx-auto px-7 flex items-center gap-3">
+          <div className="max-w-[1400px] mx-auto px-7 flex items-center gap-5">
             <img
               src="/kiawanotesicon.png"
               alt="KiawaNotes"
