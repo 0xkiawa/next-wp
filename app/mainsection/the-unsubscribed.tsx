@@ -192,22 +192,23 @@ export default async function TheUnsubscribed({
       ══════════════════════════════════════════════ */}
       <div className="md:hidden flex flex-col">
 
+        {/* Quote — white space above black card, mobile only */}
+        <div className="md:hidden relative w-full bg-white px-8 pt-7 pb-6">
+          <span className="absolute top-4 left-4 text-red-700 leading-none select-none font-space-mono"
+            style={{ fontSize: "2.8rem", lineHeight: 1 }}>
+            &#10077;
+          </span>
+          <p className="font-space-mono text-black text-[11px] tracking-[0.18em] uppercase leading-[1.85] text-center px-4">
+            How am I supposed to calculate volume when I don't have the speakers?
+          </p>
+          <span className="absolute bottom-2 right-4 text-red-700 leading-none select-none font-space-mono"
+            style={{ fontSize: "2.8rem", lineHeight: 1 }}>
+            &#10078;
+          </span>
+        </div>
+
         {/* Black card — full width */}
         <div className="bg-black w-full flex flex-col">
-
-          <div className="relative w-full bg-black px-8 pt-8 pb-6">
-            <span className="absolute top-4 left-4 text-red-700 leading-none select-none font-space-mono"
-              style={{ fontSize: "2.6rem", lineHeight: 1 }}>
-              &ldquo;
-            </span>
-            <p className="font-space-mono text-white text-[9px] tracking-[0.18em] uppercase leading-[1.85] text-center px-2">
-              How am I supposed to calculate volume when I don't have the speakers?
-            </p>
-            <span className="absolute bottom-2 right-4 text-red-700 leading-none select-none font-space-mono"
-              style={{ fontSize: "2.6rem", lineHeight: 1 }}>
-              &rdquo;
-            </span>
-          </div>
 
           {/* Image — full width, top of card */}
           {imageUrl ? (
