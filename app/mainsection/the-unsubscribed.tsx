@@ -139,7 +139,7 @@ export default async function TheUnsubscribed({
                 style={{ fontSize: "2.6rem", lineHeight: 1 }}>
                 &ldquo;
               </span>
-              <p className="font-space-mono text-black text-[9px] tracking-[0.18em] uppercase leading-[1.85] text-center px-4 pt-5 pb-4">
+              <p className="font-space-mono text-black text-xl tracking-[0.18em] uppercase leading-[1.85] text-center px-4 pt-5 pb-4">
                 How am I supposed to calculate volume when I don't have the speakers?
               </p>
               <span className="absolute -bottom-4 -right-1 text-red-700 leading-none select-none font-space-mono"
@@ -198,7 +198,7 @@ export default async function TheUnsubscribed({
             style={{ fontSize: "2.8rem", lineHeight: 1 }}>
             &#10077;
           </span>
-          <p className="font-space-mono text-black text-[11px] tracking-[0.18em] uppercase leading-[1.85] text-center px-4">
+          <p className="font-space-mono text-black text-3xl tracking-[0.18em] uppercase leading-[1.85] text-center px-4">
             How am I supposed to calculate volume when I don't have the speakers?
           </p>
           <span className="absolute bottom-2 right-4 text-red-700 leading-none select-none font-space-mono"
