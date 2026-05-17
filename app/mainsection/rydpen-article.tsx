@@ -13,15 +13,15 @@ export default function RydpenArticle() {
   if (new Date() > EXPIRY) return null;
 
   return (
-    <section className="dark:bg-black text-black dark:text-white w-full border-b border-black dark:border-white">
-      <div className="flex flex-col md:flex-row min-h-auto md:min-h-[700px]">
+    <section className="dark:bg-black text-black dark:text-white w-full max-w-full border-b border-black dark:border-white overflow-hidden">
+      <div className="flex flex-col md:flex-row md:min-h-[700px] w-full">
 
         {/* Content Section — Left on desktop, Top on mobile */}
         <div className="w-full md:w-1/2 flex flex-col justify-center p-6 md:p-16 lg:p-24 order-1 md:border-r border-black dark:border-white">
 
           {/* Label */}
           <div className="mb-6 md:mb-8 text-center md:text-left">
-            <span className="font-newyorker text-red-600 tracking-widest text-xs uppercase">
+            <span className="font-newyorker text-red-600 tracking-widest text-[10px] sm:text-xs uppercase break-words">
               Sponsored · EdTech &amp; Infrastructure
             </span>
           </div>
@@ -29,7 +29,7 @@ export default function RydpenArticle() {
           <div className="space-y-6 flex flex-col h-full">
             <div className="text-center md:text-left">
               <Link href="/sponsored/rydpen" className="block group">
-                <h1 className="text-4xl md:text-5xl lg:text-5xl font-acaslon leading-[1.1] group-hover:text-red-700 transition-colors">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-acaslon leading-[1.1] group-hover:text-red-700 transition-colors">
                   The Algorithm That Could <em className="italic">Fix</em> Africa{"'"}s Education Crisis — Starting in Kenya
                 </h1>
               </Link>

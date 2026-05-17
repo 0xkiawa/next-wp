@@ -50,7 +50,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn("min-h-screen bg-background font-sans antialiased", fontSans.variable, acaslonPro.variable,
+      <body className={cn("min-h-screen bg-background font-sans antialiased overflow-x-hidden", fontSans.variable, acaslonPro.variable,
         stilson.variable,
         millerDaily.variable,
         newyorker.variable,
