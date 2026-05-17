@@ -4,13 +4,13 @@
   --ink: #0f0e0c;
   --ink2: #2d2b26;
   --ink3: #5a5750;
-  --paper: #faf8f4;
-  --paper2: #f0ede6;
-  --rule: #d6d1c8;
+  --paper: #ffffff;
+  --paper2: #fafafa;
+  --rule: #eaeaea;
 
   /* ── RED accent (replaces teal) ── */
   --accent: #8b1a1a;
-  --accent-light: #f5e8e8;
+  --accent-light: #fdf5f5;
 
   --col: 680px;
 
@@ -21,6 +21,8 @@
   background: var(--paper);
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 /* ── MASTHEAD ── */
@@ -160,7 +162,7 @@
   gap: 0 3.5rem;
   align-items: start;
 }
-.mainCol { padding: 2.5rem 0; }
+.mainCol { padding: 2.5rem 0; min-width: 0; }
 .sidebar { padding: 2.5rem 0; position: sticky; top: 2rem; }
 
 /* ── TYPOGRAPHY ── */
