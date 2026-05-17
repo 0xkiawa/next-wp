@@ -547,8 +547,8 @@ function BooksLayout({ post, featuredMedia, author, category, cleanExcerpt, form
 // Culture & Personal Layout Component (Centered Style)
 function CultureLayout({ post, featuredMedia, author, category, cleanExcerpt, formattedDate }: any) {
   return (
-    <Section className="bg-white pt-4 pb-20">
-      <Container>
+    <Section className="bg-white !pt-0 md:!pt-2 pb-20">
+      <Container className="!pt-4 md:!pt-6">
         <div className="max-w-3xl mx-auto">
 
           {/* Category */}
