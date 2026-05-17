@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-import { Menu, X, Send } from 'lucide-react';
+import { Menu, X, Send, Bookmark } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { AuthButton } from '@/components/auth/auth-button';
 
@@ -11,7 +11,7 @@ import { useNavbarTitle } from './NavbarTitleContext';
 const FixedDualNavbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [navTheme, setNavTheme] = useState<'light' | 'dark'>('light'); // 'light' means section is white (navbar black), 'dark' means section is black (navbar white)
+  const [navTheme, setNavTheme] = useState<'light' | 'dark'>('light');
   const lastScrollY = useRef(0);
   const menuRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
@@ -19,7 +19,6 @@ const FixedDualNavbar = () => {
 
   const displayTitle = title || "THE BLOG OF KIAWA VURNER";
 
-  // Handle scroll events with direction detection and smooth transition
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
 
@@ -29,28 +28,21 @@ const FixedDualNavbar = () => {
 
       clearTimeout(timeoutId);
 
-      // If scrolling down and past threshold, show scrolled state
       if (scrollingDirection === 'down' && currentScrollY > 80) {
         setIsScrolled(true);
-      }
-      // If scrolling up, add a slight delay to prevent flickering
-      else if (scrollingDirection === 'up') {
+      } else if (scrollingDirection === 'up') {
         timeoutId = setTimeout(() => {
           setIsScrolled(false);
-        }, 100); // slight delay prevents flicker on small scrolls up
+        }, 100);
       }
 
       lastScrollY.current = currentScrollY;
 
-      // Theme detection based on section background
-      // Check the elements behind the middle of the navbar
       const elementsAtHeader = document.elementsFromPoint(window.innerWidth / 2, 32);
-      let detectedTheme: 'light' | 'dark' = 'light'; // default to light
-      
+      let detectedTheme: 'light' | 'dark' = 'light';
+
       const bgElement = elementsAtHeader.find(el => {
-        // Skip navbar itself
         if (el.closest('header')) return false;
-        // Check for specific background classes. Add more if needed.
         if (el.classList.contains('bg-black') || el.classList.contains('dark:bg-black') || el.classList.contains('bg-gray-900') || el.classList.contains('bg-[#0f0f0f]')) {
           detectedTheme = 'dark';
           return true;
@@ -59,17 +51,15 @@ const FixedDualNavbar = () => {
           detectedTheme = 'light';
           return true;
         }
-        
-        // As a fallback, check computed style if it's a structural element
         if (el.tagName === 'SECTION' || el.tagName === 'MAIN') {
-           const style = window.getComputedStyle(el);
-           if (style.backgroundColor === 'rgb(0, 0, 0)' || style.backgroundColor === 'rgba(0, 0, 0, 1)' || style.backgroundColor.startsWith('rgb(15, 15, 15)')) {
-             detectedTheme = 'dark';
-             return true;
-           } else if (style.backgroundColor === 'rgb(255, 255, 255)' || style.backgroundColor === 'rgba(255, 255, 255, 1)') {
-             detectedTheme = 'light';
-             return true;
-           }
+          const style = window.getComputedStyle(el);
+          if (style.backgroundColor === 'rgb(0, 0, 0)' || style.backgroundColor === 'rgba(0, 0, 0, 1)' || style.backgroundColor.startsWith('rgb(15, 15, 15)')) {
+            detectedTheme = 'dark';
+            return true;
+          } else if (style.backgroundColor === 'rgb(255, 255, 255)' || style.backgroundColor === 'rgba(255, 255, 255, 1)') {
+            detectedTheme = 'light';
+            return true;
+          }
         }
         return false;
       });
@@ -84,7 +74,6 @@ const FixedDualNavbar = () => {
     };
   }, []);
 
-  // Handle click outside to close menu
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node) && isMenuOpen) {
@@ -96,7 +85,6 @@ const FixedDualNavbar = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isMenuOpen]);
 
-  // Prevent background scrolling when menu is open
   useEffect(() => {
     if (isMenuOpen) {
       document.body.style.overflow = 'hidden';
@@ -112,7 +100,7 @@ const FixedDualNavbar = () => {
   return (
     <>
       <div className={cn("h-16 md:h-16", isHidden && "hidden")}>
-        {/* Spacer for fixed header - single navbar height */}
+        {/* Spacer */}
       </div>
 
       <header className={cn(
@@ -121,16 +109,15 @@ const FixedDualNavbar = () => {
       )}>
         {/* Single navbar container */}
         <div className="relative h-16">
-          {/* Navbar - Transforms content on scroll */}
           <div
             className={cn(
               "h-16 flex items-center justify-between px-4 md:px-6 transition-all duration-700 ease-in-out z-50 border-b",
-              navTheme === 'light' 
-                ? "bg-black text-white border-black" 
+              navTheme === 'light'
+                ? "bg-black text-white border-black"
                 : "bg-white text-black border-gray-200 dark:bg-background dark:border-gray-800 dark:text-white"
             )}
           >
-            {/* Left section with menu button and blog title (when scrolled) */}
+            {/* Left: menu button + scrolled title */}
             <div className="flex items-center">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -154,7 +141,6 @@ const FixedDualNavbar = () => {
                 </div>
               </button>
 
-              {/* Blog title appears when scrolled */}
               <div
                 tabIndex={-1}
                 className={cn(
@@ -168,9 +154,8 @@ const FixedDualNavbar = () => {
               </div>
             </div>
 
-            {/* Center content: Logo (not scrolled) / Newsletter (scrolled) */}
+            {/* Center: Logo / Newsletter */}
             <div className="absolute left-1/2 transform -translate-x-1/2">
-              {/* Logo - Only visible when not scrolled */}
               <div
                 tabIndex={-1}
                 className={cn(
@@ -179,14 +164,13 @@ const FixedDualNavbar = () => {
                 )}
               >
                 <Link href="/" className="hover:opacity-75 transition-all flex items-center gap-2 font-glacial">
-                  <h3 className="font-medium text-2xl lg:text-5xl md:text-4xl">KiawaNoteS</h3>
+                  <h3 className="font-bold text-2xl lg:text-5xl md:text-4xl">KiawaNoteS</h3>
                   <span className="hidden md:inline text-xs md:text-xs leading-tight font-bold dark:text-gray-600 self-end pb-1 uppercase">
                     THE BLOG<br />OF KIAWA VURNER
                   </span>
                 </Link>
               </div>
 
-              {/* Newsletter signup - Only visible when scrolled, takes the place of the logo */}
               <div
                 tabIndex={-1}
                 className={cn(
@@ -208,196 +192,238 @@ const FixedDualNavbar = () => {
               </div>
             </div>
 
-            {/* Right section - Auth Button */}
+            {/* Right: Auth */}
             <div className="flex items-center">
               <AuthButton />
             </div>
           </div>
-
-          {/* Dropdown Menu Panel - Formerly Sliding Side Panel */}
-          <div
-            ref={menuRef}
-            className={cn(
-              "absolute top-full left-0 w-72 bg-white dark:bg-background shadow-lg transform transition-all duration-300 ease-in-out z-40", // Changed positioning and transition
-              isMenuOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none" // Changed animation
-            )}
-          >
-            {/* Content container with simplified padding */}
-            <div className="p-4"> {/* Simplified padding, removed h-full and pt-20 */}
-              <div className="px-6 py-2 font-newyorker">
-                <h2 className="text-xl font-bold">Sections</h2>
-                <nav>
-                  <ul className="font-glacial group">
-                    {[
-                      { name: 'Home', href: '/' },
-                      { name: 'The Latest', href: '/posts' },
-                      { name: 'Books & Culture', href: '/books-culture' },
-                      { name: 'Personal', href: '/category/personal' },
-                      { name: 'Ideas', href: '/category/ideas' },
-                      { name: 'Science', href: '/science-tech' },
-                      { name: 'Entertainment', href: '/category/entertainment' },
-                    ].map((item) => (
-                      <li key={item.name}>
-                        <Link
-                          href={item.href}
-                          className={cn(
-                            "block py-2 transition-colors font-glacial group-hover:text-gray-400",
-                            pathname === item.href ? "text-red-600 font-bold !text-red-600" : "hover:text-primary hover:!text-black"
-                          )}
-                          onClick={() => setIsMenuOpen(false)}
-                        >
-                          {item.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </nav>
-
-                {/* Divider Line */}
-                <div className="border-t border-gray-200 dark:border-gray-700 my-4 relative">
-                  <span className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white dark:bg-background px-2 text-xs text-red-600 font-bold">
-                    CONNECT WITH ME
-                  </span>
-                </div>
-
-                {/* Connect With Me Section */}
-                <div className="mt-6">
-                  <div className="flex justify-center space-x-2 mt-2">
-                    <a
-                      href="https://github.com/kiawavurner"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-1.5 bg-white rounded-full hover:bg-red-200 transition-colors border-2 border-red-600"
-                      aria-label="GitHub"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="#E53E3E"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
-                      </svg>
-                    </a>
-
-                    <a
-                      href="https://x.com/kiawavurner"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-1.5 bg-white rounded-full hover:bg-red-200 transition-colors border-2 border-red-600"
-                      aria-label="X (Twitter)"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="#E53E3E"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M4 4l11.733 16h4.267l-11.733 -16z"></path>
-                        <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"></path>
-                      </svg>
-                    </a>
-
-                    <a
-                      href="https://reddit.com/user/kiawavurner"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-1.5 bg-white rounded-full hover:bg-red-200 transition-colors border-2 border-red-600"
-                      aria-label="Reddit"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="#E53E3E"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M12 8c2.648 0 5.028 .826 6.675 2.14a2.5 2.5 0 0 1 2.326 4.36c0 3.59 -4.03 6.5 -9 6.5c-4.875 0 -8.845 -2.8 -9 -6.294l-1 -.206a2.5 2.5 0 0 1 2.326 -4.36c1.646 -1.313 4.026 -2.14 6.674 -2.14z"></path>
-                        <path d="M12 8l1 -5l6 1"></path>
-                        <circle cx="19" cy="4" r="1"></circle>
-                        <circle cx="9" cy="13" r=".5" fill="#E53E3E"></circle>
-                        <circle cx="15" cy="13" r=".5" fill="#E53E3E"></circle>
-                        <path d="M10 17c.667 .333 1.333 .5 2 .5s1.333 -.167 2 -.5"></path>
-                      </svg>
-                    </a>
-
-                    {/* Substack Icon */}
-                    <a
-                      href="https://kiawavurner.substack.com"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-1.5 bg-white rounded-full hover:bg-red-200 transition-colors border-2 border-red-600"
-                      aria-label="Substack"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="#E53E3E"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M4 4h16v4h-16z"></path>
-                        <path d="M4 10h16v4h-16z"></path>
-                        <path d="M4 16h16v4h-16z"></path>
-                      </svg>
-                    </a>
-
-                    {/* TikTok Icon */}
-                    <a
-                      href="https://tiktok.com/@kiawavurner"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-1.5 bg-white rounded-full hover:bg-red-200 transition-colors border-2 border-red-600"
-                      aria-label="TikTok"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="#E53E3E"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path>
-                      </svg>
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
 
-        {/* Overlay when menu is open */}
+        {/* Full-screen Menu Overlay */}
         <div
+          ref={menuRef}
           className={cn(
-            "fixed inset-0 bg-black/50 z-30 transition-opacity duration-500 ease-in-out",
-            isMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+            "fixed inset-0 z-[60] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+            isMenuOpen
+              ? "opacity-100 visible"
+              : "opacity-0 invisible pointer-events-none"
           )}
-          onClick={() => setIsMenuOpen(false)}
-          aria-hidden="true"
-        />
+        >
+          {/* Background */}
+          <div className="absolute inset-0 bg-[#d4d2cd]" />
+
+          {/* Content */}
+          <div className="relative z-10 h-full flex flex-col px-6 md:px-12 lg:px-16 py-6 md:py-8">
+
+            {/* Header: Logo left, X right */}
+            <div className="flex items-start justify-between">
+
+              {/* LOGO: rises from buried ground on menu open */}
+              <div className="overflow-hidden" style={{ paddingBottom: '2px' }}>
+                <div
+                  style={{
+                    transform: isMenuOpen ? 'translateY(0)' : 'translateY(110%)',
+                    opacity: isMenuOpen ? 1 : 0,
+                    transition: isMenuOpen
+                      ? 'transform 0.75s cubic-bezier(0.22,1,0.36,1) 0.08s, opacity 0.4s ease 0.08s'
+                      : 'transform 0.3s ease, opacity 0.2s ease',
+                  }}
+                >
+                  <Link
+                    href="/"
+                    className="hover:opacity-75 transition-opacity font-glacial"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {/* Mobile: stacked. Desktop: side-by-side like original navbar */}
+                    <div className="flex flex-col md:flex-row md:items-end md:gap-2">
+                      <span className="font-bold text-2xl md:text-4xl text-black leading-none tracking-tight">
+                        KiawaNoteS
+                      </span>
+                      <div className="flex flex-col leading-tight md:self-end md:pb-0.5">
+                        <span className="font-glacial text-black text-[10px] md:text-xs font-extrabold uppercase tracking-wide">
+                          THE BLOG
+                        </span>
+                        <span className="font-glacial text-black text-[10px] md:text-xs font-extrabold uppercase tracking-wide">
+                          OF KIAWA VURNER
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                </div>
+              </div>
+
+              {/* Close Button */}
+              <button
+                onClick={() => setIsMenuOpen(false)}
+                className="p-2 text-black hover:text-black/50 transition-colors duration-300"
+                aria-label="Close menu"
+              >
+                <X size={28} strokeWidth={1.5} />
+              </button>
+            </div>
+
+            {/* Divider — more breathing room on mobile before nav items */}
+            <div
+              className={cn(
+                "w-full h-px bg-black/40 mt-16 md:mt-7 md:my-6 transition-all duration-700 delay-100 border-b border-black/30",
+                isMenuOpen ? "scale-x-100 opacity-100" : "scale-x-0 opacity-0"
+              )}
+              style={{ transformOrigin: 'left center' }}
+            />
+
+            {/* Navigation Container
+                Mobile: justify-start, items sit below divider with some padding.
+                Desktop (md+): justify-center — vertically centred. */}
+            <div className="flex-1 flex flex-col justify-start md:justify-center items-end w-full pt-8 md:pt-0">
+
+              {/* Bracket + nav wrapped together — bracket tracks nav height exactly on mobile */}
+              <div className="relative w-full flex flex-col items-end md:block">
+
+                {/* Right Bracket Line */}
+                <div
+                  className={cn(
+                    "absolute right-2 md:right-8 w-3 md:w-4",
+                    "top-0 bottom-0",
+                    "border-r border-t border-b border-black/40 rounded-r-xl pointer-events-none"
+                  )}
+                />
+
+                <nav className="flex flex-col items-end pr-8 md:pr-16 lg:pr-20 relative z-10 w-full">
+                  {[
+                    { name: 'Home', href: '/' },
+                    { name: 'The Latest', href: '/posts' },
+                    { name: 'Books & Culture', href: '/books-culture' },
+                    { name: 'Personal', href: '/category/personal' },
+                    { name: 'Ideas', href: '/category/ideas' },
+                    { name: 'Science', href: '/science-tech' },
+                    { name: 'Entertainment', href: '/category/entertainment' },
+                  ].map((item, index) => (
+                    <div
+                      key={item.name}
+                      className={cn(
+                        "transition-all duration-500",
+                        isMenuOpen
+                          ? "opacity-100 translate-x-0"
+                          : "opacity-0 translate-x-8"
+                      )}
+                      style={{ transitionDelay: isMenuOpen ? `${150 + index * 60}ms` : '0ms' }}
+                    >
+                      <Link
+                        href={item.href}
+                        className="group flex items-baseline justify-end cursor-pointer transition-transform duration-300 hover:-translate-x-2"
+                        onClick={() => setIsMenuOpen(false)}
+                      >
+                        {/* Number */}
+                        <div
+                          className={cn(
+                            "relative overflow-hidden min-h-[1.5em] flex items-center py-[0.08em]",
+                            pathname === item.href && "text-red-700/50"
+                          )}
+                          style={{
+                            WebkitFontSmoothing: 'antialiased',
+                            MozOsxFontSmoothing: 'grayscale',
+                            textRendering: 'geometricPrecision',
+                          }}
+                        >
+                          <span className="absolute left-0 top-0 translate-y-[-100%] opacity-0 transition-all duration-300 ease-out group-hover:translate-y-0 group-hover:opacity-100 font-newyorker font-thin text-black/30 text-2xl sm:text-2xl md:text-3xl lg:text-[2.6rem] tracking-tight">
+                            {String(index + 1).padStart(2, '0')}.
+                          </span>
+                          <span className="transition-all duration-300 ease-out group-hover:translate-y-full group-hover:opacity-0 font-newyorker font-extralight text-2xl sm:text-2xl md:text-3xl lg:text-[2.6rem] tracking-tight mr-2 md:mr-3">
+                            {String(index + 1).padStart(2, '0')}.
+                          </span>
+                        </div>
+
+                        {/* Item name — bigger on mobile to fill the space */}
+                        <span className={cn(
+                          "font-helvetica font-bold tracking-tighter text-[2.5rem] sm:text-4xl md:text-5xl lg:text-[3.2rem] leading-[0.95] transition-colors duration-300",
+                          pathname === item.href
+                            ? "text-red-700"
+                            : "text-[#1d1d1b] group-hover:text-black/60"
+                        )}>
+                          {item.name}
+                        </span>
+                      </Link>
+                    </div>
+                  ))}
+                </nav>
+              </div>{/* end bracket+nav wrapper */}
+
+              {/* Secondary links — visible on mobile only, right-aligned small text */}
+              <div className="md:hidden w-full flex flex-col items-end pr-8 mt-5 gap-1">
+                {[
+                  { name: 'Interviews', href: '/interviews' },
+                  { name: 'Reviews', href: '/reviews' },
+                  { name: 'Archive', href: '/archive' },
+                  { name: 'About Us', href: '/about' },
+                  { name: 'Contact', href: '/contact' },
+                  { name: 'Careers', href: '/careers' },
+                ].map((item, index) => (
+                  <div
+                    key={item.name}
+                    className={cn(
+                      "transition-all duration-500",
+                      isMenuOpen ? "opacity-100 translate-x-0" : "opacity-0 translate-x-4"
+                    )}
+                    style={{ transitionDelay: isMenuOpen ? `${550 + index * 40}ms` : '0ms' }}
+                  >
+                    <Link
+                      href={item.href}
+                      className="font-helvetica text-sm text-black/60 hover:text-black transition-colors duration-200 tracking-wide"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {item.name}
+                    </Link>
+                  </div>
+                ))}
+              </div>
+
+              {/* Your Library */}
+              <div className="w-full flex justify-end pr-8 md:pr-16 lg:pr-20 mt-3 md:mt-3">
+                <Link
+                  href="/saved-articles"
+                  className="group flex items-center gap-2 text-[#1d1d1b] hover:text-black/60 transition-colors duration-300"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <div className="relative overflow-x-visible overflow-y-hidden h-[1.3em] flex items-center">
+                    <span className="absolute inset-0 translate-y-[-100%] opacity-0 transition-all duration-300 ease-out group-hover:translate-y-0 group-hover:opacity-100 font-helvetica font-bold tracking-tight text-sm md:text-base">
+                      Your Library
+                    </span>
+                    <span className="transition-all duration-300 ease-out group-hover:translate-y-full group-hover:opacity-0 font-helvetica font-bold tracking-tight text-sm md:text-base">
+                      Your Library
+                    </span>
+                  </div>
+                  <div className="text-[#FFD100]">
+                    <svg width="18" height="40" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M5 2H19C19.5523 2 20 2.44772 20 3V22.5L12 17.5L4 22.5V3C4 2.44772 4.44772 2 5 2Z" />
+                    </svg>
+                  </div>
+                </Link>
+              </div>
+            </div>
+
+            {/* Bottom Footer */}
+            <div className="absolute bottom-6 left-6 md:left-12 lg:left-16 flex items-center gap-4 md:gap-6">
+              <span className="font-helvetica text-xs text-black/50 tracking-wider">
+                © KiawaNotes
+              </span>
+              <div className="flex items-center gap-3">
+                <a href="https://github.com/kiawavurner" target="_blank" rel="noopener noreferrer"
+                  className="text-black/50 hover:text-black/80 transition-colors" aria-label="GitHub">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+                  </svg>
+                </a>
+                <a href="https://x.com/kiawavurner" target="_blank" rel="noopener noreferrer"
+                  className="text-black/50 hover:text-black/80 transition-colors" aria-label="X">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M4 4l11.733 16h4.267l-11.733 -16z" /><path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+          </div>
+        </div>
       </header>
     </>
   );

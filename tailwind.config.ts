@@ -36,6 +36,8 @@ const config = {
         imbue: ["var(--font-imbue)", ...fontFamily.serif],
         knockout: ["var(--font-knockout)", ...fontFamily.sans],
         'space-mono': ["var(--font-space-mono)", ...fontFamily.mono],
+        helvetica: ["var(--font-helvetica)", "Helvetica", "Arial", "sans-serif"],
+        clement: ["var(--font-clement5)"],
       },
       colors: {
         border: "hsl(var(--border))",

@@ -187,3 +187,45 @@ export const spaceMono = Space_Mono({
   style: ['normal', 'italic'],
   variable: '--font-space-mono',
 });
+
+// Helvetica font family
+export const helvetica = localFont({
+  src: [
+    {
+      path: '../public/fonts/helvetica-light-587ebe5a59211.otf',
+      weight: '300',
+      style: 'normal',
+    },
+    {
+      path: '../public/fonts/Helvetica.otf',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: '../public/fonts/Helvetica-Oblique.otf',
+      weight: '400',
+      style: 'italic',
+    },
+    {
+      path: '../public/fonts/Helvetica-Bold.otf',
+      weight: '700',
+      style: 'normal',
+    },
+    {
+      path: '../public/fonts/Helvetica-BoldOblique.otf',
+      weight: '700',
+      style: 'italic',
+    },
+  ],
+  variable: '--font-helvetica',
+  display: 'swap',
+});
+
+//font clement for numbers in menu
+
+export const clement5 = localFont({
+  src: '../public/fonts/ClementFive.otf',
+  variable: '--font-clement5',
+  display: 'swap',
+});
+

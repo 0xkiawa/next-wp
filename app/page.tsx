@@ -10,6 +10,7 @@ import Interviews from '@/app/mainsection/interviews';
 import SubscribePopup from '@/app/mainsection/subscribe-popup';
 import Podcast from '@/app/mainsection/podcast';
 import WeekendEssayHeader from '@/app/mainsection/weekend-essay-header';
+import RydpenArticle from '@/app/mainsection/rydpen-article';
 
 // Revalidate the homepage every 60 seconds so WordPress updates appear quickly
 export const revalidate = 60;
@@ -108,6 +109,9 @@ export default async function Home() {
 
   return (
     <>
+      {/* Sponsored Rydpen article — pinned for 1 month, auto-expires */}
+      <RydpenArticle />
+
       {/* Featured Post Card - conditionally render based on category */}
       <div className="mb-8 py-4">
         {latestNonInterviewPost && (
