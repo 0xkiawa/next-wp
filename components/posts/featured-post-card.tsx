@@ -22,7 +22,7 @@ const FeaturedPostCard: React.FC<FeaturedPostCardProps> = ({ post }) => {
 
                 {/* Content Section */}
                 {/* Mobile: Top (Order 1). Desktop: Left (Order 1). */}
-                <div className="w-full md:w-1/2 flex flex-col justify-center p-8 md:p-14 lg:p-20 order-1">
+                <div className="w-full md:w-1/4 flex flex-col justify-center p-6 md:p-8 lg:p-10 order-1">
 
                     {/* Label */}
                     <div className="mb-6 md:mb-8 text-center md:text-left">
@@ -35,7 +35,7 @@ const FeaturedPostCard: React.FC<FeaturedPostCardProps> = ({ post }) => {
                         <div className="text-center md:text-left">
                             <Link href={`/posts/${slug}`} className="block group">
                                 <h1
-                                    className="text-4xl md:text-5xl lg:text-5xl font-acaslon leading-[1.1] group-hover:text-red-700 transition-colors"
+                                    className="text-3xl md:text-3xl lg:text-4xl font-acaslon leading-[1.1] group-hover:text-red-700 transition-colors"
                                     dangerouslySetInnerHTML={{ __html: title.rendered }}
                                 />
                             </Link>
@@ -53,7 +53,7 @@ const FeaturedPostCard: React.FC<FeaturedPostCardProps> = ({ post }) => {
                         </div>
 
                         <div
-                            className="mt-6 md:mt-12 text-lg md:text-xl font-acaslon text-gray-700 dark:text-gray-300 leading-relaxed line-clamp-4 text-left"
+                            className="mt-4 md:mt-6 text-base md:text-base font-acaslon text-gray-700 dark:text-gray-300 leading-relaxed line-clamp-4 text-left"
                             dangerouslySetInnerHTML={{ __html: excerpt.rendered }}
                         />
                     </div>
@@ -62,7 +62,7 @@ const FeaturedPostCard: React.FC<FeaturedPostCardProps> = ({ post }) => {
                 {/* Image Section */}
                 {/* Mobile: Bottom (Order 2). Desktop: Right (Order 2). */}
                 {/* Desktop: Framed with padding. Mobile: Full width. */}
-                <div className="relative w-full md:w-1/2 min-h-[400px] md:min-h-full order-2">
+                <div className="relative w-full md:w-3/4 min-h-[400px] md:min-h-full order-2">
                     <Image
                         src={featuredImage}
                         alt={title.rendered}
