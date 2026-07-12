@@ -22,17 +22,17 @@ const FeaturedPostCard: React.FC<FeaturedPostCardProps> = ({ post }) => {
 
                 {/* Content Section */}
                 {/* Mobile: Top (Order 1). Desktop: Left (Order 1). */}
-                <div className="w-full md:w-1/2 flex flex-col justify-start pt-[25%] p-8 md:p-14 lg:p-20 order-1">
+                <div className="w-full md:w-1/2 flex flex-col justify-start p-8 md:p-12 lg:p-16 pt-10 md:pt-12 lg:pt-14 order-1">
 
                     {/* Label */}
-                    <div className="mb-6 md:mb-8 text-center md:text-left">
+                    <div className="mb-6 md:mb-8 text-center">
                         <span className="font-newyorker text-red-600 tracking-widest text-xs uppercase">
                             Featured Story
                         </span>
                     </div>
 
                     <div className="space-y-6 flex flex-col">
-                        <div className="text-center md:text-left">
+                        <div className="text-center">
                             <Link href={`/posts/${slug}`} className="block group">
                                 <h1
                                     className="text-4xl md:text-5xl lg:text-5xl font-acaslon leading-[1.1] group-hover:text-red-700 transition-colors"
@@ -41,21 +41,21 @@ const FeaturedPostCard: React.FC<FeaturedPostCardProps> = ({ post }) => {
                             </Link>
                         </div>
 
-                        <div className="pt-2 flex items-center gap-1.5 justify-center md:justify-start text-center md:text-left flex-wrap">
-                            <span className="font-acaslon italic text-sm md:text-base text-gray-700 dark:text-gray-300 lowercase">by</span>
-                            <span className="font-futura font-bold text-xs md:text-sm tracking-[0.1em] text-red-600 uppercase">
-                                {authorName}
-                            </span>
-                            <span className="font-acaslon italic text-sm md:text-base text-gray-700 dark:text-gray-300 mx-1">•</span>
+                        <div
+                            className="mt-2 text-lg md:text-xl font-acaslon text-gray-700 dark:text-gray-300 leading-relaxed line-clamp-4 text-center italic"
+                            dangerouslySetInnerHTML={{ __html: excerpt.rendered }}
+                        />
+
+                        <div className="pt-2 flex flex-col items-center gap-1 text-center">
+                            <div className="flex items-center gap-1.5 flex-wrap justify-center">
+                                <span className="font-futura font-bold text-xs md:text-sm tracking-[0.1em] text-black dark:text-white uppercase">
+                                    By {authorName}
+                                </span>
+                            </div>
                             <span className="font-acaslon italic text-sm md:text-base text-gray-700 dark:text-gray-300">
                                 {formattedDate}
                             </span>
                         </div>
-
-                        <div
-                            className="mt-6 md:mt-12 text-lg md:text-xl font-acaslon text-gray-700 dark:text-gray-300 leading-relaxed line-clamp-4 text-left"
-                            dangerouslySetInnerHTML={{ __html: excerpt.rendered }}
-                        />
                     </div>
                 </div>
 
