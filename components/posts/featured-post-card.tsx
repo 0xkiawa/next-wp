@@ -22,7 +22,7 @@ const FeaturedPostCard: React.FC<FeaturedPostCardProps> = ({ post }) => {
 
                 {/* Content Section */}
                 {/* Mobile: Top (Order 1). Desktop: Left (Order 1). */}
-                <div className="w-full md:w-1/2 flex flex-col justify-center p-6 md:p-16 lg:p-24 order-1 md:border-r border-black dark:border-white">
+                <div className="w-full md:w-1/2 flex flex-col justify-start p-6 md:p-12 lg:p-16 lg:pt-12 order-1 md:border-r border-black dark:border-white">
 
                     {/* Label */}
                     <div className="mb-6 md:mb-8 text-center md:text-left">
@@ -31,7 +31,7 @@ const FeaturedPostCard: React.FC<FeaturedPostCardProps> = ({ post }) => {
                         </span>
                     </div>
 
-                    <div className="space-y-6 flex flex-col h-full">
+                    <div className="space-y-6 flex flex-col">
                         <div className="text-center md:text-left">
                             <Link href={`/posts/${slug}`} className="block group">
                                 <h1
@@ -62,7 +62,7 @@ const FeaturedPostCard: React.FC<FeaturedPostCardProps> = ({ post }) => {
                 {/* Image Section */}
                 {/* Mobile: Bottom (Order 2). Desktop: Right (Order 2). */}
                 {/* Desktop: Framed with padding. Mobile: Full width. */}
-                <div className="relative w-full md:w-1/2 min-h-[400px] md:h-auto order-2 md:p-12 border-t md:border-t-0 border-black dark:border-white">
+                <div className="relative w-full md:w-1/2 min-h-[400px] md:h-auto order-2 border-t md:border-t-0 border-black dark:border-white">
                     <div className="relative w-full h-[400px] md:h-full">
                         <Image
                             src={featuredImage}
