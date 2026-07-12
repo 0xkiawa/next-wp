@@ -10,8 +10,8 @@ const nextConfig: NextConfig = {
         pathname: "/**",
       },
       {
-        protocol: "http",
-        hostname: "kiawanotes.atwebpages.com",
+        protocol: "https",
+        hostname: "kiawanotes.wasmer.app",
         port: "",
         pathname: "/**",
       },
