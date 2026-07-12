@@ -22,7 +22,7 @@ const FeaturedPostCard: React.FC<FeaturedPostCardProps> = ({ post }) => {
 
                 {/* Content Section */}
                 {/* Mobile: Top (Order 1). Desktop: Left (Order 1). */}
-                <div className="w-full md:w-1/2 flex flex-col justify-start p-8 md:p-12 lg:p-16 pt-10 md:pt-[15%] lg:pt-[18%] order-1">
+                <div className="w-full md:w-1/2 flex flex-col justify-start p-8 md:p-12 lg:p-16 pt-10 md:pt-[8%] lg:pt-[8%] order-1">
 
                     {/* Label */}
                     <div className="mb-6 md:mb-8 text-center">
