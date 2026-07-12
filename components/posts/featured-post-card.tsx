@@ -17,12 +17,12 @@ const FeaturedPostCard: React.FC<FeaturedPostCardProps> = ({ post }) => {
     const formattedDate = new Date(date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
 
     return (
-        <section className="dark:bg-black text-black dark:text-white w-full border-b border-black dark:border-white">
-            <div className="flex flex-col md:flex-row min-h-auto md:min-h-[700px]">
+        <section className="dark:bg-black text-black dark:text-white w-full">
+            <div className="flex flex-col md:flex-row min-h-[500px] md:min-h-[700px] lg:min-h-[780px]">
 
                 {/* Content Section */}
                 {/* Mobile: Top (Order 1). Desktop: Left (Order 1). */}
-                <div className="w-full md:w-1/2 flex flex-col justify-start p-6 md:p-12 lg:p-16 lg:pt-12 order-1 md:border-r border-black dark:border-white">
+                <div className="w-full md:w-1/2 flex flex-col justify-center p-8 md:p-14 lg:p-20 order-1">
 
                     {/* Label */}
                     <div className="mb-6 md:mb-8 text-center md:text-left">
@@ -62,16 +62,14 @@ const FeaturedPostCard: React.FC<FeaturedPostCardProps> = ({ post }) => {
                 {/* Image Section */}
                 {/* Mobile: Bottom (Order 2). Desktop: Right (Order 2). */}
                 {/* Desktop: Framed with padding. Mobile: Full width. */}
-                <div className="relative w-full md:w-1/2 min-h-[400px] md:h-auto order-2 border-t md:border-t-0 border-black dark:border-white">
-                    <div className="relative w-full h-[400px] md:h-full">
-                        <Image
-                            src={featuredImage}
-                            alt={title.rendered}
-                            fill
-                            className="object-cover"
-                            priority
-                        />
-                    </div>
+                <div className="relative w-full md:w-1/2 min-h-[400px] md:min-h-full order-2">
+                    <Image
+                        src={featuredImage}
+                        alt={title.rendered}
+                        fill
+                        className="object-cover object-center"
+                        priority
+                    />
                 </div>
 
             </div>

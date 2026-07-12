@@ -113,7 +113,7 @@ export default async function Home() {
       <RydpenArticle />
 
       {/* Featured Post Card - conditionally render based on category */}
-      <div className="mb-8 py-4">
+      <div className="mb-8">
         {latestNonInterviewPost && (
           isLatestPostScience
             ? <NonFiction post={latestNonInterviewPost} />
