@@ -3,6 +3,7 @@
 // Types are imported from `wp.d.ts`
 
 import querystring from "query-string";
+import * as he from "he";
 import type {
   Post,
   Category,
@@ -11,6 +12,32 @@ import type {
   Author,
   FeaturedMedia,
 } from "./wordpress.d";
+
+// Helper to recursively decode HTML entities in WordPress response data,
+// but skipping fields like 'content' and 'excerpt' to avoid breaking HTML structures.
+function decodeWPEntity<T>(obj: T, key?: string): T {
+  if (typeof obj === "string") {
+    // If the key is 'content' or 'excerpt', we don't want to decode it, as those are handled via dangerouslySetInnerHTML
+    if (key === "content" || key === "excerpt") {
+      return obj;
+    }
+    return he.decode(obj) as unknown as T;
+  }
+
+  if (Array.isArray(obj)) {
+    return obj.map(item => decodeWPEntity(item, key)) as unknown as T;
+  }
+
+  if (obj !== null && typeof obj === "object") {
+    const newObj: any = {};
+    for (const k of Object.keys(obj)) {
+      newObj[k] = decodeWPEntity((obj as any)[k], k);
+    }
+    return newObj as T;
+  }
+
+  return obj;
+}
 
 const baseUrl = process.env.WORDPRESS_URL;
 
@@ -137,7 +164,8 @@ async function wordpressFetch<T>(
     const responseClone = response.clone();
 
     try {
-      return await response.json();
+      const data = await response.json();
+      return decodeWPEntity(data);
     } catch (parseError) {
       const text = await responseClone.text();
       console.error("[WordPress] Failed to parse JSON. Response text:", text.substring(0, 500));
