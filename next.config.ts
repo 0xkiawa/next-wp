@@ -42,6 +42,11 @@ const nextConfig: NextConfig = {
         destination: `${process.env.WORDPRESS_URL}/wp-admin`,
         permanent: true,
       },
+      {
+        source: "/link-in-bio",
+        destination: "https://beacons.ai/kiawanotes",
+        permanent: false,
+      },
     ];
   },
   eslint: {
