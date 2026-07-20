@@ -18,30 +18,24 @@ export const revalidate = 60;
 // Define metadata for the home page
 export const metadata: Metadata = {
   title: 'KiawaNotes | The Blog of Kiawa Vurner',
-  description: 'Explore thought-provoking articles on books, culture, ideas, and more from Kiawa Vurner.',
-  keywords: ['blog', 'books', 'culture', 'ideas', 'Kiawa Vurner'],
+  description: 'Explore thought-provoking articles on books, culture, science, ideas, and more from Kiawa Vurner — also known as Victor Kiawa. Published on KiawaNotes.',
+  keywords: ['KiawaNotes', 'Kiawa Vurner', 'Victor Kiawa', 'blog', 'books', 'culture', 'ideas', 'science'],
   authors: [{ name: 'Kiawa Vurner' }],
+  alternates: {
+    canonical: 'https://kiawanotes.com',
+  },
   openGraph: {
     title: 'KiawaNotes | The Blog of Kiawa Vurner',
-    description: 'Explore thought-provoking articles on books, culture, ideas, and more from Kiawa Vurner.',
+    description: 'Explore thought-provoking articles on books, culture, science, ideas, and more from Kiawa Vurner.',
     url: 'https://kiawanotes.com',
     siteName: 'KiawaNotes',
-    images: [
-      {
-        url: '/twitter-image.jpg', // Make sure this image exists in your public folder
-        width: 1200,
-        height: 630,
-        alt: 'KiawaNotes Blog',
-      },
-    ],
     locale: 'en_US',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'KiawaNotes | The Blog of Kiawa Vurner',
-    description: 'Explore thought-provoking articles on books, culture, ideas, and more from Kiawa Vurner.',
-    images: ['/twitter-image.jpg'], // Make sure this image exists in your public folder
+    description: 'Explore thought-provoking articles on books, culture, science, ideas, and more from Kiawa Vurner.',
     creator: '@kiawavurner',
   },
   robots: {

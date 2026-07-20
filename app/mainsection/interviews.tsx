@@ -57,7 +57,7 @@ const Interviews: React.FC<InterviewsProps> = ({ post }) => {
                     <div className="space-y-6 text-white md:text-black md:dark:text-white flex flex-col h-full">
                         <div className="text-center md:text-left">
                             <Link href={`/posts/${slug}`} className="block group">
-                                <h1
+                                <h2
                                     className="text-4xl md:text-5xl lg:text-6xl font-acaslon leading-[1.1] md:group-hover:text-red-700 transition-colors"
                                     dangerouslySetInnerHTML={{ __html: title.rendered }}
                                 />

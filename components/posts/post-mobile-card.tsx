@@ -41,7 +41,7 @@ export default async function PostComponent({
               <Image
                 className="object-cover"
                 src={media.source_url}
-                alt={post.title.rendered}
+                alt={media.alt_text || post.title.rendered.replace(/<[^>]*>/g, '')}
                 layout="fill"
               />
             ) : (

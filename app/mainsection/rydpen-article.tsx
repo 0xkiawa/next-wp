@@ -29,9 +29,9 @@ export default function RydpenArticle() {
           <div className="space-y-6 flex flex-col h-full">
             <div className="text-center md:text-left">
               <Link href="/sponsored/rydpen" className="block group">
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-acaslon leading-[1.1] group-hover:text-red-700 transition-colors">
+                <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-5xl font-acaslon leading-[1.1] group-hover:text-red-700 transition-colors">
                   The Algorithm That Could <em className="italic">Fix</em> Africa{"'"}s Education Crisis — Starting in Kenya
-                </h1>
+                </h2>
               </Link>
             </div>
 

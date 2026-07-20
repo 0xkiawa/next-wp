@@ -33,11 +33,44 @@ import type { Metadata } from "next"
 import FixedDualNavbar from '@/components/navigation/FixedDualNavbar';
 
 export const metadata: Metadata = {
-  title: siteConfig.site_name,
-  description: siteConfig.site_description,
-  metadataBase: new URL(siteConfig.site_domain),
+  metadataBase: new URL('https://kiawanotes.com'),
+  title: {
+    default: 'KiawaNotes | The Blog of Kiawa Vurner',
+    template: '%s | KiawaNotes',
+  },
+  description: 'Explore thought-provoking articles on books, culture, science, ideas, and more from Kiawa Vurner — also known as Victor Kiawa.',
+  keywords: ['KiawaNotes', 'Kiawa Vurner', 'Victor Kiawa', 'blog', 'books', 'culture', 'ideas', 'science'],
+  authors: [{ name: 'Kiawa Vurner' }],
+  creator: 'Kiawa Vurner',
+  publisher: 'KiawaNotes',
   alternates: {
-    canonical: "/",
+    canonical: 'https://kiawanotes.com',
+  },
+  openGraph: {
+    title: 'KiawaNotes | The Blog of Kiawa Vurner',
+    description: 'Explore thought-provoking articles on books, culture, science, ideas, and more from Kiawa Vurner.',
+    url: 'https://kiawanotes.com',
+    siteName: 'KiawaNotes',
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'KiawaNotes | The Blog of Kiawa Vurner',
+    description: 'Explore thought-provoking articles on books, culture, science, ideas, and more from Kiawa Vurner.',
+    creator: '@kiawavurner',
+    site: '@kiawavurner',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
 };
 
@@ -48,8 +81,52 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  // JSON-LD: Person (Victor Kiawa / Kiawa Vurner) + WebSite
+  const personSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Victor Kiawa',
+    alternateName: ['Kiawa Vurner'],
+    url: 'https://kiawanotes.com',
+    sameAs: [
+      'https://www.instagram.com/kiawanotes/',
+      'https://x.com/kiawavurner',
+    ],
+  };
+
+  const websiteSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'KiawaNotes',
+    url: 'https://kiawanotes.com',
+    description: 'Thought-provoking articles on books, culture, science, and ideas by Kiawa Vurner.',
+    author: {
+      '@type': 'Person',
+      name: 'Victor Kiawa',
+      alternateName: ['Kiawa Vurner'],
+    },
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: 'https://kiawanotes.com/posts?search={search_term_string}',
+      },
+      'query-input': 'required name=search_term_string',
+    },
+  };
+
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
+        />
+      </head>
       <body className={cn("min-h-screen bg-background font-sans antialiased overflow-x-hidden", fontSans.variable, acaslonPro.variable,
         stilson.variable,
         millerDaily.variable,

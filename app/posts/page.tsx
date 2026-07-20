@@ -25,8 +25,27 @@ import { SearchInput } from "@/components/posts/search-input";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Latest Posts ",
-  description: "Browse all our latest blog posts",
+  title: 'All Articles | KiawaNotes',
+  description:
+    'Browse every article published on KiawaNotes by Kiawa Vurner \u2014 covering books, culture, science, politics, interviews, and ideas that matter.',
+  alternates: {
+    canonical: 'https://kiawanotes.com/posts',
+  },
+  openGraph: {
+    title: 'All Articles | KiawaNotes',
+    description:
+      'Browse every article published on KiawaNotes by Kiawa Vurner \u2014 covering books, culture, science, politics, and ideas.',
+    url: 'https://kiawanotes.com/posts',
+    siteName: 'KiawaNotes',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'All Articles | KiawaNotes',
+    description:
+      'Browse every article published on KiawaNotes by Kiawa Vurner.',
+    creator: '@kiawavurner',
+  },
 };
 
 export const dynamic = "auto";

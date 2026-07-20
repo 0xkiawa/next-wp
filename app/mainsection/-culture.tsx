@@ -56,7 +56,7 @@ export default async function Page() {
                 {post._embedded?.['wp:term']?.[0]?.[0] && (
                   <div className="mb-1 md:mb-2">
                     <Link
-                      href={`/posts/?category=${post._embedded['wp:term'][0][0].id}`}
+                      href={`/categories/${post._embedded['wp:term'][0][0].slug}`}
                       className="text-sm md:text-base font-acaslon italic text-black hover:text-red-700 transition-colors"
                     >
                       {post._embedded['wp:term'][0][0].name}
@@ -93,7 +93,7 @@ export default async function Page() {
                   <span className="text-[11px] md:text-sm font-acaslon italic text-black lowercase">by</span>
                   <span className="text-[10px] md:text-xs font-bold font-futura tracking-[0.1em] text-black uppercase">
                     {post._embedded?.author?.[0]?.name ? (
-                      <Link href={`/posts/?author=${post.author}`} className="hover:text-red-700 transition-colors">
+                      <Link href={`/authors/${post._embedded.author[0].slug}`} className="hover:text-red-700 transition-colors">
                         {post._embedded.author[0].name}
                       </Link>
                     ) : (
