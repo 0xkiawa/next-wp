@@ -1,2 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /api/
+Disallow: /login
+Disallow: /saved-articles
+
+Sitemap: https://kiawanotes.com/sitemap.xml

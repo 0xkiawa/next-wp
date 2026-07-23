@@ -12,7 +12,7 @@ const getSiteUrl = () => {
   if (process.env.NEXT_PUBLIC_VERCEL_URL) {
     return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
   }
-  return "https://kiawanotes.vercel.app";
+  return "https://kiawanotes.com";
 };
 
 export const siteConfig: SiteConfig = {

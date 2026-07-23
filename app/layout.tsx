@@ -30,7 +30,10 @@ import Image from "next/image";
 import Link from "next/link";
 
 import type { Metadata } from "next"
+import type { Viewport } from "next";
 import FixedDualNavbar from '@/components/navigation/FixedDualNavbar';
+import { JsonLd } from "@/components/seo/json-ld";
+import { primaryAuthor, publisher } from "@/lib/seo";
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://kiawanotes.com'),
@@ -72,7 +75,14 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
+  manifest: "/site.webmanifest",
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
 };
+
+export const viewport: Viewport = { themeColor: "#ffffff", colorScheme: "light" };
 
 import { NavbarTitleProvider } from "@/components/navigation/NavbarTitleContext";
 
@@ -82,29 +92,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   // JSON-LD: Person (Victor Kiawa / Kiawa Vurner) + WebSite
-  const personSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'Person',
-    name: 'Victor Kiawa',
-    alternateName: ['Kiawa Vurner'],
-    url: 'https://kiawanotes.com',
-    sameAs: [
-      'https://www.instagram.com/kiawanotes/',
-      'https://x.com/kiawavurner',
-    ],
-  };
-
   const websiteSchema = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
+    '@id': 'https://kiawanotes.com/#website',
     name: 'KiawaNotes',
     url: 'https://kiawanotes.com',
     description: 'Thought-provoking articles on books, culture, science, and ideas by Kiawa Vurner.',
-    author: {
-      '@type': 'Person',
-      name: 'Victor Kiawa',
-      alternateName: ['Kiawa Vurner'],
-    },
+    publisher,
+    author: primaryAuthor,
     potentialAction: {
       '@type': 'SearchAction',
       target: {
@@ -118,14 +114,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
-        />
+        <JsonLd data={[{ "@context": "https://schema.org", ...publisher }, { "@context": "https://schema.org", ...primaryAuthor }, websiteSchema]} />
       </head>
       <body className={cn("min-h-screen bg-background font-sans antialiased overflow-x-hidden", fontSans.variable, acaslonPro.variable,
         stilson.variable,

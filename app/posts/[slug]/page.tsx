@@ -27,6 +27,7 @@ import AboutTheAuthor from "@/components/posts/about-the-author";
 import SetNavbarTitle from "@/components/navigation/SetNavbarTitle";
 import { AudioPlayer } from "@/components/posts/audio-player";
 import InterviewLayout from "@/components/posts/interview-layout";
+import { stripHtml, truncate } from "@/lib/seo";
 
 export const revalidate = 60;
 
@@ -221,6 +222,7 @@ export async function generateMetadata({
   const awaitedParams = await params;
   const post = await getPostBySlug(awaitedParams.slug);
 
+
   if (!post || !post.title) return { title: "Post Not Found" };
 
   const [author, category] = await Promise.all([
@@ -242,16 +244,19 @@ export async function generateMetadata({
     : null;
 
   const title = post.title.rendered.replace(/<[^>]*>/g, "");
-  const description = post.excerpt?.rendered?.replace(/<[^>]*>/g, "").trim() || "";
+  const description = truncate(stripHtml(post.excerpt?.rendered || post.content.rendered));
+  const url = `${siteConfig.site_domain}/posts/${post.slug}`;
 
   return {
     title,
     description,
+    alternates: { canonical: url },
+    robots: { index: true, follow: true },
     openGraph: {
       title,
       description,
       type: "article",
-      url: `${siteConfig.site_domain}/posts/${post.slug}`,
+      url,
       siteName: siteConfig.site_name,
       images: ogImageUrl
         ? [{ url: ogImageUrl, width: 1200, height: 630, alt: title }]
@@ -854,6 +859,88 @@ export default async function Page({ params }: { params: { slug: string } }) {
     year: "numeric",
   });
 
+  // SEO helper values (derived only from existing data — no extra WP requests)
+  const cleanTitle = post.title.rendered.replace(/<[^>]*>/g, "");
+  const canonicalUrl = `${siteConfig.site_domain}/posts/${post.slug}`;
+  const articleImageUrl = featuredMedia?.source_url
+    ? (featuredMedia.source_url.includes("res.cloudinary.com") && !featuredMedia.source_url.includes("w_1200")
+        ? featuredMedia.source_url.replace("/upload/", "/upload/w_1200,h_630,c_fill,q_auto,f_auto/")
+        : featuredMedia.source_url)
+    : null;
+  const keywords = Array.isArray((post as any).tags_meta)
+    ? (post as any).tags_meta.map((t: any) => t.name).filter(Boolean)
+    : (post._embedded?.["wp:term"]?.[1] || [])
+        .map((t: any) => t?.name)
+        .filter(Boolean);
+
+  const jsonLd = [
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "@id": `${canonicalUrl}#article`,
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": canonicalUrl
+      },
+      "url": canonicalUrl,
+      "headline": cleanTitle,
+      ...(post.title?.rendered && post.excerpt?.rendered
+        ? { "alternativeHeadline": stripHtml(post.excerpt.rendered).slice(0, 110) }
+        : {}),
+      "description": cleanExcerpt,
+      "image": articleImageUrl ? [articleImageUrl] : [],
+      "datePublished": post.date,
+      "dateModified": post.modified || post.date,
+      "articleSection": category?.name ? category.name.replace(/<[^>]*>/g, "") : undefined,
+      "keywords": keywords.length > 0 ? keywords.join(", ") : undefined,
+      "inLanguage": "en-US",
+      "wordCount": wordCount,
+      "author": {
+        "@id": "https://kiawanotes.com/#kiawa"
+      },
+      "publisher": {
+        "@id": "https://kiawanotes.com/#organization"
+      }
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": siteConfig.site_domain
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Posts",
+          "item": `${siteConfig.site_domain}/posts`
+        },
+        category ? {
+          "@type": "ListItem",
+          "position": 3,
+          "name": category.name.replace(/<[^>]*>/g, ""),
+          "item": `${siteConfig.site_domain}/posts/?category=${category.id}`
+        } : null,
+        {
+          "@type": "ListItem",
+          "position": category ? 4 : 3,
+          "name": post.title.rendered.replace(/<[^>]*>/g, ""),
+          "item": `${siteConfig.site_domain}/posts/${post.slug}`
+        }
+      ].filter(Boolean)
+    }
+  ];
+
+  const SchemaScript = (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
+  );
+
   // Check category types for layout selection
   const isScienceTech = category?.slug === 'science-tech' ||
     category?.name?.toLowerCase().includes('science') ||
@@ -876,6 +963,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   if (isScienceTech) {
     return (
       <>
+        {SchemaScript}
         <SetNavbarTitle title={post.title.rendered} />
         <ScienceTechLayout post={post} featuredMedia={featuredMedia} author={author} category={category} />
         <ReadMoreSection posts={recommendedPosts} />
@@ -886,6 +974,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   if (isInterview) {
     return (
       <>
+        {SchemaScript}
         <SetNavbarTitle title={post.title.rendered} />
         <InterviewLayout
           post={post}
@@ -901,6 +990,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   if (isBooks) {
     return (
       <>
+        {SchemaScript}
         <SetNavbarTitle title={post.title.rendered} />
         <BooksLayout
           post={post}
@@ -918,6 +1008,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   if (isCulture || isPersonal) {
     return (
       <>
+        {SchemaScript}
         <SetNavbarTitle title={post.title.rendered} />
         <CultureLayout
           post={post}
@@ -934,6 +1025,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
   return (
     <>
+      {SchemaScript}
       <SetNavbarTitle title={post.title.rendered} />
       <DefaultLayout
         post={post}

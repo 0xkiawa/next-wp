@@ -220,6 +220,31 @@ export async function getAllPosts(filterParams?: {
   return wordpressFetch<Post[]>(url);
 }
 
+/**
+ * Fetch every published post for crawler-facing surfaces. Keep interactive
+ * archive requests bounded in getAllPosts; sitemaps and static paths must not
+ * silently omit older URLs.
+ */
+export async function getAllPostsForIndexing(): Promise<Post[]> {
+  const perPage = 100;
+  const firstUrl = getUrl("/wp-json/wp/v2/posts", { _embed: true, per_page: perPage, page: 1 });
+  if (!firstUrl) return [];
+
+  const firstResponse = await fetchWithRetry(firstUrl, defaultFetchOptions);
+  if (!firstResponse.ok) return [];
+  const firstPage = decodeWPEntity(await firstResponse.json()) as Post[];
+  const totalPages = Number(firstResponse.headers.get("X-WP-TotalPages") || "1");
+
+  const remaining = await Promise.all(
+    Array.from({ length: Math.max(0, totalPages - 1) }, (_, index) => {
+      const url = getUrl("/wp-json/wp/v2/posts", { _embed: true, per_page: perPage, page: index + 2 });
+      return wordpressFetch<Post[]>(url);
+    })
+  );
+
+  return firstPage.concat(remaining.flat());
+}
+
 export async function getPostById(id: number): Promise<Post> {
   const url = getUrl(`/wp-json/wp/v2/posts/${id}`);
   return wordpressFetch<Post>(url);
