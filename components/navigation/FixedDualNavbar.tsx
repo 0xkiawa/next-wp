@@ -203,7 +203,7 @@ const FixedDualNavbar = () => {
         <div
           ref={menuRef}
           className={cn(
-            "fixed inset-0 z-[60] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]",
+            "fixed inset-0 z-[60] transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] overflow-hidden",
             isMenuOpen
               ? "opacity-100 visible"
               : "opacity-0 invisible pointer-events-none"

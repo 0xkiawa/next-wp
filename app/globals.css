@@ -71,8 +71,18 @@
     @apply border-border;
   }
 
+  /* Prevent horizontal scroll on all browsers, including iOS Safari.
+     Safari requires overflow-x on BOTH html and body to fully lock it. */
+  html {
+    overflow-x: hidden;
+    max-width: 100%;
+  }
+
   body {
     @apply bg-background text-foreground;
+    overflow-x: hidden;
+    max-width: 100%;
+    position: relative;
   }
 }
 

@@ -17,7 +17,7 @@ const FeaturedPostCard: React.FC<FeaturedPostCardProps> = ({ post }) => {
     const formattedDate = new Date(date).toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
 
     return (
-        <section className="dark:bg-black text-black dark:text-white w-full">
+        <section className="dark:bg-black text-black dark:text-white w-full max-w-full overflow-hidden">
             <div className="flex flex-col md:flex-row min-h-[500px] md:min-h-[700px] lg:min-h-[780px]">
 
                 {/* Content Section */}
@@ -62,7 +62,7 @@ const FeaturedPostCard: React.FC<FeaturedPostCardProps> = ({ post }) => {
                 {/* Image Section */}
                 {/* Mobile: Bottom (Order 2). Desktop: Right (Order 2). */}
                 {/* Desktop: Framed with padding. Mobile: Full width. */}
-                <div className="relative w-full md:w-1/2 min-h-[400px] md:min-h-full order-2">
+                <div className="relative w-full md:w-1/2 min-h-[400px] md:min-h-full order-2 overflow-hidden">
                     <Image
                         src={featuredImage}
                         alt={title.rendered}

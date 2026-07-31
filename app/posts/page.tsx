@@ -3,9 +3,6 @@ import {
   getAllAuthors,
   getAllTags,
   getAllCategories,
-  searchAuthors,
-  searchTags,
-  searchCategories,
 } from "@/lib/wordpress";
 
 import {
@@ -65,12 +62,15 @@ export default async function Page({
   const params = await searchParams;
   const { author, tag, category, page: pageParam, search } = params;
 
-  // Fetch data based on search parameters
+  // Fetch data based on search parameters.
+  // NOTE: authors/tags/categories for the dropdowns are always fetched in full
+  // so that a selected filter (stored as an ID in the URL) always has a matching
+  // <SelectItem> and displays its name — not a raw number.
   const [posts, authors, tags, categories] = await Promise.all([
     getAllPosts({ author, tag, category, search }),
-    search ? searchAuthors(search) : getAllAuthors(),
-    search ? searchTags(search) : getAllTags(),
-    search ? searchCategories(search) : getAllCategories(),
+    getAllAuthors(),
+    getAllTags(),
+    getAllCategories(),
   ]);
 
   // Handle pagination
